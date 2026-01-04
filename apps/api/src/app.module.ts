@@ -1,34 +1,35 @@
-// src/app.module.ts
+// src/app.module. ts
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
 
 /**
  * AppModule - Root Module der Anwendung
  *
- * Import-Reihenfolge ist wichtig:
- * 1. ConfigModule (lädt . env Variablen)
- * 2. DatabaseModule (braucht Config für DATABASE_URL)
- * 3. Feature Modules (brauchen Database)
+ * Import-Reihenfolge:
+ * 1. ConfigModule (Infrastruktur)
+ * 2. DatabaseModule (Infrastruktur)
+ * 3. Feature Modules (Business Logic)
  */
 @Module({
   imports: [
-    // 1. Configuration - Lädt .env Variablen
+    // 1. Configuration
     ConfigModule.forRoot({
-      isGlobal: true, // Macht ConfigService überall verfügbar
-      envFilePath: '.env', // Pfad zur .env Datei
-      cache: true, // Cached Env-Variablen (Performance)
+      isGlobal: true,
+      envFilePath: '.env',
+      cache: true,
     }),
 
-    // 2. Database - Stellt Drizzle ORM bereit
+    // 2. Database
     DatabaseModule,
 
-    // 3. Feature Modules (kommen in späteren Commits)
-    // UsersModule,
-    // AuthModule,
+    // 3. Feature Modules
+    UsersModule,
+    // AuthModule, (kommt in Commit 3)
   ],
   controllers: [AppController],
   providers: [AppService],
