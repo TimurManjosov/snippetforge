@@ -1,19 +1,29 @@
-// src/app.module. ts
+// src/app.module.ts
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule, JwtAuthGuard } from './modules/auth';
 import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
 
 /**
- * AppModule - Root Module der Anwendung
+ * AppModule - Root Module
  *
- * Import-Reihenfolge:
- * 1. ConfigModule (Infrastruktur)
- * 2. DatabaseModule (Infrastruktur)
- * 3. Feature Modules (Business Logic)
+ * WICHTIG: JwtAuthGuard ist GLOBAL aktiviert!
+ * Das bedeutet:  ALLE Routes sind geschützt, außer @Public()
+ *
+ * Vorteile:
+ * - Security by Default (vergessene Auth ist nicht möglich)
+ * - Weniger Boilerplate (@UseGuards auf jeder Route)
+ *
+ * Nachteile:
+ * - Muss @Public() für öffentliche Routes setzen
+ *
+ * ALTERNATIV: Guards nur auf einzelnen Routes/Controllern
+ * Dann APP_GUARD Provider entfernen und @UseGuards() nutzen
  */
 @Module({
   imports: [
@@ -29,9 +39,18 @@ import { DatabaseModule } from './shared/database';
 
     // 3. Feature Modules
     UsersModule,
-    // AuthModule, (kommt in Commit 3)
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+
+    // Global JwtAuthGuard
+    // Alle Routes sind geschützt, außer @Public()
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
