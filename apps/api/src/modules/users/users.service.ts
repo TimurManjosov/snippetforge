@@ -105,7 +105,7 @@ export class UsersService {
   async create(data: CreateUserData): Promise<SafeUser> {
     this.logger.debug(`Creating user: ${data.email}`);
 
-    // Normalize email once
+    // Normalize email for case-insensitive comparison and storage consistency
     const normalizedEmail = data.email.toLowerCase();
 
     // 1. Prüfe ob Email oder Username bereits existieren
@@ -325,10 +325,10 @@ export class UsersService {
       // User nicht gefunden - aber wir verraten das nicht!
       // Stattdessen führen wir trotzdem einen Hash-Vergleich durch
       // (verhindert Timing-Attacks)
-      // Dummy hash von bcrypt.hash('dummy', 10)
+      // Real bcrypt hash (10 rounds) for consistent timing characteristics
       await this.comparePassword(
         password,
-        '$2a$10$X5ZYXJ5j5zJ5zJ5zJ5zJ5.uX5ZYXJ5j5zJ5zJ5zJ5zJ5uX5ZYXJ5jO',
+        '$2b$10$tfim3AUyYJJ.b1Cjz4jUn.NJ4JiCMCJYS7FotrpAKOAk2r6rjrQDe',
       );
       return null;
     }
