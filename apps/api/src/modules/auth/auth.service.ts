@@ -93,7 +93,7 @@ export class AuthService {
    * @throws UnauthorizedException bei ungültigen Credentials
    */
   async login(dto: LoginDto): Promise<AuthResponse> {
-    this.logger.debug(`Login attempt for:  ${dto.email}`);
+    this.logger.debug(`Login attempt for: ${dto.email}`);
 
     // 1. Credentials validieren (UsersService macht Timing-Safe Comparison)
     const user = await this.usersService.validateCredentials(

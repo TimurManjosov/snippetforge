@@ -105,15 +105,18 @@ export class UsersService {
   async create(data: CreateUserData): Promise<SafeUser> {
     this.logger.debug(`Creating user: ${data.email}`);
 
+    // Normalize email once
+    const normalizedEmail = data.email.toLowerCase();
+
     // 1. Prüfe ob Email oder Username bereits existieren
     const existingUser = await this.usersRepository.findByEmailOrUsername(
-      data.email,
+      normalizedEmail,
       data.username,
     );
 
     if (existingUser) {
       // Spezifische Fehlermeldung (aber nicht zu spezifisch - Security!)
-      if (existingUser.email === data.email.toLowerCase()) {
+      if (existingUser.email === normalizedEmail) {
         throw new ConflictException('Email is already registered');
       }
       throw new ConflictException('Username is already taken');
@@ -124,7 +127,7 @@ export class UsersService {
 
     // 3. User erstellen
     const user = await this.usersRepository.create({
-      email: data.email,
+      email: normalizedEmail,
       username: data.username,
       passwordHash,
     });
@@ -206,6 +209,16 @@ export class UsersService {
     const existingUser = await this.usersRepository.findById(id);
     if (!existingUser) {
       throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    // Prüfe ob Username bereits von anderem User verwendet wird
+    if (data.username && data.username !== existingUser.username) {
+      const userWithSameUsername = await this.usersRepository.findByUsername(
+        data.username,
+      );
+      if (userWithSameUsername && userWithSameUsername.id !== id) {
+        throw new ConflictException('Username is already taken');
+      }
     }
 
     // Update durchführen
@@ -312,7 +325,11 @@ export class UsersService {
       // User nicht gefunden - aber wir verraten das nicht!
       // Stattdessen führen wir trotzdem einen Hash-Vergleich durch
       // (verhindert Timing-Attacks)
-      await this.hashPassword('dummy-password');
+      // Dummy hash von bcrypt.hash('dummy', 10)
+      await this.comparePassword(
+        password,
+        '$2a$10$X5ZYXJ5j5zJ5zJ5zJ5zJ5.uX5ZYXJ5j5zJ5zJ5zJ5zJ5uX5ZYXJ5jO',
+      );
       return null;
     }
 
@@ -327,15 +344,6 @@ export class UsersService {
     }
 
     // 3. SafeUser zurückgeben (ohne passwordHash!)
-    return {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      bio: user.bio,
-      avatarUrl: user.avatarUrl,
-      role: user.role,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+    return toSafeUser(user);
   }
 }

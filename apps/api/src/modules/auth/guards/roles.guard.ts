@@ -18,7 +18,7 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
  * WIE ES FUNKTIONIERT:
  * 1. Route ist mit @Roles('ADMIN', 'MODERATOR') dekoriert
  * 2. User ist bereits authentifiziert (JwtAuthGuard lief vorher)
- * 3. RolesGuard prüft ob user. role in erlaubten Rollen ist
+ * 3. RolesGuard prüft ob user.role in erlaubten Rollen ist
  * 4. Wenn ja: Route wird ausgeführt
  * 5. Wenn nein: 403 Forbidden
  *
@@ -28,7 +28,7 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
  * VERWENDUNG:
  * @Roles('ADMIN')
  * @UseGuards(JwtAuthGuard, RolesGuard)
- * @Delete('users/: id')
+ * @Delete('users/:id')
  * deleteUser() {}
  *
  * @Roles('ADMIN', 'MODERATOR')  // Einer von beiden reicht
@@ -68,7 +68,7 @@ export class RolesGuard implements CanActivate {
     // 4. Defensive Check: User sollte existieren (JwtAuthGuard lief vorher)
     if (!user) {
       this.logger.error(
-        'RolesGuard: No user found in request.  JwtAuthGuard missing?',
+        'RolesGuard: No user found in request. JwtAuthGuard missing?',
       );
       throw new ForbiddenException('Authentication required');
     }
