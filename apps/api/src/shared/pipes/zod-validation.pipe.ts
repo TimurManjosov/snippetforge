@@ -1,4 +1,4 @@
-// src/shared/pipes/zod-validation. pipe.ts
+// src/shared/pipes/zod-validation.pipe.ts
 
 import {
   ArgumentMetadata,
@@ -88,7 +88,7 @@ export class ZodValidationPipe<T> implements PipeTransform<unknown, T> {
 
     for (const issue of error.issues) {
       // Path kann nested sein:  ['user', 'email'] → 'user.email'
-      const path = issue.path.join('. ') || 'root';
+      const path = issue.path.join('.') || 'root';
 
       if (!formattedErrors[path]) {
         formattedErrors[path] = [];
