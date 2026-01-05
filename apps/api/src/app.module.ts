@@ -2,35 +2,55 @@
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule, JwtAuthGuard } from './modules/auth';
+import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
 
 /**
- * AppModule - Root Module der Anwendung
+ * AppModule - Root Module
  *
- * Import-Reihenfolge ist wichtig:
- * 1. ConfigModule (lädt . env Variablen)
- * 2. DatabaseModule (braucht Config für DATABASE_URL)
- * 3. Feature Modules (brauchen Database)
+ * WICHTIG: JwtAuthGuard ist GLOBAL aktiviert!
+ * Das bedeutet:  ALLE Routes sind geschützt, außer @Public()
+ *
+ * Vorteile:
+ * - Security by Default (vergessene Auth ist nicht möglich)
+ * - Weniger Boilerplate (@UseGuards auf jeder Route)
+ *
+ * Nachteile:
+ * - Muss @Public() für öffentliche Routes setzen
+ *
+ * ALTERNATIV: Guards nur auf einzelnen Routes/Controllern
+ * Dann APP_GUARD Provider entfernen und @UseGuards() nutzen
  */
 @Module({
   imports: [
-    // 1. Configuration - Lädt .env Variablen
+    // 1. Configuration
     ConfigModule.forRoot({
-      isGlobal: true, // Macht ConfigService überall verfügbar
-      envFilePath: '.env', // Pfad zur .env Datei
-      cache: true, // Cached Env-Variablen (Performance)
+      isGlobal: true,
+      envFilePath: '.env',
+      cache: true,
     }),
 
-    // 2. Database - Stellt Drizzle ORM bereit
+    // 2. Database
     DatabaseModule,
 
-    // 3. Feature Modules (kommen in späteren Commits)
-    // UsersModule,
-    // AuthModule,
+    // 3. Feature Modules
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+
+    // Global JwtAuthGuard
+    // Alle Routes sind geschützt, außer @Public()
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
