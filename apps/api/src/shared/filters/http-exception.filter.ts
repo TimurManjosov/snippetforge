@@ -28,7 +28,7 @@ import { createErrorResponse, type ErrorDetails } from '../types';
  * - Alle anderen HttpExceptions
  *
  * WAS ES NICHT FÄNGT:
- * - TypeError, ReferenceError, etc.  (→ AllExceptionsFilter)
+ * - TypeError, ReferenceError, etc. (→ AllExceptionsFilter)
  * - Errors die keine HttpException sind
  *
  * PERFORMANCE OPTIMIERUNGEN:
@@ -90,7 +90,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
    * - String: "Not found"
    * - Object: { message: "Not found", error: "Not Found" }
    * - Object mit Array: { message: ["error1", "error2"] }
-   * - Custom Object: { message: ".. .", code: "CUSTOM_CODE", errors: {... } }
+   * - Custom Object: { message: "...", code: "CUSTOM_CODE", errors: {...} }
    *
    * Diese Methode normalisiert alle Formate.
    */
@@ -160,7 +160,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const lowerMessage = message.toLowerCase();
 
     // Authentication Errors
-    if (status === (HttpStatus.UNAUTHORIZED as number)) {
+    if (status === HttpStatus.UNAUTHORIZED) {
       if (lowerMessage.includes('expired')) {
         return ErrorCodes.AUTH_TOKEN_EXPIRED;
       }
@@ -180,7 +180,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     // Authorization Errors
-    if (status === (HttpStatus.FORBIDDEN as number)) {
+    if (status === HttpStatus.FORBIDDEN) {
       if (lowerMessage.includes('role')) {
         return ErrorCodes.AUTH_INSUFFICIENT_ROLE;
       }
@@ -188,7 +188,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     // Conflict Errors
-    if (status === (HttpStatus.CONFLICT as number)) {
+    if (status === HttpStatus.CONFLICT) {
       if (lowerMessage.includes('email')) {
         return ErrorCodes.USER_EMAIL_EXISTS;
       }
@@ -198,7 +198,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     // Not Found Errors
-    if (status === (HttpStatus.NOT_FOUND as number)) {
+    if (status === HttpStatus.NOT_FOUND) {
       if (lowerMessage.includes('user')) {
         return ErrorCodes.USER_NOT_FOUND;
       }
@@ -230,7 +230,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
    * - 5xx (Server Errors): error Level (Unsere Fehler)
    *
    * FORMAT:
-   * [METHOD] /path - STATUS CODE:  message
+   * [METHOD] /path - STATUS CODE: message
    */
   private logError(
     exception: HttpException,
@@ -254,9 +254,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     // Log Level basierend auf Status
     if (status >= 500) {
-      // Server Errors:  Immer mit Stack Trace loggen
+      // Server Errors: Immer mit Stack Trace loggen
       this.logger.error(
-        `[${method}] ${url} - ${status} ${code}:  ${message}`,
+        `[${method}] ${url} - ${status} ${code}: ${message}`,
         exception.stack,
         JSON.stringify(logContext),
       );

@@ -18,13 +18,13 @@ import { type ErrorCode } from '../constants';
  *     code: "AUTH_TOKEN_EXPIRED", // Machine-readable
  *     message: "Token expired",   // Human-readable
  *     statusCode: 401,            // HTTP Status
- *     details?:  {... }             // Zusätzliche Infos (Validation Errors)
+ *     details?: {...}           // Zusätzliche Infos (Validation Errors)
  *   },
  *   meta: {
- *     timestamp:  ".. .",           // Wann der Error auftrat
+ *     timestamp: "...",           // Wann der Error auftrat
  *     path: "/api/auth/me",       // Welcher Endpoint
- *     method:  "GET",              // Welche HTTP Methode
- *     requestId?:  "..."           // Für Tracing (optional)
+ *     method: "GET",              // Welche HTTP Methode
+ *     requestId?: "..."           // Für Tracing (optional)
  *   }
  * }
  */

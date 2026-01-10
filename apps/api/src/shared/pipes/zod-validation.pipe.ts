@@ -60,7 +60,7 @@ export class ZodValidationPipe<T> implements PipeTransform<unknown, T> {
    * INPUT (Zod Format):
    * [
    *   { path: ['email'], message: 'Invalid email' },
-   *   { path:  ['password'], message: 'Too short' }
+   *   { path: ['password'], message: 'Too short' }
    * ]
    *
    * OUTPUT:
@@ -73,8 +73,8 @@ export class ZodValidationPipe<T> implements PipeTransform<unknown, T> {
     const formattedErrors: Record<string, string[]> = {};
 
     for (const issue of error.issues) {
-      // Path kann nested sein:  ['user', 'email'] → 'user.email'
-      const path = issue.path.length > 0 ? issue.path.join('. ') : '_root'; // Für root-level Errors
+      // Path kann nested sein: ['user', 'email'] → 'user.email'
+      const path = issue.path.length > 0 ? issue.path.join('.') : '_root'; // Für root-level Errors
 
       if (!formattedErrors[path]) {
         formattedErrors[path] = [];
