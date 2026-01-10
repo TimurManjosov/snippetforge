@@ -67,9 +67,9 @@ export type ApiResult<T = unknown> = ApiResponse<T> | ApiErrorResponse;
  * ```typescript
  * const result = await api.getUser(id)
  * if (isSuccessResponse(result)) {
- *   console.log(result.data. email) // TypeScript weiß:  data existiert
+ *   console.log(result.data.email) // TypeScript weiß:  data existiert
  * } else {
- *   console. log(result.error.message) // TypeScript weiß: error existiert
+ *   console.log(result.error.message) // TypeScript weiß: error existiert
  * }
  * ```
  */

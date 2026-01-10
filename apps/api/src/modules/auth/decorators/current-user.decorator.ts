@@ -39,7 +39,7 @@ export const CurrentUser = createParamDecorator(
     const request = ctx.switchToHttp().getRequest<Request>();
     const user = request.user as SafeUser | undefined;
 
-    // Wenn kein User (Guard nicht aktiv? ), undefined zurückgeben
+    // Wenn kein User (Guard nicht aktiv?), undefined zurückgeben
     if (!user) {
       return undefined;
     }

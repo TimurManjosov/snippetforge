@@ -1,4 +1,4 @@
-// src/modules/auth/strategies/jwt. strategy.ts
+// src/modules/auth/strategies/jwt.strategy.ts
 
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -77,7 +77,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // User nicht gefunden (gelöscht?)
-      this.logger.warn(`JWT validation failed:  User ${payload.sub} not found`);
+      this.logger.warn(`JWT validation failed: User ${payload.sub} not found`);
       throw new UnauthorizedException('User not found or has been deleted');
     }
   }
