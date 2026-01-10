@@ -1,4 +1,4 @@
-// src/modules/auth/guards/jwt-auth. guard.ts
+// src/modules/auth/guards/jwt-auth.guard.ts
 
 import {
   ExecutionContext,

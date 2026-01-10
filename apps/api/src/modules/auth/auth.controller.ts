@@ -60,8 +60,8 @@ export class AuthController {
    *
    * RESPONSE (201 Created):
    * {
-   *   "user": { "id": ".. .", "email": ".. .", ...  },
-   *   "tokens":  { "accessToken": "...", "tokenType": "Bearer", "expiresIn": 900 }
+   *   "user": { "id": "...", "email": "...", ... },
+   *   "tokens": { "accessToken": "...", "tokenType": "Bearer", "expiresIn": 900 }
    * }
    *
    * ERRORS:
@@ -87,13 +87,13 @@ export class AuthController {
    * REQUEST BODY:
    * {
    *   "email": "user@example.com",
-   *   "password":  "SecurePass123"
+   *   "password": "SecurePass123"
    * }
    *
    * RESPONSE (200 OK):
    * {
    *   "user": { "id": "...", "email": "...", ... },
-   *   "tokens": { "accessToken": ".. .", "tokenType": "Bearer", "expiresIn": 900 }
+   *   "tokens": { "accessToken": "...", "tokenType": "Bearer", "expiresIn": 900 }
    * }
    *
    * ERRORS:
@@ -122,17 +122,17 @@ export class AuthController {
    * RESPONSE (200 OK):
    * {
    *   "id": "uuid",
-   *   "email":  "user@example.com",
+   *   "email": "user@example.com",
    *   "username": "johndoe",
    *   "bio": null,
    *   "avatarUrl": null,
    *   "role": "USER",
-   *   "createdAt": "2026-01-04T.. .",
+   *   "createdAt": "2026-01-04T...",
    *   "updatedAt": "2026-01-04T..."
    * }
    *
    * ERRORS:
-   * - 401 Unauthorized:  Missing/Invalid token
+   * - 401 Unauthorized: Missing/Invalid token
    */
   @UseGuards(JwtAuthGuard)
   @Get('me')
