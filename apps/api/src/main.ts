@@ -76,6 +76,7 @@ async function bootstrap() {
 
   await app.listen(port);
 
+  // Startup Logs
   logger.log(`🚀 Application is running on: http://localhost:${port}`);
   logger.log(`📚 API available at: http://localhost:${port}/api`);
   logger.log(`🔒 Environment: ${isProduction ? 'production' : 'development'}`);

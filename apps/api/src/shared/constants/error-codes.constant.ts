@@ -4,9 +4,9 @@
  * Error Codes - Machine-readable Error Identifiers
  *
  * WARUM Error Codes?
- * 1. Frontend kann auf spezifische Errors reagieren (z.B.  Redirect bei AUTH_TOKEN_EXPIRED)
+ * 1. Frontend kann auf spezifische Errors reagieren (z.B. Redirect bei AUTH_TOKEN_EXPIRED)
  * 2. Logging/Monitoring kann Errors kategorisieren
- * 3. I18n:  Frontend kann Error Code zu lokalisierter Message mappen
+ * 3. I18n: Frontend kann Error Code zu lokalisierter Message mappen
  * 4. API Consumers können programmatisch auf Errors reagieren
  *
  * NAMENSKONVENTION:
@@ -18,7 +18,7 @@
  * - AUTH_*: Authentication/Authorization Errors
  * - VALIDATION_*: Input Validation Errors
  * - USER_*: User-bezogene Errors
- * - RESOURCE_*:  Allgemeine Resource Errors
+ * - RESOURCE_*: Allgemeine Resource Errors
  * - SERVER_*: Server-seitige Errors
  */
 

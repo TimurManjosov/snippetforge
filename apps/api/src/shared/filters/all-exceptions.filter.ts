@@ -45,7 +45,7 @@ import { createErrorResponse } from '../types';
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
 
-  /** Ist Production Environment?  */
+  /** Ist Production Environment? */
   private readonly isProduction = process.env.NODE_ENV === 'production';
 
   /**
@@ -101,7 +101,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
    * Verarbeitet die Exception und extrahiert Code + Message
    *
    * SECURITY-REGEL:
-   * In Production:  NIEMALS echte Error Message zurückgeben
+   * In Production: NIEMALS echte Error Message zurückgeben
    * - Könnte interne Pfade verraten
    * - Könnte DB-Schema verraten
    * - Könnte verwendete Libraries verraten
@@ -112,7 +112,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
   } {
     // Default für Production
     let code: ErrorCode = ErrorCodes.SERVER_ERROR;
-    let message = 'An unexpected error occurred.  Please try again later.';
+    let message = 'An unexpected error occurred. Please try again later.';
 
     // In Development:  Mehr Details für Debugging
     if (!this.isProduction && exception instanceof Error) {
@@ -194,10 +194,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const sensitivePatterns = [
       // Dateipfade (Windows und Unix)
       /[A-Za-z]:\\[^\s]+/g,
-      /\/[^\s]*\/[^\s]+/g,
+      /(?:\/[\w.-]+){2,}/g,
 
       // Connection Strings
-      /postgresql: \/\/[^\s]+/gi,
+      /postgresql:\/\/[^\s]+/gi,
       /postgres:\/\/[^\s]+/gi,
       /mongodb:\/\/[^\s]+/gi,
 
@@ -205,7 +205,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       /at\s+[^\n]+/g,
 
       // Node.js Interna
-      /node: internal[^\n]+/g,
+      /node:internal[^\n]+/g,
     ];
 
     for (const pattern of sensitivePatterns) {

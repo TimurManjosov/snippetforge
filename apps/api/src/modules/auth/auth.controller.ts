@@ -61,11 +61,30 @@ export class AuthController {
 
   constructor(private readonly authService: AuthService) {}
 
-  // ============================================================
-  // POST /api/auth/register
-  // ============================================================
-
-  @Public()
+  /**
+   * POST /api/auth/register
+   *
+   * Registriert neuen User und gibt Tokens zurück.
+   * User ist sofort eingeloggt (kein separater Login nötig).
+   *
+   * REQUEST BODY:
+   * {
+   *   "email": "user@example.com",
+   *   "username": "johndoe",
+   *   "password": "SecurePass123"
+   * }
+   *
+   * RESPONSE (201 Created):
+   * {
+   *   "user": { "id": "...", "email": "...", ... },
+   *   "tokens": { "accessToken": "...", "tokenType": "Bearer", "expiresIn": 900 }
+   * }
+   *
+   * ERRORS:
+   * - 400 Bad Request: Validation Error
+   * - 409 Conflict: Email/Username already exists
+   */
+  @Public() // Keine Auth nötig für Registration
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -128,11 +147,28 @@ The user is immediately logged in after registration.
     return this.authService.register(dto);
   }
 
-  // ============================================================
-  // POST /api/auth/login
-  // ============================================================
-
-  @Public()
+  /**
+   * POST /api/auth/login
+   *
+   * Loggt User ein und gibt Tokens zurück.
+   *
+   * REQUEST BODY:
+   * {
+   *   "email": "user@example.com",
+   *   "password": "SecurePass123"
+   * }
+   *
+   * RESPONSE (200 OK):
+   * {
+   *   "user": { "id": "...", "email": "...", ... },
+   *   "tokens": { "accessToken": "...", "tokenType": "Bearer", "expiresIn": 900 }
+   * }
+   *
+   * ERRORS:
+   * - 400 Bad Request: Validation Error
+   * - 401 Unauthorized: Invalid credentials
+   */
+  @Public() // Keine Auth nötig für Login
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -181,10 +217,30 @@ Authorization: Bearer <accessToken>
     return this.authService.login(dto);
   }
 
-  // ============================================================
-  // GET /api/auth/me
-  // ============================================================
-
+  /**
+   * GET /api/auth/me
+   *
+   * Gibt aktuellen User zurück (aus JWT Token).
+   * Erfordert gültigen Bearer Token.
+   *
+   * HEADERS:
+   * Authorization: Bearer <token>
+   *
+   * RESPONSE (200 OK):
+   * {
+   *   "id": "uuid",
+   *   "email": "user@example.com",
+   *   "username": "johndoe",
+   *   "bio": null,
+   *   "avatarUrl": null,
+   *   "role": "USER",
+   *   "createdAt": "2026-01-04T...",
+   *   "updatedAt": "2026-01-04T..."
+   * }
+   *
+   * ERRORS:
+   * - 401 Unauthorized: Missing/Invalid token
+   */
   @UseGuards(JwtAuthGuard)
   @Get('me')
   @HttpCode(HttpStatus.OK)
