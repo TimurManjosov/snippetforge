@@ -11,7 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const app_service_1 = require("./app.service");
+const auth_1 = require("./modules/auth");
+const swagger_2 = require("./shared/swagger");
 let AppController = class AppController {
     appService;
     constructor(appService) {
@@ -20,16 +23,48 @@ let AppController = class AppController {
     getHello() {
         return this.appService.getHello();
     }
+    getHealth() {
+        return {
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            service: 'snippetforge-api',
+            version: process.env.API_VERSION || '0.1.0',
+        };
+    }
 };
 exports.AppController = AppController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiExcludeEndpoint)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
+__decorate([
+    (0, common_1.Get)('health'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Health check endpoint',
+        description: `
+Returns the health status of the API.
+Use this endpoint for:
+- Kubernetes liveness/readiness probes
+- Load balancer health checks
+- Monitoring systems
+    `,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Service is healthy',
+        type: swagger_2.HealthCheckResponseSchema,
+    }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "getHealth", null);
 exports.AppController = AppController = __decorate([
+    (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)(),
+    (0, auth_1.Public)(),
     __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

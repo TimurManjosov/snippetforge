@@ -124,7 +124,7 @@ The user is immediately logged in after registration.
     @Body(new ZodValidationPipe(registerDto.RegisterSchema))
     dto: registerDto.RegisterDto,
   ): Promise<AuthResponse> {
-    this.logger.debug(`Register request for:  ${dto.email}`);
+    this.logger.debug(`Register request for: ${dto.email}`);
     return this.authService.register(dto);
   }
 
@@ -155,7 +155,7 @@ Authorization: Bearer <accessToken>
       valid: {
         summary: 'Valid credentials',
         value: {
-          email: 'user@example. com',
+          email: 'user@example.com',
           password: 'SecurePass123',
         },
       },
