@@ -6,7 +6,7 @@ import { DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
  * Swagger/OpenAPI Konfiguration
  *
  * WARUM SEPARATE CONFIG?
- * - Single Responsibility:  Swagger-Logik isoliert von main. ts
+ * - Single Responsibility: Swagger-Logik isoliert von main.ts
  * - Testbarkeit: Config kann unabhängig getestet werden
  * - Wiederverwendbarkeit: Kann in verschiedenen Umgebungen angepasst werden
  * - Übersichtlichkeit: main.ts bleibt schlank
@@ -154,13 +154,13 @@ Authorization: Bearer <your-access-token>
   "success": false,
   "error": {
     "code": "ERROR_CODE",
-    "message":  "Human readable message",
+    "message": "Human readable message",
     "statusCode": 400,
-    "details": { ...  }
+    "details": { ... }
   },
   "meta": {
     "timestamp": "2026-01-10T12:00:00.000Z",
-    "path": "/api/.. .",
+    "path": "/api/...",
     "method": "POST"
   }
 }
@@ -212,7 +212,7 @@ export const swaggerCustomOptions: SwaggerCustomOptions = {
   customCss: `
     .swagger-ui .topbar { display: none; }
     .swagger-ui .info { margin-bottom: 20px; }
-    .swagger-ui . info . title { font-size: 2. 5em; }
+    .swagger-ui .info .title { font-size: 2.5em; }
   `,
 
   // ========================================

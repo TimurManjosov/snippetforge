@@ -77,7 +77,7 @@ export class LoginRequestSchema {
 export class TokenResponseSchema {
   @ApiProperty({
     description: 'JWT access token',
-    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.. .',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
   accessToken: string;
 
@@ -109,7 +109,7 @@ export class UserResponseSchema {
 
   @ApiProperty({
     description: 'User email address',
-    example: 'user@example. com',
+    example: 'user@example.com',
     format: 'email',
   })
   email: string;

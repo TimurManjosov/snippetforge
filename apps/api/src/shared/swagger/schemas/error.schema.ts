@@ -1,4 +1,4 @@
-// src/shared/swagger/schemas/error.schema. ts
+// src/shared/swagger/schemas/error.schema.ts
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -191,7 +191,7 @@ export class ForbiddenErrorResponseSchema extends ErrorResponseSchema {
     type: ErrorObjectSchema,
     example: {
       code: 'AUTH_INSUFFICIENT_ROLE',
-      message: 'Access denied.  Required role:  ADMIN',
+      message: 'Access denied. Required role: ADMIN',
       statusCode: 403,
     },
   })
@@ -242,7 +242,7 @@ export class InternalServerErrorResponseSchema extends ErrorResponseSchema {
     type: ErrorObjectSchema,
     example: {
       code: 'SERVER_ERROR',
-      message: 'An unexpected error occurred.  Please try again later.',
+      message: 'An unexpected error occurred. Please try again later.',
       statusCode: 500,
     },
   })
