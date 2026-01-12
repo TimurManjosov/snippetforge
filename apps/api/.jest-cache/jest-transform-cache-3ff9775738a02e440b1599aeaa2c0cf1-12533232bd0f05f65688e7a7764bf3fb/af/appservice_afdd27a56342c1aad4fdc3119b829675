@@ -1,0 +1,32 @@
+eaa26786b5e1b97be6bb12d3afccfd22
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppService = void 0;
+const common_1 = require("@nestjs/common");
+const auth_schemas_1 = require("../../../packages/shared/src/auth.schemas");
+let AppService = class AppService {
+    getHello() {
+        return 'Hello World!';
+    }
+    // ✅ Nutze RegisterSchema
+    testValidation() {
+        const testData = {
+            email: 'test@example.com',
+            username: 'testuser',
+            password: 'SecurePass123',
+        };
+        const result = auth_schemas_1.RegisterSchema.safeParse(testData);
+        return result.success ? 'Valid!' : result.error;
+    }
+};
+exports.AppService = AppService;
+exports.AppService = AppService = __decorate([
+    (0, common_1.Injectable)()
+], AppService);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcc3JjXFxhcHAuc2VydmljZS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSwyQ0FBNEM7QUFDNUMsNEVBQTJFO0FBR3BFLElBQU0sVUFBVSxHQUFoQixNQUFNLFVBQVU7SUFDckIsUUFBUTtRQUNOLE9BQU8sY0FBYyxDQUFDO0lBQ3hCLENBQUM7SUFFRCx5QkFBeUI7SUFDekIsY0FBYztRQUNaLE1BQU0sUUFBUSxHQUFHO1lBQ2YsS0FBSyxFQUFFLGtCQUFrQjtZQUN6QixRQUFRLEVBQUUsVUFBVTtZQUNwQixRQUFRLEVBQUUsZUFBZTtTQUMxQixDQUFDO1FBRUYsTUFBTSxNQUFNLEdBQUcsNkJBQWMsQ0FBQyxTQUFTLENBQUMsUUFBUSxDQUFDLENBQUM7UUFDbEQsT0FBTyxNQUFNLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQyxRQUFRLENBQUMsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxLQUFLLENBQUM7SUFDbEQsQ0FBQztDQUNGLENBQUE7QUFoQlksZ0NBQVU7cUJBQVYsVUFBVTtJQUR0QixJQUFBLG1CQUFVLEdBQUU7R0FDQSxVQUFVLENBZ0J0QiIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJDOlxcVXNlcnNcXHRpbXVyXFxQcm9ncmFtbWluZ1xcUHJvamVjdHNcXHNuaXBwZXRmb3JnZVxcYXBwc1xcYXBpXFxzcmNcXGFwcC5zZXJ2aWNlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEluamVjdGFibGUgfSBmcm9tICdAbmVzdGpzL2NvbW1vbic7XHJcbmltcG9ydCB7IFJlZ2lzdGVyU2NoZW1hIH0gZnJvbSAnLi4vLi4vLi4vcGFja2FnZXMvc2hhcmVkL3NyYy9hdXRoLnNjaGVtYXMnO1xyXG5cclxuQEluamVjdGFibGUoKVxyXG5leHBvcnQgY2xhc3MgQXBwU2VydmljZSB7XHJcbiAgZ2V0SGVsbG8oKTogc3RyaW5nIHtcclxuICAgIHJldHVybiAnSGVsbG8gV29ybGQhJztcclxuICB9XHJcblxyXG4gIC8vIOKchSBOdXR6ZSBSZWdpc3RlclNjaGVtYVxyXG4gIHRlc3RWYWxpZGF0aW9uKCkge1xyXG4gICAgY29uc3QgdGVzdERhdGEgPSB7XHJcbiAgICAgIGVtYWlsOiAndGVzdEBleGFtcGxlLmNvbScsXHJcbiAgICAgIHVzZXJuYW1lOiAndGVzdHVzZXInLFxyXG4gICAgICBwYXNzd29yZDogJ1NlY3VyZVBhc3MxMjMnLFxyXG4gICAgfTtcclxuXHJcbiAgICBjb25zdCByZXN1bHQgPSBSZWdpc3RlclNjaGVtYS5zYWZlUGFyc2UodGVzdERhdGEpO1xyXG4gICAgcmV0dXJuIHJlc3VsdC5zdWNjZXNzID8gJ1ZhbGlkIScgOiByZXN1bHQuZXJyb3I7XHJcbiAgfVxyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

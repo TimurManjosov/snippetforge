@@ -1,0 +1,60 @@
+40cd83564b39dc4729c8fe658f165f67
+"use strict";
+// test/factories/auth.factory.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.invalidAuthData = void 0;
+exports.createRegisterDto = createRegisterDto;
+exports.createLoginDto = createLoginDto;
+const test_utils_1 = require("../setup/test-utils");
+/**
+ * Auth Test Data Factory
+ *
+ * Erstellt valide Test-Daten für Auth-bezogene Tests.
+ */
+/**
+ * Erstellt valide Registration-Daten
+ */
+function createRegisterDto(overrides = {}) {
+    return {
+        email: overrides.email ?? (0, test_utils_1.randomEmail)(),
+        username: overrides.username ?? (0, test_utils_1.randomUsername)(),
+        password: overrides.password ?? 'SecurePass123',
+    };
+}
+/**
+ * Erstellt valide Login-Daten
+ */
+function createLoginDto(overrides = {}) {
+    return {
+        email: overrides.email ?? 'test@example.com',
+        password: overrides.password ?? 'SecurePass123',
+    };
+}
+/**
+ * Invalide Auth-Daten für Validation Tests
+ */
+exports.invalidAuthData = {
+    register: {
+        emptyBody: {},
+        missingEmail: { username: 'test', password: 'SecurePass123' },
+        missingUsername: { email: 'test@test.com', password: 'SecurePass123' },
+        missingPassword: { email: 'test@test.com', username: 'test' },
+        invalidEmail: {
+            email: 'invalid',
+            username: 'test',
+            password: 'SecurePass123',
+        },
+        weakPassword: {
+            email: 'test@test.com',
+            username: 'test',
+            password: 'weak',
+        },
+    },
+    login: {
+        emptyBody: {},
+        missingEmail: { password: 'SecurePass123' },
+        missingPassword: { email: 'test@test. com' },
+        invalidEmail: { email: 'invalid', password: 'SecurePass123' },
+    },
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcdGVzdFxcZmFjdG9yaWVzXFxhdXRoLmZhY3RvcnkudHMiLCJtYXBwaW5ncyI6IjtBQUFBLGlDQUFpQzs7O0FBYWpDLDhDQVlDO0FBS0Qsd0NBVUM7QUF0Q0Qsb0RBQWtFO0FBRWxFOzs7O0dBSUc7QUFFSDs7R0FFRztBQUNILFNBQWdCLGlCQUFpQixDQUMvQixZQUlJLEVBQUU7SUFFTixPQUFPO1FBQ0wsS0FBSyxFQUFFLFNBQVMsQ0FBQyxLQUFLLElBQUksSUFBQSx3QkFBVyxHQUFFO1FBQ3ZDLFFBQVEsRUFBRSxTQUFTLENBQUMsUUFBUSxJQUFJLElBQUEsMkJBQWMsR0FBRTtRQUNoRCxRQUFRLEVBQUUsU0FBUyxDQUFDLFFBQVEsSUFBSSxlQUFlO0tBQ2hELENBQUM7QUFDSixDQUFDO0FBRUQ7O0dBRUc7QUFDSCxTQUFnQixjQUFjLENBQzVCLFlBR0ksRUFBRTtJQUVOLE9BQU87UUFDTCxLQUFLLEVBQUUsU0FBUyxDQUFDLEtBQUssSUFBSSxrQkFBa0I7UUFDNUMsUUFBUSxFQUFFLFNBQVMsQ0FBQyxRQUFRLElBQUksZUFBZTtLQUNoRCxDQUFDO0FBQ0osQ0FBQztBQUVEOztHQUVHO0FBQ1UsUUFBQSxlQUFlLEdBQUc7SUFDN0IsUUFBUSxFQUFFO1FBQ1IsU0FBUyxFQUFFLEVBQUU7UUFDYixZQUFZLEVBQUUsRUFBRSxRQUFRLEVBQUUsTUFBTSxFQUFFLFFBQVEsRUFBRSxlQUFlLEVBQUU7UUFDN0QsZUFBZSxFQUFFLEVBQUUsS0FBSyxFQUFFLGVBQWUsRUFBRSxRQUFRLEVBQUUsZUFBZSxFQUFFO1FBQ3RFLGVBQWUsRUFBRSxFQUFFLEtBQUssRUFBRSxlQUFlLEVBQUUsUUFBUSxFQUFFLE1BQU0sRUFBRTtRQUM3RCxZQUFZLEVBQUU7WUFDWixLQUFLLEVBQUUsU0FBUztZQUNoQixRQUFRLEVBQUUsTUFBTTtZQUNoQixRQUFRLEVBQUUsZUFBZTtTQUMxQjtRQUNELFlBQVksRUFBRTtZQUNaLEtBQUssRUFBRSxlQUFlO1lBQ3RCLFFBQVEsRUFBRSxNQUFNO1lBQ2hCLFFBQVEsRUFBRSxNQUFNO1NBQ2pCO0tBQ0Y7SUFDRCxLQUFLLEVBQUU7UUFDTCxTQUFTLEVBQUUsRUFBRTtRQUNiLFlBQVksRUFBRSxFQUFFLFFBQVEsRUFBRSxlQUFlLEVBQUU7UUFDM0MsZUFBZSxFQUFFLEVBQUUsS0FBSyxFQUFFLGdCQUFnQixFQUFFO1FBQzVDLFlBQVksRUFBRSxFQUFFLEtBQUssRUFBRSxTQUFTLEVBQUUsUUFBUSxFQUFFLGVBQWUsRUFBRTtLQUM5RDtDQUNGLENBQUMiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcdGVzdFxcZmFjdG9yaWVzXFxhdXRoLmZhY3RvcnkudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gdGVzdC9mYWN0b3JpZXMvYXV0aC5mYWN0b3J5LnRzXHJcblxyXG5pbXBvcnQgeyByYW5kb21FbWFpbCwgcmFuZG9tVXNlcm5hbWUgfSBmcm9tICcuLi9zZXR1cC90ZXN0LXV0aWxzJztcclxuXHJcbi8qKlxyXG4gKiBBdXRoIFRlc3QgRGF0YSBGYWN0b3J5XHJcbiAqXHJcbiAqIEVyc3RlbGx0IHZhbGlkZSBUZXN0LURhdGVuIGbDvHIgQXV0aC1iZXpvZ2VuZSBUZXN0cy5cclxuICovXHJcblxyXG4vKipcclxuICogRXJzdGVsbHQgdmFsaWRlIFJlZ2lzdHJhdGlvbi1EYXRlblxyXG4gKi9cclxuZXhwb3J0IGZ1bmN0aW9uIGNyZWF0ZVJlZ2lzdGVyRHRvKFxyXG4gIG92ZXJyaWRlczoge1xyXG4gICAgZW1haWw/OiBzdHJpbmc7XHJcbiAgICB1c2VybmFtZT86IHN0cmluZztcclxuICAgIHBhc3N3b3JkPzogc3RyaW5nO1xyXG4gIH0gPSB7fSxcclxuKSB7XHJcbiAgcmV0dXJuIHtcclxuICAgIGVtYWlsOiBvdmVycmlkZXMuZW1haWwgPz8gcmFuZG9tRW1haWwoKSxcclxuICAgIHVzZXJuYW1lOiBvdmVycmlkZXMudXNlcm5hbWUgPz8gcmFuZG9tVXNlcm5hbWUoKSxcclxuICAgIHBhc3N3b3JkOiBvdmVycmlkZXMucGFzc3dvcmQgPz8gJ1NlY3VyZVBhc3MxMjMnLFxyXG4gIH07XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBFcnN0ZWxsdCB2YWxpZGUgTG9naW4tRGF0ZW5cclxuICovXHJcbmV4cG9ydCBmdW5jdGlvbiBjcmVhdGVMb2dpbkR0byhcclxuICBvdmVycmlkZXM6IHtcclxuICAgIGVtYWlsPzogc3RyaW5nO1xyXG4gICAgcGFzc3dvcmQ/OiBzdHJpbmc7XHJcbiAgfSA9IHt9LFxyXG4pIHtcclxuICByZXR1cm4ge1xyXG4gICAgZW1haWw6IG92ZXJyaWRlcy5lbWFpbCA/PyAndGVzdEBleGFtcGxlLmNvbScsXHJcbiAgICBwYXNzd29yZDogb3ZlcnJpZGVzLnBhc3N3b3JkID8/ICdTZWN1cmVQYXNzMTIzJyxcclxuICB9O1xyXG59XHJcblxyXG4vKipcclxuICogSW52YWxpZGUgQXV0aC1EYXRlbiBmw7xyIFZhbGlkYXRpb24gVGVzdHNcclxuICovXHJcbmV4cG9ydCBjb25zdCBpbnZhbGlkQXV0aERhdGEgPSB7XHJcbiAgcmVnaXN0ZXI6IHtcclxuICAgIGVtcHR5Qm9keToge30sXHJcbiAgICBtaXNzaW5nRW1haWw6IHsgdXNlcm5hbWU6ICd0ZXN0JywgcGFzc3dvcmQ6ICdTZWN1cmVQYXNzMTIzJyB9LFxyXG4gICAgbWlzc2luZ1VzZXJuYW1lOiB7IGVtYWlsOiAndGVzdEB0ZXN0LmNvbScsIHBhc3N3b3JkOiAnU2VjdXJlUGFzczEyMycgfSxcclxuICAgIG1pc3NpbmdQYXNzd29yZDogeyBlbWFpbDogJ3Rlc3RAdGVzdC5jb20nLCB1c2VybmFtZTogJ3Rlc3QnIH0sXHJcbiAgICBpbnZhbGlkRW1haWw6IHtcclxuICAgICAgZW1haWw6ICdpbnZhbGlkJyxcclxuICAgICAgdXNlcm5hbWU6ICd0ZXN0JyxcclxuICAgICAgcGFzc3dvcmQ6ICdTZWN1cmVQYXNzMTIzJyxcclxuICAgIH0sXHJcbiAgICB3ZWFrUGFzc3dvcmQ6IHtcclxuICAgICAgZW1haWw6ICd0ZXN0QHRlc3QuY29tJyxcclxuICAgICAgdXNlcm5hbWU6ICd0ZXN0JyxcclxuICAgICAgcGFzc3dvcmQ6ICd3ZWFrJyxcclxuICAgIH0sXHJcbiAgfSxcclxuICBsb2dpbjoge1xyXG4gICAgZW1wdHlCb2R5OiB7fSxcclxuICAgIG1pc3NpbmdFbWFpbDogeyBwYXNzd29yZDogJ1NlY3VyZVBhc3MxMjMnIH0sXHJcbiAgICBtaXNzaW5nUGFzc3dvcmQ6IHsgZW1haWw6ICd0ZXN0QHRlc3QuIGNvbScgfSxcclxuICAgIGludmFsaWRFbWFpbDogeyBlbWFpbDogJ2ludmFsaWQnLCBwYXNzd29yZDogJ1NlY3VyZVBhc3MxMjMnIH0sXHJcbiAgfSxcclxufTtcclxuIl0sInZlcnNpb24iOjN9
