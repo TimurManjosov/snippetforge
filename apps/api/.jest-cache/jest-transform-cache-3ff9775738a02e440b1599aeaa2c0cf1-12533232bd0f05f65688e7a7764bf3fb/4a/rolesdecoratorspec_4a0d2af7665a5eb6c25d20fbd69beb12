@@ -1,0 +1,56 @@
+a236f34d0c1cd48a765d9847cd4565f4
+"use strict";
+// test/unit/decorators/roles.decorator.spec.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@nestjs/core");
+const roles_decorator_1 = require("../../../src/modules/auth/decorators/roles.decorator");
+describe('Roles Decorator', () => {
+    let reflector;
+    beforeEach(() => {
+        reflector = new core_1.Reflector();
+    });
+    it('should set roles metadata', () => {
+        let TestController = class TestController {
+            testMethod() { }
+        };
+        TestController = __decorate([
+            (0, roles_decorator_1.Roles)('ADMIN', 'MODERATOR')
+        ], TestController);
+        const roles = reflector.get(roles_decorator_1.ROLES_KEY, TestController);
+        expect(roles).toEqual(['ADMIN', 'MODERATOR']);
+    });
+    it('should work with single role', () => {
+        let TestController = class TestController {
+            testMethod() { }
+        };
+        TestController = __decorate([
+            (0, roles_decorator_1.Roles)('USER')
+        ], TestController);
+        const roles = reflector.get(roles_decorator_1.ROLES_KEY, TestController);
+        expect(roles).toEqual(['USER']);
+    });
+    it('should set roles on method', () => {
+        class TestController {
+            testMethod() { }
+        }
+        __decorate([
+            (0, roles_decorator_1.Roles)('ADMIN'),
+            __metadata("design:type", Function),
+            __metadata("design:paramtypes", []),
+            __metadata("design:returntype", void 0)
+        ], TestController.prototype, "testMethod", null);
+        const controller = new TestController();
+        const roles = reflector.get(roles_decorator_1.ROLES_KEY, controller.testMethod);
+        expect(roles).toEqual(['ADMIN']);
+    });
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcdGVzdFxcdW5pdFxcZGVjb3JhdG9yc1xccm9sZXMuZGVjb3JhdG9yLnNwZWMudHMiLCJtYXBwaW5ncyI6IjtBQUFBLCtDQUErQzs7Ozs7Ozs7Ozs7QUFFL0MsdUNBQXlDO0FBQ3pDLDBGQUc4RDtBQUU5RCxRQUFRLENBQUMsaUJBQWlCLEVBQUUsR0FBRyxFQUFFO0lBQy9CLElBQUksU0FBb0IsQ0FBQztJQUV6QixVQUFVLENBQUMsR0FBRyxFQUFFO1FBQ2QsU0FBUyxHQUFHLElBQUksZ0JBQVMsRUFBRSxDQUFDO0lBQzlCLENBQUMsQ0FBQyxDQUFDO0lBRUgsRUFBRSxDQUFDLDJCQUEyQixFQUFFLEdBQUcsRUFBRTtRQUVuQyxJQUFNLGNBQWMsR0FBcEIsTUFBTSxjQUFjO1lBQ2xCLFVBQVUsS0FBSSxDQUFDO1NBQ2hCLENBQUE7UUFGSyxjQUFjO1lBRG5CLElBQUEsdUJBQUssRUFBQyxPQUFPLEVBQUUsV0FBVyxDQUFDO1dBQ3RCLGNBQWMsQ0FFbkI7UUFFRCxNQUFNLEtBQUssR0FBRyxTQUFTLENBQUMsR0FBRyxDQUFDLDJCQUFTLEVBQUUsY0FBYyxDQUFDLENBQUM7UUFDdkQsTUFBTSxDQUFDLEtBQUssQ0FBQyxDQUFDLE9BQU8sQ0FBQyxDQUFDLE9BQU8sRUFBRSxXQUFXLENBQUMsQ0FBQyxDQUFDO0lBQ2hELENBQUMsQ0FBQyxDQUFDO0lBRUgsRUFBRSxDQUFDLDhCQUE4QixFQUFFLEdBQUcsRUFBRTtRQUV0QyxJQUFNLGNBQWMsR0FBcEIsTUFBTSxjQUFjO1lBQ2xCLFVBQVUsS0FBSSxDQUFDO1NBQ2hCLENBQUE7UUFGSyxjQUFjO1lBRG5CLElBQUEsdUJBQUssRUFBQyxNQUFNLENBQUM7V0FDUixjQUFjLENBRW5CO1FBRUQsTUFBTSxLQUFLLEdBQUcsU0FBUyxDQUFDLEdBQUcsQ0FBQywyQkFBUyxFQUFFLGNBQWMsQ0FBQyxDQUFDO1FBQ3ZELE1BQU0sQ0FBQyxLQUFLLENBQUMsQ0FBQyxPQUFPLENBQUMsQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDO0lBQ2xDLENBQUMsQ0FBQyxDQUFDO0lBRUgsRUFBRSxDQUFDLDRCQUE0QixFQUFFLEdBQUcsRUFBRTtRQUNwQyxNQUFNLGNBQWM7WUFFbEIsVUFBVSxLQUFJLENBQUM7U0FDaEI7UUFEQztZQURDLElBQUEsdUJBQUssRUFBQyxPQUFPLENBQUM7Ozs7d0RBQ0E7UUFHakIsTUFBTSxVQUFVLEdBQUcsSUFBSSxjQUFjLEVBQUUsQ0FBQztRQUN4QyxNQUFNLEtBQUssR0FBRyxTQUFTLENBQUMsR0FBRyxDQUFDLDJCQUFTLEVBQUUsVUFBVSxDQUFDLFVBQVUsQ0FBQyxDQUFDO1FBQzlELE1BQU0sQ0FBQyxLQUFLLENBQUMsQ0FBQyxPQUFPLENBQUMsQ0FBQyxPQUFPLENBQUMsQ0FBQyxDQUFDO0lBQ25DLENBQUMsQ0FBQyxDQUFDO0FBQ0wsQ0FBQyxDQUFDLENBQUMiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcdGVzdFxcdW5pdFxcZGVjb3JhdG9yc1xccm9sZXMuZGVjb3JhdG9yLnNwZWMudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gdGVzdC91bml0L2RlY29yYXRvcnMvcm9sZXMuZGVjb3JhdG9yLnNwZWMudHNcclxuXHJcbmltcG9ydCB7IFJlZmxlY3RvciB9IGZyb20gJ0BuZXN0anMvY29yZSc7XHJcbmltcG9ydCB7XHJcbiAgUm9sZXMsXHJcbiAgUk9MRVNfS0VZLFxyXG59IGZyb20gJy4uLy4uLy4uL3NyYy9tb2R1bGVzL2F1dGgvZGVjb3JhdG9ycy9yb2xlcy5kZWNvcmF0b3InO1xyXG5cclxuZGVzY3JpYmUoJ1JvbGVzIERlY29yYXRvcicsICgpID0+IHtcclxuICBsZXQgcmVmbGVjdG9yOiBSZWZsZWN0b3I7XHJcblxyXG4gIGJlZm9yZUVhY2goKCkgPT4ge1xyXG4gICAgcmVmbGVjdG9yID0gbmV3IFJlZmxlY3RvcigpO1xyXG4gIH0pO1xyXG5cclxuICBpdCgnc2hvdWxkIHNldCByb2xlcyBtZXRhZGF0YScsICgpID0+IHtcclxuICAgIEBSb2xlcygnQURNSU4nLCAnTU9ERVJBVE9SJylcclxuICAgIGNsYXNzIFRlc3RDb250cm9sbGVyIHtcclxuICAgICAgdGVzdE1ldGhvZCgpIHt9XHJcbiAgICB9XHJcblxyXG4gICAgY29uc3Qgcm9sZXMgPSByZWZsZWN0b3IuZ2V0KFJPTEVTX0tFWSwgVGVzdENvbnRyb2xsZXIpO1xyXG4gICAgZXhwZWN0KHJvbGVzKS50b0VxdWFsKFsnQURNSU4nLCAnTU9ERVJBVE9SJ10pO1xyXG4gIH0pO1xyXG5cclxuICBpdCgnc2hvdWxkIHdvcmsgd2l0aCBzaW5nbGUgcm9sZScsICgpID0+IHtcclxuICAgIEBSb2xlcygnVVNFUicpXHJcbiAgICBjbGFzcyBUZXN0Q29udHJvbGxlciB7XHJcbiAgICAgIHRlc3RNZXRob2QoKSB7fVxyXG4gICAgfVxyXG5cclxuICAgIGNvbnN0IHJvbGVzID0gcmVmbGVjdG9yLmdldChST0xFU19LRVksIFRlc3RDb250cm9sbGVyKTtcclxuICAgIGV4cGVjdChyb2xlcykudG9FcXVhbChbJ1VTRVInXSk7XHJcbiAgfSk7XHJcblxyXG4gIGl0KCdzaG91bGQgc2V0IHJvbGVzIG9uIG1ldGhvZCcsICgpID0+IHtcclxuICAgIGNsYXNzIFRlc3RDb250cm9sbGVyIHtcclxuICAgICAgQFJvbGVzKCdBRE1JTicpXHJcbiAgICAgIHRlc3RNZXRob2QoKSB7fVxyXG4gICAgfVxyXG5cclxuICAgIGNvbnN0IGNvbnRyb2xsZXIgPSBuZXcgVGVzdENvbnRyb2xsZXIoKTtcclxuICAgIGNvbnN0IHJvbGVzID0gcmVmbGVjdG9yLmdldChST0xFU19LRVksIGNvbnRyb2xsZXIudGVzdE1ldGhvZCk7XHJcbiAgICBleHBlY3Qocm9sZXMpLnRvRXF1YWwoWydBRE1JTiddKTtcclxuICB9KTtcclxufSk7XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

@@ -1,0 +1,130 @@
+a279b7c8b10373e6f883aa4e38aca05f
+"use strict";
+// src/shared/swagger/schemas/common.schema.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MessageResponseSchema = exports.PaginationMetaSchema = exports.HealthCheckResponseSchema = void 0;
+const swagger_1 = require("@nestjs/swagger");
+/**
+ * Common/Shared Swagger Schemas
+ * Wiederverwendbare Schemas für die gesamte API
+ */
+/**
+ * Health Check Response Schema
+ */
+class HealthCheckResponseSchema {
+    status;
+    timestamp;
+    service;
+    version;
+}
+exports.HealthCheckResponseSchema = HealthCheckResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Service status',
+        example: 'ok',
+        enum: ['ok', 'degraded', 'error'],
+    }),
+    __metadata("design:type", String)
+], HealthCheckResponseSchema.prototype, "status", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Current server timestamp',
+        example: '2026-01-10T12:00:00.000Z',
+        format: 'date-time',
+    }),
+    __metadata("design:type", String)
+], HealthCheckResponseSchema.prototype, "timestamp", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Service name',
+        example: 'snippetforge-api',
+    }),
+    __metadata("design:type", String)
+], HealthCheckResponseSchema.prototype, "service", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'API version',
+        example: '0.1.0',
+    }),
+    __metadata("design:type", String)
+], HealthCheckResponseSchema.prototype, "version", void 0);
+/**
+ * Pagination Meta Schema
+ * Für paginated Responses (zukünftig)
+ */
+class PaginationMetaSchema {
+    page;
+    limit;
+    total;
+    totalPages;
+    hasNextPage;
+    hasPreviousPage;
+}
+exports.PaginationMetaSchema = PaginationMetaSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Current page number',
+        example: 1,
+    }),
+    __metadata("design:type", Number)
+], PaginationMetaSchema.prototype, "page", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Items per page',
+        example: 20,
+    }),
+    __metadata("design:type", Number)
+], PaginationMetaSchema.prototype, "limit", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Total number of items',
+        example: 100,
+    }),
+    __metadata("design:type", Number)
+], PaginationMetaSchema.prototype, "total", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Total number of pages',
+        example: 5,
+    }),
+    __metadata("design:type", Number)
+], PaginationMetaSchema.prototype, "totalPages", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Has next page',
+        example: true,
+    }),
+    __metadata("design:type", Boolean)
+], PaginationMetaSchema.prototype, "hasNextPage", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Has previous page',
+        example: false,
+    }),
+    __metadata("design:type", Boolean)
+], PaginationMetaSchema.prototype, "hasPreviousPage", void 0);
+/**
+ * Message Response Schema
+ * Für einfache Status-Messages
+ */
+class MessageResponseSchema {
+    message;
+}
+exports.MessageResponseSchema = MessageResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Status message',
+        example: 'Operation completed successfully',
+    }),
+    __metadata("design:type", String)
+], MessageResponseSchema.prototype, "message", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcc3JjXFxzaGFyZWRcXHN3YWdnZXJcXHNjaGVtYXNcXGNvbW1vbi5zY2hlbWEudHMiLCJtYXBwaW5ncyI6IjtBQUFBLDhDQUE4Qzs7Ozs7Ozs7Ozs7O0FBRTlDLDZDQUE4QztBQUU5Qzs7O0dBR0c7QUFFSDs7R0FFRztBQUNILE1BQWEseUJBQXlCO0lBTXBDLE1BQU0sQ0FBUztJQU9mLFNBQVMsQ0FBUztJQU1sQixPQUFPLENBQVM7SUFNaEIsT0FBTyxDQUFTO0NBQ2pCO0FBMUJELDhEQTBCQztBQXBCQztJQUxDLElBQUEscUJBQVcsRUFBQztRQUNYLFdBQVcsRUFBRSxnQkFBZ0I7UUFDN0IsT0FBTyxFQUFFLElBQUk7UUFDYixJQUFJLEVBQUUsQ0FBQyxJQUFJLEVBQUUsVUFBVSxFQUFFLE9BQU8sQ0FBQztLQUNsQyxDQUFDOzt5REFDYTtBQU9mO0lBTEMsSUFBQSxxQkFBVyxFQUFDO1FBQ1gsV0FBVyxFQUFFLDBCQUEwQjtRQUN2QyxPQUFPLEVBQUUsMEJBQTBCO1FBQ25DLE1BQU0sRUFBRSxXQUFXO0tBQ3BCLENBQUM7OzREQUNnQjtBQU1sQjtJQUpDLElBQUEscUJBQVcsRUFBQztRQUNYLFdBQVcsRUFBRSxjQUFjO1FBQzNCLE9BQU8sRUFBRSxrQkFBa0I7S0FDNUIsQ0FBQzs7MERBQ2M7QUFNaEI7SUFKQyxJQUFBLHFCQUFXLEVBQUM7UUFDWCxXQUFXLEVBQUUsYUFBYTtRQUMxQixPQUFPLEVBQUUsT0FBTztLQUNqQixDQUFDOzswREFDYztBQUdsQjs7O0dBR0c7QUFDSCxNQUFhLG9CQUFvQjtJQUsvQixJQUFJLENBQVM7SUFNYixLQUFLLENBQVM7SUFNZCxLQUFLLENBQVM7SUFNZCxVQUFVLENBQVM7SUFNbkIsV0FBVyxDQUFVO0lBTXJCLGVBQWUsQ0FBVTtDQUMxQjtBQXBDRCxvREFvQ0M7QUEvQkM7SUFKQyxJQUFBLHFCQUFXLEVBQUM7UUFDWCxXQUFXLEVBQUUscUJBQXFCO1FBQ2xDLE9BQU8sRUFBRSxDQUFDO0tBQ1gsQ0FBQzs7a0RBQ1c7QUFNYjtJQUpDLElBQUEscUJBQVcsRUFBQztRQUNYLFdBQVcsRUFBRSxnQkFBZ0I7UUFDN0IsT0FBTyxFQUFFLEVBQUU7S0FDWixDQUFDOzttREFDWTtBQU1kO0lBSkMsSUFBQSxxQkFBVyxFQUFDO1FBQ1gsV0FBVyxFQUFFLHVCQUF1QjtRQUNwQyxPQUFPLEVBQUUsR0FBRztLQUNiLENBQUM7O21EQUNZO0FBTWQ7SUFKQyxJQUFBLHFCQUFXLEVBQUM7UUFDWCxXQUFXLEVBQUUsdUJBQXVCO1FBQ3BDLE9BQU8sRUFBRSxDQUFDO0tBQ1gsQ0FBQzs7d0RBQ2lCO0FBTW5CO0lBSkMsSUFBQSxxQkFBVyxFQUFDO1FBQ1gsV0FBVyxFQUFFLGVBQWU7UUFDNUIsT0FBTyxFQUFFLElBQUk7S0FDZCxDQUFDOzt5REFDbUI7QUFNckI7SUFKQyxJQUFBLHFCQUFXLEVBQUM7UUFDWCxXQUFXLEVBQUUsbUJBQW1CO1FBQ2hDLE9BQU8sRUFBRSxLQUFLO0tBQ2YsQ0FBQzs7NkRBQ3VCO0FBRzNCOzs7R0FHRztBQUNILE1BQWEscUJBQXFCO0lBS2hDLE9BQU8sQ0FBUztDQUNqQjtBQU5ELHNEQU1DO0FBREM7SUFKQyxJQUFBLHFCQUFXLEVBQUM7UUFDWCxXQUFXLEVBQUUsZ0JBQWdCO1FBQzdCLE9BQU8sRUFBRSxrQ0FBa0M7S0FDNUMsQ0FBQzs7c0RBQ2MiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcc3JjXFxzaGFyZWRcXHN3YWdnZXJcXHNjaGVtYXNcXGNvbW1vbi5zY2hlbWEudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL3NoYXJlZC9zd2FnZ2VyL3NjaGVtYXMvY29tbW9uLnNjaGVtYS50c1xyXG5cclxuaW1wb3J0IHsgQXBpUHJvcGVydHkgfSBmcm9tICdAbmVzdGpzL3N3YWdnZXInO1xyXG5cclxuLyoqXHJcbiAqIENvbW1vbi9TaGFyZWQgU3dhZ2dlciBTY2hlbWFzXHJcbiAqIFdpZWRlcnZlcndlbmRiYXJlIFNjaGVtYXMgZsO8ciBkaWUgZ2VzYW10ZSBBUElcclxuICovXHJcblxyXG4vKipcclxuICogSGVhbHRoIENoZWNrIFJlc3BvbnNlIFNjaGVtYVxyXG4gKi9cclxuZXhwb3J0IGNsYXNzIEhlYWx0aENoZWNrUmVzcG9uc2VTY2hlbWEge1xyXG4gIEBBcGlQcm9wZXJ0eSh7XHJcbiAgICBkZXNjcmlwdGlvbjogJ1NlcnZpY2Ugc3RhdHVzJyxcclxuICAgIGV4YW1wbGU6ICdvaycsXHJcbiAgICBlbnVtOiBbJ29rJywgJ2RlZ3JhZGVkJywgJ2Vycm9yJ10sXHJcbiAgfSlcclxuICBzdGF0dXM6IHN0cmluZztcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnQ3VycmVudCBzZXJ2ZXIgdGltZXN0YW1wJyxcclxuICAgIGV4YW1wbGU6ICcyMDI2LTAxLTEwVDEyOjAwOjAwLjAwMFonLFxyXG4gICAgZm9ybWF0OiAnZGF0ZS10aW1lJyxcclxuICB9KVxyXG4gIHRpbWVzdGFtcDogc3RyaW5nO1xyXG5cclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdTZXJ2aWNlIG5hbWUnLFxyXG4gICAgZXhhbXBsZTogJ3NuaXBwZXRmb3JnZS1hcGknLFxyXG4gIH0pXHJcbiAgc2VydmljZTogc3RyaW5nO1xyXG5cclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdBUEkgdmVyc2lvbicsXHJcbiAgICBleGFtcGxlOiAnMC4xLjAnLFxyXG4gIH0pXHJcbiAgdmVyc2lvbjogc3RyaW5nO1xyXG59XHJcblxyXG4vKipcclxuICogUGFnaW5hdGlvbiBNZXRhIFNjaGVtYVxyXG4gKiBGw7xyIHBhZ2luYXRlZCBSZXNwb25zZXMgKHp1a8O8bmZ0aWcpXHJcbiAqL1xyXG5leHBvcnQgY2xhc3MgUGFnaW5hdGlvbk1ldGFTY2hlbWEge1xyXG4gIEBBcGlQcm9wZXJ0eSh7XHJcbiAgICBkZXNjcmlwdGlvbjogJ0N1cnJlbnQgcGFnZSBudW1iZXInLFxyXG4gICAgZXhhbXBsZTogMSxcclxuICB9KVxyXG4gIHBhZ2U6IG51bWJlcjtcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnSXRlbXMgcGVyIHBhZ2UnLFxyXG4gICAgZXhhbXBsZTogMjAsXHJcbiAgfSlcclxuICBsaW1pdDogbnVtYmVyO1xyXG5cclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdUb3RhbCBudW1iZXIgb2YgaXRlbXMnLFxyXG4gICAgZXhhbXBsZTogMTAwLFxyXG4gIH0pXHJcbiAgdG90YWw6IG51bWJlcjtcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnVG90YWwgbnVtYmVyIG9mIHBhZ2VzJyxcclxuICAgIGV4YW1wbGU6IDUsXHJcbiAgfSlcclxuICB0b3RhbFBhZ2VzOiBudW1iZXI7XHJcblxyXG4gIEBBcGlQcm9wZXJ0eSh7XHJcbiAgICBkZXNjcmlwdGlvbjogJ0hhcyBuZXh0IHBhZ2UnLFxyXG4gICAgZXhhbXBsZTogdHJ1ZSxcclxuICB9KVxyXG4gIGhhc05leHRQYWdlOiBib29sZWFuO1xyXG5cclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdIYXMgcHJldmlvdXMgcGFnZScsXHJcbiAgICBleGFtcGxlOiBmYWxzZSxcclxuICB9KVxyXG4gIGhhc1ByZXZpb3VzUGFnZTogYm9vbGVhbjtcclxufVxyXG5cclxuLyoqXHJcbiAqIE1lc3NhZ2UgUmVzcG9uc2UgU2NoZW1hXHJcbiAqIEbDvHIgZWluZmFjaGUgU3RhdHVzLU1lc3NhZ2VzXHJcbiAqL1xyXG5leHBvcnQgY2xhc3MgTWVzc2FnZVJlc3BvbnNlU2NoZW1hIHtcclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdTdGF0dXMgbWVzc2FnZScsXHJcbiAgICBleGFtcGxlOiAnT3BlcmF0aW9uIGNvbXBsZXRlZCBzdWNjZXNzZnVsbHknLFxyXG4gIH0pXHJcbiAgbWVzc2FnZTogc3RyaW5nO1xyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

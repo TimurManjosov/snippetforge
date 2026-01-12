@@ -1,0 +1,35 @@
+c6d526c2cf0d6d99741a0e56893efa01
+"use strict";
+// src/modules/auth/dto/login.dto.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoginSchema = void 0;
+exports.validateLoginDto = validateLoginDto;
+exports.safeValidateLoginDto = safeValidateLoginDto;
+const zod_1 = require("zod");
+/**
+ * Login DTO - Validierung für User-Login
+ *
+ * VALIDATION RULES:
+ * - email: Valides Email-Format
+ * - password:  Nicht leer (keine Komplexitätsprüfung - das war bei Registrierung)
+ *
+ * WARUM keine Password-Komplexität bei Login?
+ * - User hat bereits registriert → Password war valide
+ * - Bei Login prüfen wir nur ob Credentials stimmen
+ * - Wenn wir Komplexität ändern, können bestehende User sich nicht mehr einloggen
+ */
+exports.LoginSchema = zod_1.z.object({
+    email: zod_1.z
+        .string()
+        .min(1, 'Email is required')
+        .email('Invalid email format')
+        .transform((val) => val.toLowerCase().trim()),
+    password: zod_1.z.string().min(1, 'Password is required'), // Nur "nicht leer" prüfen
+});
+function validateLoginDto(data) {
+    return exports.LoginSchema.parse(data);
+}
+function safeValidateLoginDto(data) {
+    return exports.LoginSchema.safeParse(data);
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcc3JjXFxtb2R1bGVzXFxhdXRoXFxkdG9cXGxvZ2luLmR0by50cyIsIm1hcHBpbmdzIjoiO0FBQUEsb0NBQW9DOzs7QUE2QnBDLDRDQUVDO0FBRUQsb0RBRUM7QUFqQ0QsNkJBQXdCO0FBRXhCOzs7Ozs7Ozs7OztHQVdHO0FBRVUsUUFBQSxXQUFXLEdBQUcsT0FBQyxDQUFDLE1BQU0sQ0FBQztJQUNsQyxLQUFLLEVBQUUsT0FBQztTQUNMLE1BQU0sRUFBRTtTQUNSLEdBQUcsQ0FBQyxDQUFDLEVBQUUsbUJBQW1CLENBQUM7U0FDM0IsS0FBSyxDQUFDLHNCQUFzQixDQUFDO1NBQzdCLFNBQVMsQ0FBQyxDQUFDLEdBQUcsRUFBRSxFQUFFLENBQUMsR0FBRyxDQUFDLFdBQVcsRUFBRSxDQUFDLElBQUksRUFBRSxDQUFDO0lBRS9DLFFBQVEsRUFBRSxPQUFDLENBQUMsTUFBTSxFQUFFLENBQUMsR0FBRyxDQUFDLENBQUMsRUFBRSxzQkFBc0IsQ0FBQyxFQUFFLDBCQUEwQjtDQUNoRixDQUFDLENBQUM7QUFJSCxTQUFnQixnQkFBZ0IsQ0FBQyxJQUFhO0lBQzVDLE9BQU8sbUJBQVcsQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLENBQUM7QUFDakMsQ0FBQztBQUVELFNBQWdCLG9CQUFvQixDQUFDLElBQWE7SUFDaEQsT0FBTyxtQkFBVyxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsQ0FBQztBQUNyQyxDQUFDIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcdGltdXJcXFByb2dyYW1taW5nXFxQcm9qZWN0c1xcc25pcHBldGZvcmdlXFxhcHBzXFxhcGlcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZHRvXFxsb2dpbi5kdG8udHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL21vZHVsZXMvYXV0aC9kdG8vbG9naW4uZHRvLnRzXHJcblxyXG5pbXBvcnQgeyB6IH0gZnJvbSAnem9kJztcclxuXHJcbi8qKlxyXG4gKiBMb2dpbiBEVE8gLSBWYWxpZGllcnVuZyBmw7xyIFVzZXItTG9naW5cclxuICpcclxuICogVkFMSURBVElPTiBSVUxFUzpcclxuICogLSBlbWFpbDogVmFsaWRlcyBFbWFpbC1Gb3JtYXRcclxuICogLSBwYXNzd29yZDogIE5pY2h0IGxlZXIgKGtlaW5lIEtvbXBsZXhpdMOkdHNwcsO8ZnVuZyAtIGRhcyB3YXIgYmVpIFJlZ2lzdHJpZXJ1bmcpXHJcbiAqXHJcbiAqIFdBUlVNIGtlaW5lIFBhc3N3b3JkLUtvbXBsZXhpdMOkdCBiZWkgTG9naW4/XHJcbiAqIC0gVXNlciBoYXQgYmVyZWl0cyByZWdpc3RyaWVydCDihpIgUGFzc3dvcmQgd2FyIHZhbGlkZVxyXG4gKiAtIEJlaSBMb2dpbiBwcsO8ZmVuIHdpciBudXIgb2IgQ3JlZGVudGlhbHMgc3RpbW1lblxyXG4gKiAtIFdlbm4gd2lyIEtvbXBsZXhpdMOkdCDDpG5kZXJuLCBrw7ZubmVuIGJlc3RlaGVuZGUgVXNlciBzaWNoIG5pY2h0IG1laHIgZWlubG9nZ2VuXHJcbiAqL1xyXG5cclxuZXhwb3J0IGNvbnN0IExvZ2luU2NoZW1hID0gei5vYmplY3Qoe1xyXG4gIGVtYWlsOiB6XHJcbiAgICAuc3RyaW5nKClcclxuICAgIC5taW4oMSwgJ0VtYWlsIGlzIHJlcXVpcmVkJylcclxuICAgIC5lbWFpbCgnSW52YWxpZCBlbWFpbCBmb3JtYXQnKVxyXG4gICAgLnRyYW5zZm9ybSgodmFsKSA9PiB2YWwudG9Mb3dlckNhc2UoKS50cmltKCkpLFxyXG5cclxuICBwYXNzd29yZDogei5zdHJpbmcoKS5taW4oMSwgJ1Bhc3N3b3JkIGlzIHJlcXVpcmVkJyksIC8vIE51ciBcIm5pY2h0IGxlZXJcIiBwcsO8ZmVuXHJcbn0pO1xyXG5cclxuZXhwb3J0IHR5cGUgTG9naW5EdG8gPSB6LmluZmVyPHR5cGVvZiBMb2dpblNjaGVtYT47XHJcblxyXG5leHBvcnQgZnVuY3Rpb24gdmFsaWRhdGVMb2dpbkR0byhkYXRhOiB1bmtub3duKTogTG9naW5EdG8ge1xyXG4gIHJldHVybiBMb2dpblNjaGVtYS5wYXJzZShkYXRhKTtcclxufVxyXG5cclxuZXhwb3J0IGZ1bmN0aW9uIHNhZmVWYWxpZGF0ZUxvZ2luRHRvKGRhdGE6IHVua25vd24pIHtcclxuICByZXR1cm4gTG9naW5TY2hlbWEuc2FmZVBhcnNlKGRhdGEpO1xyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

@@ -1,0 +1,196 @@
+acc7bc6030b36a0ee4be0f1b2ee64067
+"use strict";
+
+// src/modules/auth/decorators/roles.decorator.ts
+/* istanbul ignore next */
+function cov_12jw597bbd() {
+  var path = "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\roles.decorator.ts";
+  var hash = "a135c755c5c40548eb380b81d0f8efe53bc0d161";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\roles.decorator.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 43
+        }
+      },
+      "2": {
+        start: {
+          line: 5,
+          column: 17
+        },
+        end: {
+          line: 5,
+          column: 42
+        }
+      },
+      "3": {
+        start: {
+          line: 10,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 28
+        }
+      },
+      "4": {
+        start: {
+          line: 29,
+          column: 14
+        },
+        end: {
+          line: 29,
+          column: 79
+        }
+      },
+      "5": {
+        start: {
+          line: 29,
+          column: 28
+        },
+        end: {
+          line: 29,
+          column: 79
+        }
+      },
+      "6": {
+        start: {
+          line: 30,
+          column: 0
+        },
+        end: {
+          line: 30,
+          column: 22
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 29,
+            column: 14
+          },
+          end: {
+            line: 29,
+            column: 15
+          }
+        },
+        loc: {
+          start: {
+            line: 29,
+            column: 28
+          },
+          end: {
+            line: 29,
+            column: 79
+          }
+        },
+        line: 29
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {},
+    inputSourceMap: {
+      file: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\roles.decorator.ts",
+      mappings: ";AAAA,iDAAiD;;;AAEjD,2CAA6C;AAE7C;;;GAGG;AACU,QAAA,SAAS,GAAG,OAAO,CAAC;AAQjC;;;;;;;;;;;;;;;;;GAiBG;AACI,MAAM,KAAK,GAAG,CAAC,GAAG,KAAa,EAAE,EAAE,CAAC,IAAA,oBAAW,EAAC,iBAAS,EAAE,KAAK,CAAC,CAAC;AAA5D,QAAA,KAAK,SAAuD",
+      names: [],
+      sources: ["C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\roles.decorator.ts"],
+      sourcesContent: ["// src/modules/auth/decorators/roles.decorator.ts\r\n\r\nimport { SetMetadata } from '@nestjs/common';\r\n\r\n/**\r\n * Metadata Key f\xFCr @Roles() Decorator\r\n * Wird von RolesGuard gelesen\r\n */\r\nexport const ROLES_KEY = 'roles';\r\n\r\n/**\r\n * Erlaubte Rollen (aus DB Schema)\r\n * Type-Safety: Nur diese Werte k\xF6nnen \xFCbergeben werden\r\n */\r\nexport type Role = 'USER' | 'ADMIN' | 'MODERATOR';\r\n\r\n/**\r\n * @Roles() Decorator - Definiert welche Rollen Zugriff haben\r\n *\r\n * VERWENDUNG:\r\n * @Roles('ADMIN')\r\n * @UseGuards(JwtAuthGuard, RolesGuard)\r\n * deleteUser() {}\r\n *\r\n * // Mehrere Rollen (OR - eine reicht)\r\n * @Roles('ADMIN', 'MODERATOR')\r\n * @UseGuards(JwtAuthGuard, RolesGuard)\r\n * moderateContent() {}\r\n *\r\n * WICHTIG: Immer mit RolesGuard kombinieren!\r\n * @Roles() alleine macht nichts.\r\n *\r\n * @param roles - Erlaubte Rollen (mindestens eine muss User haben)\r\n */\r\nexport const Roles = (...roles: Role[]) => SetMetadata(ROLES_KEY, roles);\r\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "a135c755c5c40548eb380b81d0f8efe53bc0d161"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_12jw597bbd = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_12jw597bbd();
+cov_12jw597bbd().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_12jw597bbd().s[1]++;
+exports.Roles = exports.ROLES_KEY = void 0;
+const common_1 =
+/* istanbul ignore next */
+(cov_12jw597bbd().s[2]++, require("@nestjs/common"));
+/**
+ * Metadata Key für @Roles() Decorator
+ * Wird von RolesGuard gelesen
+ */
+/* istanbul ignore next */
+cov_12jw597bbd().s[3]++;
+exports.ROLES_KEY = 'roles';
+/**
+ * @Roles() Decorator - Definiert welche Rollen Zugriff haben
+ *
+ * VERWENDUNG:
+ * @Roles('ADMIN')
+ * @UseGuards(JwtAuthGuard, RolesGuard)
+ * deleteUser() {}
+ *
+ * // Mehrere Rollen (OR - eine reicht)
+ * @Roles('ADMIN', 'MODERATOR')
+ * @UseGuards(JwtAuthGuard, RolesGuard)
+ * moderateContent() {}
+ *
+ * WICHTIG: Immer mit RolesGuard kombinieren!
+ * @Roles() alleine macht nichts.
+ *
+ * @param roles - Erlaubte Rollen (mindestens eine muss User haben)
+ */
+/* istanbul ignore next */
+cov_12jw597bbd().s[4]++;
+const Roles = (...roles) => {
+  /* istanbul ignore next */
+  cov_12jw597bbd().f[0]++;
+  cov_12jw597bbd().s[5]++;
+  return (0, common_1.SetMetadata)(exports.ROLES_KEY, roles);
+};
+/* istanbul ignore next */
+cov_12jw597bbd().s[6]++;
+exports.Roles = Roles;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTJqdzU5N2JiZCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwicyIsImYiLCJiIiwiaW5wdXRTb3VyY2VNYXAiLCJmaWxlIiwibWFwcGluZ3MiLCJuYW1lcyIsInNvdXJjZXMiLCJzb3VyY2VzQ29udGVudCIsInZlcnNpb24iLCJfY292ZXJhZ2VTY2hlbWEiLCJjb3ZlcmFnZSIsImFjdHVhbENvdmVyYWdlIiwiY29tbW9uXzEiLCJyZXF1aXJlIiwiZXhwb3J0cyIsIlJPTEVTX0tFWSIsIlJvbGVzIiwicm9sZXMiLCJTZXRNZXRhZGF0YSJdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcdGltdXJcXFByb2dyYW1taW5nXFxQcm9qZWN0c1xcc25pcHBldGZvcmdlXFxhcHBzXFxhcGlcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZGVjb3JhdG9yc1xccm9sZXMuZGVjb3JhdG9yLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9tb2R1bGVzL2F1dGgvZGVjb3JhdG9ycy9yb2xlcy5kZWNvcmF0b3IudHNcclxuXHJcbmltcG9ydCB7IFNldE1ldGFkYXRhIH0gZnJvbSAnQG5lc3Rqcy9jb21tb24nO1xyXG5cclxuLyoqXHJcbiAqIE1ldGFkYXRhIEtleSBmw7xyIEBSb2xlcygpIERlY29yYXRvclxyXG4gKiBXaXJkIHZvbiBSb2xlc0d1YXJkIGdlbGVzZW5cclxuICovXHJcbmV4cG9ydCBjb25zdCBST0xFU19LRVkgPSAncm9sZXMnO1xyXG5cclxuLyoqXHJcbiAqIEVybGF1YnRlIFJvbGxlbiAoYXVzIERCIFNjaGVtYSlcclxuICogVHlwZS1TYWZldHk6IE51ciBkaWVzZSBXZXJ0ZSBrw7ZubmVuIMO8YmVyZ2ViZW4gd2VyZGVuXHJcbiAqL1xyXG5leHBvcnQgdHlwZSBSb2xlID0gJ1VTRVInIHwgJ0FETUlOJyB8ICdNT0RFUkFUT1InO1xyXG5cclxuLyoqXHJcbiAqIEBSb2xlcygpIERlY29yYXRvciAtIERlZmluaWVydCB3ZWxjaGUgUm9sbGVuIFp1Z3JpZmYgaGFiZW5cclxuICpcclxuICogVkVSV0VORFVORzpcclxuICogQFJvbGVzKCdBRE1JTicpXHJcbiAqIEBVc2VHdWFyZHMoSnd0QXV0aEd1YXJkLCBSb2xlc0d1YXJkKVxyXG4gKiBkZWxldGVVc2VyKCkge31cclxuICpcclxuICogLy8gTWVocmVyZSBSb2xsZW4gKE9SIC0gZWluZSByZWljaHQpXHJcbiAqIEBSb2xlcygnQURNSU4nLCAnTU9ERVJBVE9SJylcclxuICogQFVzZUd1YXJkcyhKd3RBdXRoR3VhcmQsIFJvbGVzR3VhcmQpXHJcbiAqIG1vZGVyYXRlQ29udGVudCgpIHt9XHJcbiAqXHJcbiAqIFdJQ0hUSUc6IEltbWVyIG1pdCBSb2xlc0d1YXJkIGtvbWJpbmllcmVuIVxyXG4gKiBAUm9sZXMoKSBhbGxlaW5lIG1hY2h0IG5pY2h0cy5cclxuICpcclxuICogQHBhcmFtIHJvbGVzIC0gRXJsYXVidGUgUm9sbGVuIChtaW5kZXN0ZW5zIGVpbmUgbXVzcyBVc2VyIGhhYmVuKVxyXG4gKi9cclxuZXhwb3J0IGNvbnN0IFJvbGVzID0gKC4uLnJvbGVzOiBSb2xlW10pID0+IFNldE1ldGFkYXRhKFJPTEVTX0tFWSwgcm9sZXMpO1xyXG4iXSwibWFwcGluZ3MiOiI7O0FBQUE7QUFBQTtBQUFBLFNBQUFBLGVBQUE7RUFBQSxJQUFBQyxJQUFBO0VBQUEsSUFBQUMsSUFBQTtFQUFBLElBQUFDLE1BQUEsT0FBQUMsUUFBQTtFQUFBLElBQUFDLEdBQUE7RUFBQSxJQUFBQyxZQUFBO0lBQUFMLElBQUE7SUFBQU0sWUFBQTtNQUFBO1FBQUFDLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO0lBQUE7SUFBQUUsS0FBQTtNQUFBO1FBQUFDLElBQUE7UUFBQUMsSUFBQTtVQUFBTixLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBSyxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFELElBQUE7TUFBQTtJQUFBO0lBQUFPLFNBQUE7SUFBQUMsQ0FBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO0lBQUE7SUFBQUMsQ0FBQTtNQUFBO0lBQUE7SUFBQUMsQ0FBQTtJQUFBQyxjQUFBO01BQUFDLElBQUE7TUFBQUMsUUFBQTtNQUFBQyxLQUFBO01BQUFDLE9BQUE7TUFBQUMsY0FBQTtNQUFBQyxPQUFBO0lBQUE7SUFBQUMsZUFBQTtJQUFBekIsSUFBQTtFQUFBO0VBQUEsSUFBQTBCLFFBQUEsR0FBQXpCLE1BQUEsQ0FBQUUsR0FBQSxNQUFBRixNQUFBLENBQUFFLEdBQUE7RUFBQSxLQUFBdUIsUUFBQSxDQUFBM0IsSUFBQSxLQUFBMkIsUUFBQSxDQUFBM0IsSUFBQSxFQUFBQyxJQUFBLEtBQUFBLElBQUE7SUFBQTBCLFFBQUEsQ0FBQTNCLElBQUEsSUFBQUssWUFBQTtFQUFBO0VBQUEsSUFBQXVCLGNBQUEsR0FBQUQsUUFBQSxDQUFBM0IsSUFBQTtFQUFBOzs7Ozs7Ozs7Ozs7Ozs7O0FBRUEsTUFBQTZCLFFBQUE7QUFBQTtBQUFBLENBQUE5QixjQUFBLEdBQUFpQixDQUFBLE9BQUFjLE9BQUE7QUFFQTs7OztBQUFBO0FBQUEvQixjQUFBLEdBQUFpQixDQUFBO0FBSWFlLE9BQUEsQ0FBQUMsU0FBUyxHQUFHLE9BQU87QUFRaEM7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBO0FBQUFqQyxjQUFBLEdBQUFpQixDQUFBO0FBa0JPLE1BQU1pQixLQUFLLEdBQUdBLENBQUMsR0FBR0MsS0FBYSxLQUFLO0VBQUE7RUFBQW5DLGNBQUEsR0FBQWtCLENBQUE7RUFBQWxCLGNBQUEsR0FBQWlCLENBQUE7RUFBQSxXQUFBYSxRQUFBLENBQUFNLFdBQVcsRUFBQ0osT0FBQSxDQUFBQyxTQUFTLEVBQUVFLEtBQUssQ0FBQztBQUFELENBQUM7QUFBQztBQUFBbkMsY0FBQSxHQUFBaUIsQ0FBQTtBQUE1RGUsT0FBQSxDQUFBRSxLQUFLLEdBQUFBLEtBQUEiLCJpZ25vcmVMaXN0IjpbXX0=

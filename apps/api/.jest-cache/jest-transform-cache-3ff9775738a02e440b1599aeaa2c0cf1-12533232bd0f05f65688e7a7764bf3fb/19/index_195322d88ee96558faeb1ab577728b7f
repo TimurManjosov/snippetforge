@@ -1,0 +1,22 @@
+2bc89f25dc8997e0a63d20b51a2d3344
+"use strict";
+// test/mocks/index.ts
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+__exportStar(require("./auth.mock"), exports);
+__exportStar(require("./database.mock"), exports);
+__exportStar(require("./users.mock"), exports);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcdGVzdFxcbW9ja3NcXGluZGV4LnRzIiwibWFwcGluZ3MiOiI7QUFBQSxzQkFBc0I7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFdEIsOENBQTRCO0FBQzVCLGtEQUFnQztBQUNoQywrQ0FBNkIiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcdGVzdFxcbW9ja3NcXGluZGV4LnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHRlc3QvbW9ja3MvaW5kZXgudHNcclxuXHJcbmV4cG9ydCAqIGZyb20gJy4vYXV0aC5tb2NrJztcclxuZXhwb3J0ICogZnJvbSAnLi9kYXRhYmFzZS5tb2NrJztcclxuZXhwb3J0ICogZnJvbSAnLi91c2Vycy5tb2NrJztcclxuIl0sInZlcnNpb24iOjN9
