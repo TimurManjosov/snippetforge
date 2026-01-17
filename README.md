@@ -2,9 +2,9 @@
 
 > Full-stack code snippet sharing platform built with NestJS and Next.js
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.1-blue)](https://www.typescriptlang.org/)
-[![NestJS](https://img.shields.io/badge/NestJS-10.0-red)](https://nestjs.com/)
-[![Next.js](https://img.shields.io/badge/Next.js-16.1-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
+[![NestJS](https://img.shields.io/badge/NestJS-11.0-red)](https://nestjs.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black)](https://nextjs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
@@ -74,8 +74,8 @@ SnippetForge is a modern code snippet sharing platform that allows developers to
 ## 🛠 Tech Stack
 
 ### Backend
-- **Framework:** NestJS 10
-- **Language:** TypeScript 5.1
+- **Framework:** NestJS 11
+- **Language:** TypeScript 5.7
 - **Database:** PostgreSQL 16
 - **ORM:** Drizzle ORM
 - **Authentication:** Passport.js + JWT
@@ -85,7 +85,7 @@ SnippetForge is a modern code snippet sharing platform that allows developers to
 
 ### Frontend
 - **Framework:** Next.js 16 (App Router)
-- **Language:** TypeScript 5.1
+- **Language:** TypeScript 5.7
 - **Styling:** Tailwind CSS
 - **State Management:** TBD
 - **Testing:** TBD
@@ -329,7 +329,7 @@ chore:    Maintenance tasks
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is intended to be licensed under the MIT License. Full licensing details will be added once the LICENSE file is included in the repository.
 
 ---
 

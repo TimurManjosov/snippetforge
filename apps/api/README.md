@@ -2,8 +2,8 @@
 
 > Backend API for SnippetForge built with NestJS
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.1-blue)](https://www.typescriptlang.org/)
-[![NestJS](https://img.shields.io/badge/NestJS-10.0-red)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
+[![NestJS](https://img.shields.io/badge/NestJS-11.0-red)](https://nestjs.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)](https://www.postgresql.org/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-ORM-green)](https://orm.drizzle.team/)
 [![Jest](https://img.shields.io/badge/Jest-Testing-red)](https://jestjs.io/)
@@ -53,7 +53,7 @@ The API follows a modular architecture:
 
 | Category | Technology | Version | Purpose |
 |----------|-----------|---------|---------|
-| **Framework** | NestJS | 10.x | Backend framework |
+| **Framework** | NestJS | 11.x | Backend framework |
 | **Language** | TypeScript | 5.7 | Type-safe development |
 | **Database** | PostgreSQL | 16.x | Relational database |
 | **ORM** | Drizzle ORM | 0.45+ | Type-safe database queries |
@@ -315,7 +315,7 @@ Endpoints requiring authentication will return `401 Unauthorized` without a vali
 {
   "statusCode": 401,
   "message": "Unauthorized",
-  "errorCode": "AUTH_001",
+  "errorCode": "AUTH_TOKEN_INVALID",
   "timestamp": "2026-01-17T10:30:00.000Z"
 }
 ```
@@ -337,7 +337,7 @@ CREATE TABLE users (
   password_hash VARCHAR(60) NOT NULL,
   bio TEXT,
   avatar_url TEXT,
-  role role_enum DEFAULT 'USER' NOT NULL,
+  role role DEFAULT 'USER' NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
 );
@@ -493,7 +493,7 @@ All errors follow a consistent format:
 {
   "statusCode": 400,
   "message": "Validation failed",
-  "errorCode": "VAL_001",
+  "errorCode": "VALIDATION_ERROR",
   "timestamp": "2026-01-17T10:30:00.000Z",
   "path": "/api/auth/register",
   "errors": [
@@ -509,13 +509,22 @@ All errors follow a consistent format:
 
 | Code | HTTP Status | Description |
 |------|-------------|-------------|
-| `AUTH_001` | 401 | Unauthorized - Missing or invalid token |
-| `AUTH_002` | 401 | Invalid credentials |
-| `AUTH_003` | 409 | Email already exists |
-| `AUTH_004` | 409 | Username already exists |
-| `VAL_001` | 400 | Validation error |
-| `SYS_001` | 500 | Internal server error |
-| `DB_001` | 500 | Database error |
+| `AUTH_TOKEN_MISSING` | 401 | Token missing in request |
+| `AUTH_TOKEN_INVALID` | 401 | Token is invalid (wrong format or signature) |
+| `AUTH_TOKEN_EXPIRED` | 401 | Token has expired |
+| `AUTH_INVALID_CREDENTIALS` | 401 | Invalid email or password |
+| `AUTH_INSUFFICIENT_ROLE` | 403 | User does not have required role |
+| `AUTH_ACCESS_DENIED` | 403 | User does not have access to resource |
+| `VALIDATION_ERROR` | 400 | General validation error |
+| `VALIDATION_REQUIRED_FIELD` | 400 | Required field is missing |
+| `VALIDATION_INVALID_FORMAT` | 400 | Invalid format (email, UUID, etc.) |
+| `USER_NOT_FOUND` | 404 | User not found |
+| `USER_EMAIL_EXISTS` | 409 | Email already registered |
+| `USER_USERNAME_EXISTS` | 409 | Username already taken |
+| `RESOURCE_NOT_FOUND` | 404 | Resource not found |
+| `RESOURCE_ALREADY_EXISTS` | 409 | Resource already exists |
+| `SERVER_ERROR` | 500 | Internal server error |
+| `SERVER_DATABASE_ERROR` | 500 | Database error |
 
 ### Common Error Scenarios
 
@@ -524,7 +533,7 @@ All errors follow a consistent format:
 {
   "statusCode": 400,
   "message": "Validation failed",
-  "errorCode": "VAL_001",
+  "errorCode": "VALIDATION_ERROR",
   "errors": [
     {
       "field": "password",
@@ -539,7 +548,7 @@ All errors follow a consistent format:
 {
   "statusCode": 401,
   "message": "Unauthorized",
-  "errorCode": "AUTH_001"
+  "errorCode": "AUTH_TOKEN_INVALID"
 }
 ```
 
@@ -548,7 +557,7 @@ All errors follow a consistent format:
 {
   "statusCode": 409,
   "message": "Email already exists",
-  "errorCode": "AUTH_003"
+  "errorCode": "USER_EMAIL_EXISTS"
 }
 ```
 
