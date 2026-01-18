@@ -120,21 +120,6 @@
           "method": "btree",
           "with": {}
         },
-        "snippets_is_public_idx": {
-          "name": "snippets_is_public_idx",
-          "columns": [
-            {
-              "expression": "is_public",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "snippets_public_created_at_idx": {
           "name": "snippets_public_created_at_idx",
           "columns": [
