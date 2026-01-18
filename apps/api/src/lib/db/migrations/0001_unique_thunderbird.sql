@@ -15,5 +15,4 @@ ALTER TABLE "snippets" ADD CONSTRAINT "snippets_user_id_users_id_fk" FOREIGN KEY
 CREATE INDEX "snippets_user_id_idx" ON "snippets" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "snippets_language_idx" ON "snippets" USING btree ("language");--> statement-breakpoint
 CREATE INDEX "snippets_created_at_idx" ON "snippets" USING btree ("created_at");--> statement-breakpoint
-CREATE INDEX "snippets_is_public_idx" ON "snippets" USING btree ("is_public");--> statement-breakpoint
 CREATE INDEX "snippets_public_created_at_idx" ON "snippets" USING btree ("is_public","created_at");

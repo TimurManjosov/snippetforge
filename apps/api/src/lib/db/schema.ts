@@ -43,25 +43,25 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
 /**
- * Snippets Table - Code Snippets erstellt von Users
+ * Snippets Table - Code Snippets created by Users
  *
  * BUSINESS RULES:
- * - Jeder Snippet gehört einem User (Foreign Key mit CASCADE DELETE)
- * - Title ist Pflicht, max 200 Zeichen
- * - Code ist Pflicht, max 50,000 Zeichen
- * - Language ist Pflicht (z.B. "typescript", "python")
- * - Description ist optional
- * - isPublic default true (Snippets sind standardmäßig öffentlich)
- * - viewCount wird automatisch hochgezählt
+ * - Each snippet belongs to a user (Foreign Key with CASCADE DELETE)
+ * - Title is required, max 200 characters
+ * - Code is required, max 50,000 characters
+ * - Language is required (e.g. "typescript", "python")
+ * - Description is optional
+ * - isPublic defaults to true (Snippets are public by default)
+ * - viewCount is automatically incremented
  *
  * PERFORMANCE:
- * - Index auf userId (für "meine Snippets" Query)
- * - Index auf language (für "alle TypeScript Snippets" Query)
- * - Index auf createdAt (für Sortierung)
- * - Index auf isPublic (für "alle öffentlichen Snippets" Query)
+ * - Index on userId (for "my snippets" queries)
+ * - Index on language (for "all TypeScript snippets" queries)
+ * - Index on createdAt (for sorting)
+ * - Composite index on (isPublic, createdAt) for common query pattern
  *
  * SECURITY:
- * - CASCADE DELETE:  Wenn User gelöscht wird, werden seine Snippets auch gelöscht
+ * - CASCADE DELETE: When user is deleted, their snippets are also deleted
  */
 export const snippets = pgTable(
   'snippets',
@@ -77,26 +77,27 @@ export const snippets = pgTable(
     // ========================================
 
     /**
-     * Titel des Snippets
-     * Max 200 Zeichen (für Übersichtlichkeit)
+     * Snippet title
+     * Max 200 characters (for clarity)
      */
     title: varchar('title', { length: 200 }).notNull(),
 
-    /** Optionale Beschreibung
-     * Erklärt was der Code macht
+    /**
+     * Optional description
+     * Explains what the code does
      */
     description: text('description'),
 
     /**
-     * Der eigentliche Code
-     * Max 50,000 Zeichen (verhindert zu große Files)
+     * The actual code
+     * Max 50,000 characters (prevents excessively large files)
      */
     code: text('code').notNull(),
 
     /**
-     * Programmiersprache
-     * Verwendet für Syntax Highlighting
-     * Beispiele: "typescript", "python", "javascript", "rust"
+     * Programming language
+     * Used for syntax highlighting
+     * Examples: "typescript", "python", "javascript", "rust"
      */
     language: varchar('language', { length: 50 }).notNull(),
 
@@ -104,8 +105,8 @@ export const snippets = pgTable(
     // RELATIONSHIPS
     // ========================================
     /**
-     * Foreign Key zu Users
-     * CASCADE DELETE: Wenn User gelöscht wird, werden seine Snippets auch gelöscht
+     * Foreign Key to Users
+     * CASCADE DELETE: When user is deleted, their snippets are also deleted
      */
     userId: uuid('user_id')
       .notNull()
@@ -116,15 +117,15 @@ export const snippets = pgTable(
     // ========================================
 
     /**
-     * Sichtbarkeit
-     * true = Öffentlich (jeder kann sehen)
-     * false = Privat (nur Owner kann sehen)
+     * Visibility
+     * true = Public (everyone can see)
+     * false = Private (only owner can see)
      */
     isPublic: boolean('is_public').default(true).notNull(),
 
     /**
-     * Anzahl der Views
-     * Wird hochgezählt wenn jemand den Snippet öffnet
+     * Number of views
+     * Incremented when someone opens the snippet
      */
     viewCount: integer('view_count').default(0).notNull(),
 
@@ -137,6 +138,7 @@ export const snippets = pgTable(
       .notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .defaultNow()
+      .$onUpdate(() => new Date())
       .notNull(),
   },
   (table) => ({
@@ -145,33 +147,27 @@ export const snippets = pgTable(
     // ========================================
 
     /**
-     * Index auf userId
-     * Query:  "Alle meine Snippets" (SELECT * FROM snippets WHERE user_id = ?)
-     * Ohne Index: Full Table Scan
-     * Mit Index: Index Scan (10-1000x schneller)
+     * Index on userId
+     * Query: "All my snippets" (SELECT * FROM snippets WHERE user_id = ?)
+     * Without index: Full Table Scan
+     * With index: Index Scan (10-1000x faster)
      */
     userIdIdx: index('snippets_user_id_idx').on(table.userId),
 
     /**
-     * Index auf language
-     * Query: "Alle TypeScript Snippets" (SELECT * FROM snippets WHERE language = 'typescript')
+     * Index on language
+     * Query: "All TypeScript snippets" (SELECT * FROM snippets WHERE language = 'typescript')
      */
     languageIdx: index('snippets_language_idx').on(table.language),
 
     /**
-     * Index auf createdAt
-     * Query:  Sortierung nach Datum (ORDER BY created_at DESC)
+     * Index on createdAt
+     * Query: Sort by date (ORDER BY created_at DESC)
      */
     createdAtIdx: index('snippets_created_at_idx').on(table.createdAt),
 
     /**
-     * Index auf isPublic
-     * Query: "Alle öffentlichen Snippets" (SELECT * FROM snippets WHERE is_public = true)
-     */
-    publicIdx: index('snippets_is_public_idx').on(table.isPublic),
-
-    /**
-     * Composite Index für häufigste Query:   "Öffentliche Snippets sortiert nach Datum"
+     * Composite index for most common query: "Public snippets sorted by date"
      * Query: SELECT * FROM snippets WHERE is_public = true ORDER BY created_at DESC
      */
     publicCreatedAtIdx: index('snippets_public_created_at_idx').on(
@@ -182,10 +178,10 @@ export const snippets = pgTable(
 );
 
 /**
- * Snippet Type (aus DB gelesen)
+ * Snippet Type (read from database)
  */
 export type Snippet = typeof snippets.$inferSelect;
 /**
- * New Snippet Type (für INSERT)
+ * New Snippet Type (for INSERT operations)
  */
 export type NewSnippet = typeof snippets.$inferInsert;
