@@ -1,0 +1,305 @@
+f4f97b2e3dd93bf9b98bdcbc3afb7f0d
+"use strict";
+// src/shared/swagger/schemas/error.schema.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InternalServerErrorResponseSchema = exports.ConflictErrorResponseSchema = exports.NotFoundErrorResponseSchema = exports.ForbiddenErrorResponseSchema = exports.UnauthorizedErrorResponseSchema = exports.ValidationErrorResponseSchema = exports.ErrorResponseSchema = exports.ResponseMetaSchema = exports.ErrorObjectSchema = exports.ErrorDetailsSchema = void 0;
+const swagger_1 = require("@nestjs/swagger");
+/**
+ * Swagger Schemas für Error Responses
+ *
+ * WARUM KLASSEN STATT INTERFACES?
+ * - @nestjs/swagger braucht Klassen für Schema-Generierung
+ * - Decorators können nur auf Klassen angewendet werden
+ * - Runtime-Reflection für automatische Schema-Erstellung
+ *
+ * WICHTIG:
+ * - Diese Klassen sind NUR für Dokumentation
+ * - Sie werden NICHT für Validierung verwendet
+ * - Zod-Schemas bleiben für Runtime-Validierung
+ */
+/**
+ * Error Details Schema
+ * Zusätzliche Informationen bei Validation Errors
+ */
+class ErrorDetailsSchema {
+    fields;
+    context;
+}
+exports.ErrorDetailsSchema = ErrorDetailsSchema;
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Field-specific validation errors',
+        example: {
+            email: ['Invalid email format'],
+            password: ['Password must be at least 8 characters'],
+        },
+        type: 'object',
+        additionalProperties: {
+            type: 'array',
+            items: { type: 'string' },
+        },
+    }),
+    __metadata("design:type", typeof (_a = typeof Record !== "undefined" && Record) === "function" ? _a : Object)
+], ErrorDetailsSchema.prototype, "fields", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Additional context information',
+        type: 'object',
+        additionalProperties: true,
+    }),
+    __metadata("design:type", typeof (_b = typeof Record !== "undefined" && Record) === "function" ? _b : Object)
+], ErrorDetailsSchema.prototype, "context", void 0);
+/**
+ * Error Object Schema
+ * Hauptteil der Error Response
+ */
+class ErrorObjectSchema {
+    code;
+    message;
+    statusCode;
+    details;
+}
+exports.ErrorObjectSchema = ErrorObjectSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Machine-readable error code',
+        example: 'VALIDATION_ERROR',
+        enum: [
+            'AUTH_TOKEN_MISSING',
+            'AUTH_TOKEN_INVALID',
+            'AUTH_TOKEN_EXPIRED',
+            'AUTH_INVALID_CREDENTIALS',
+            'AUTH_INSUFFICIENT_ROLE',
+            'AUTH_ACCESS_DENIED',
+            'VALIDATION_ERROR',
+            'USER_NOT_FOUND',
+            'USER_EMAIL_EXISTS',
+            'USER_USERNAME_EXISTS',
+            'RESOURCE_NOT_FOUND',
+            'SERVER_ERROR',
+        ],
+    }),
+    __metadata("design:type", String)
+], ErrorObjectSchema.prototype, "code", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Human-readable error message',
+        example: 'Validation failed',
+    }),
+    __metadata("design:type", String)
+], ErrorObjectSchema.prototype, "message", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'HTTP status code',
+        example: 400,
+    }),
+    __metadata("design:type", Number)
+], ErrorObjectSchema.prototype, "statusCode", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Additional error details',
+        type: ErrorDetailsSchema,
+    }),
+    __metadata("design:type", ErrorDetailsSchema)
+], ErrorObjectSchema.prototype, "details", void 0);
+/**
+ * Response Meta Schema
+ * Metadaten jeder Response
+ */
+class ResponseMetaSchema {
+    timestamp;
+    path;
+    method;
+    requestId;
+}
+exports.ResponseMetaSchema = ResponseMetaSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'ISO 8601 timestamp',
+        example: '2026-01-10T12:00:00.000Z',
+    }),
+    __metadata("design:type", String)
+], ResponseMetaSchema.prototype, "timestamp", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Request path',
+        example: '/api/auth/register',
+    }),
+    __metadata("design:type", String)
+], ResponseMetaSchema.prototype, "path", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'HTTP method',
+        example: 'POST',
+    }),
+    __metadata("design:type", String)
+], ResponseMetaSchema.prototype, "method", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Request ID for tracing',
+        example: 'req-123-456-789',
+    }),
+    __metadata("design:type", String)
+], ResponseMetaSchema.prototype, "requestId", void 0);
+/**
+ * Standard Error Response Schema
+ * Wird für alle Error-Dokumentationen verwendet
+ */
+class ErrorResponseSchema {
+    success;
+    error;
+    meta;
+}
+exports.ErrorResponseSchema = ErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Always false for errors',
+        example: false,
+    }),
+    __metadata("design:type", Boolean)
+], ErrorResponseSchema.prototype, "success", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details',
+        type: ErrorObjectSchema,
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], ErrorResponseSchema.prototype, "error", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Response metadata',
+        type: ResponseMetaSchema,
+    }),
+    __metadata("design:type", ResponseMetaSchema)
+], ErrorResponseSchema.prototype, "meta", void 0);
+/**
+ * Validation Error Response Schema
+ * Spezifisch für 400 Bad Request mit Validation Details
+ */
+class ValidationErrorResponseSchema extends ErrorResponseSchema {
+}
+exports.ValidationErrorResponseSchema = ValidationErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details with validation fields',
+        type: ErrorObjectSchema,
+        example: {
+            code: 'VALIDATION_ERROR',
+            message: 'Validation failed',
+            statusCode: 400,
+            details: {
+                fields: {
+                    email: ['Invalid email format'],
+                    password: ['Password must be at least 8 characters'],
+                },
+            },
+        },
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], ValidationErrorResponseSchema.prototype, "error", void 0);
+/**
+ * Unauthorized Error Response Schema
+ * Spezifisch für 401 Unauthorized
+ */
+class UnauthorizedErrorResponseSchema extends ErrorResponseSchema {
+}
+exports.UnauthorizedErrorResponseSchema = UnauthorizedErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details for authentication failure',
+        type: ErrorObjectSchema,
+        example: {
+            code: 'AUTH_TOKEN_MISSING',
+            message: 'Invalid or missing authentication token',
+            statusCode: 401,
+        },
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], UnauthorizedErrorResponseSchema.prototype, "error", void 0);
+/**
+ * Forbidden Error Response Schema
+ * Spezifisch für 403 Forbidden
+ */
+class ForbiddenErrorResponseSchema extends ErrorResponseSchema {
+}
+exports.ForbiddenErrorResponseSchema = ForbiddenErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details for authorization failure',
+        type: ErrorObjectSchema,
+        example: {
+            code: 'AUTH_INSUFFICIENT_ROLE',
+            message: 'Access denied. Required role: ADMIN',
+            statusCode: 403,
+        },
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], ForbiddenErrorResponseSchema.prototype, "error", void 0);
+/**
+ * Not Found Error Response Schema
+ * Spezifisch für 404 Not Found
+ */
+class NotFoundErrorResponseSchema extends ErrorResponseSchema {
+}
+exports.NotFoundErrorResponseSchema = NotFoundErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details for not found',
+        type: ErrorObjectSchema,
+        example: {
+            code: 'RESOURCE_NOT_FOUND',
+            message: 'Resource not found',
+            statusCode: 404,
+        },
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], NotFoundErrorResponseSchema.prototype, "error", void 0);
+/**
+ * Conflict Error Response Schema
+ * Spezifisch für 409 Conflict
+ */
+class ConflictErrorResponseSchema extends ErrorResponseSchema {
+}
+exports.ConflictErrorResponseSchema = ConflictErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details for conflict',
+        type: ErrorObjectSchema,
+        example: {
+            code: 'USER_EMAIL_EXISTS',
+            message: 'Email is already registered',
+            statusCode: 409,
+        },
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], ConflictErrorResponseSchema.prototype, "error", void 0);
+/**
+ * Internal Server Error Response Schema
+ * Spezifisch für 500 Internal Server Error
+ */
+class InternalServerErrorResponseSchema extends ErrorResponseSchema {
+}
+exports.InternalServerErrorResponseSchema = InternalServerErrorResponseSchema;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Error details for server error',
+        type: ErrorObjectSchema,
+        example: {
+            code: 'SERVER_ERROR',
+            message: 'An unexpected error occurred. Please try again later.',
+            statusCode: 500,
+        },
+    }),
+    __metadata("design:type", ErrorObjectSchema)
+], InternalServerErrorResponseSchema.prototype, "error", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFx0aW11clxcUHJvZ3JhbW1pbmdcXFByb2plY3RzXFxzbmlwcGV0Zm9yZ2VcXGFwcHNcXGFwaVxcc3JjXFxzaGFyZWRcXHN3YWdnZXJcXHNjaGVtYXNcXGVycm9yLnNjaGVtYS50cyIsIm1hcHBpbmdzIjoiO0FBQUEsNkNBQTZDOzs7Ozs7Ozs7Ozs7O0FBRTdDLDZDQUFtRTtBQUVuRTs7Ozs7Ozs7Ozs7O0dBWUc7QUFFSDs7O0dBR0c7QUFDSCxNQUFhLGtCQUFrQjtJQWE3QixNQUFNLENBQTRCO0lBT2xDLE9BQU8sQ0FBMkI7Q0FDbkM7QUFyQkQsZ0RBcUJDO0FBUkM7SUFaQyxJQUFBLDZCQUFtQixFQUFDO1FBQ25CLFdBQVcsRUFBRSxrQ0FBa0M7UUFDL0MsT0FBTyxFQUFFO1lBQ1AsS0FBSyxFQUFFLENBQUMsc0JBQXNCLENBQUM7WUFDL0IsUUFBUSxFQUFFLENBQUMsd0NBQXdDLENBQUM7U0FDckQ7UUFDRCxJQUFJLEVBQUUsUUFBUTtRQUNkLG9CQUFvQixFQUFFO1lBQ3BCLElBQUksRUFBRSxPQUFPO1lBQ2IsS0FBSyxFQUFFLEVBQUUsSUFBSSxFQUFFLFFBQVEsRUFBRTtTQUMxQjtLQUNGLENBQUM7a0RBQ08sTUFBTSxvQkFBTixNQUFNO2tEQUFtQjtBQU9sQztJQUxDLElBQUEsNkJBQW1CLEVBQUM7UUFDbkIsV0FBVyxFQUFFLGdDQUFnQztRQUM3QyxJQUFJLEVBQUUsUUFBUTtRQUNkLG9CQUFvQixFQUFFLElBQUk7S0FDM0IsQ0FBQztrREFDUSxNQUFNLG9CQUFOLE1BQU07bURBQWtCO0FBR3BDOzs7R0FHRztBQUNILE1BQWEsaUJBQWlCO0lBbUI1QixJQUFJLENBQVM7SUFNYixPQUFPLENBQVM7SUFNaEIsVUFBVSxDQUFTO0lBTW5CLE9BQU8sQ0FBc0I7Q0FDOUI7QUF0Q0QsOENBc0NDO0FBbkJDO0lBbEJDLElBQUEscUJBQVcsRUFBQztRQUNYLFdBQVcsRUFBRSw2QkFBNkI7UUFDMUMsT0FBTyxFQUFFLGtCQUFrQjtRQUMzQixJQUFJLEVBQUU7WUFDSixv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RCw4RUFXQztBQURTO0lBVFAsSUFBQSxxQkFBVyxFQUFDO1FBQ1gsV0FBVyxFQUFFLGdDQUFnQztRQUM3QyxJQUFJLEVBQUUsaUJBQWlCO1FBQ3ZCLE9BQU8sRUFBRTtZQUNQLElBQUksRUFBRSxjQUFjO1lBQ3BCLE9BQU8sRUFBRSx1REFBdUQ7WUFDaEUsVUFBVSxFQUFFLEdBQUc7U0FDaEI7S0FDRixDQUFDOzhCQUNhLGlCQUFpQjtnRUFBQyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJDOlxcVXNlcnNcXHRpbXVyXFxQcm9ncmFtbWluZ1xcUHJvamVjdHNcXHNuaXBwZXRmb3JnZVxcYXBwc1xcYXBpXFxzcmNcXHNoYXJlZFxcc3dhZ2dlclxcc2NoZW1hc1xcZXJyb3Iuc2NoZW1hLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9zaGFyZWQvc3dhZ2dlci9zY2hlbWFzL2Vycm9yLnNjaGVtYS50c1xyXG5cclxuaW1wb3J0IHsgQXBpUHJvcGVydHksIEFwaVByb3BlcnR5T3B0aW9uYWwgfSBmcm9tICdAbmVzdGpzL3N3YWdnZXInO1xyXG5cclxuLyoqXHJcbiAqIFN3YWdnZXIgU2NoZW1hcyBmw7xyIEVycm9yIFJlc3BvbnNlc1xyXG4gKlxyXG4gKiBXQVJVTSBLTEFTU0VOIFNUQVRUIElOVEVSRkFDRVM/XHJcbiAqIC0gQG5lc3Rqcy9zd2FnZ2VyIGJyYXVjaHQgS2xhc3NlbiBmw7xyIFNjaGVtYS1HZW5lcmllcnVuZ1xyXG4gKiAtIERlY29yYXRvcnMga8O2bm5lbiBudXIgYXVmIEtsYXNzZW4gYW5nZXdlbmRldCB3ZXJkZW5cclxuICogLSBSdW50aW1lLVJlZmxlY3Rpb24gZsO8ciBhdXRvbWF0aXNjaGUgU2NoZW1hLUVyc3RlbGx1bmdcclxuICpcclxuICogV0lDSFRJRzpcclxuICogLSBEaWVzZSBLbGFzc2VuIHNpbmQgTlVSIGbDvHIgRG9rdW1lbnRhdGlvblxyXG4gKiAtIFNpZSB3ZXJkZW4gTklDSFQgZsO8ciBWYWxpZGllcnVuZyB2ZXJ3ZW5kZXRcclxuICogLSBab2QtU2NoZW1hcyBibGVpYmVuIGbDvHIgUnVudGltZS1WYWxpZGllcnVuZ1xyXG4gKi9cclxuXHJcbi8qKlxyXG4gKiBFcnJvciBEZXRhaWxzIFNjaGVtYVxyXG4gKiBadXPDpHR6bGljaGUgSW5mb3JtYXRpb25lbiBiZWkgVmFsaWRhdGlvbiBFcnJvcnNcclxuICovXHJcbmV4cG9ydCBjbGFzcyBFcnJvckRldGFpbHNTY2hlbWEge1xyXG4gIEBBcGlQcm9wZXJ0eU9wdGlvbmFsKHtcclxuICAgIGRlc2NyaXB0aW9uOiAnRmllbGQtc3BlY2lmaWMgdmFsaWRhdGlvbiBlcnJvcnMnLFxyXG4gICAgZXhhbXBsZToge1xyXG4gICAgICBlbWFpbDogWydJbnZhbGlkIGVtYWlsIGZvcm1hdCddLFxyXG4gICAgICBwYXNzd29yZDogWydQYXNzd29yZCBtdXN0IGJlIGF0IGxlYXN0IDggY2hhcmFjdGVycyddLFxyXG4gICAgfSxcclxuICAgIHR5cGU6ICdvYmplY3QnLFxyXG4gICAgYWRkaXRpb25hbFByb3BlcnRpZXM6IHtcclxuICAgICAgdHlwZTogJ2FycmF5JyxcclxuICAgICAgaXRlbXM6IHsgdHlwZTogJ3N0cmluZycgfSxcclxuICAgIH0sXHJcbiAgfSlcclxuICBmaWVsZHM/OiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmdbXT47XHJcblxyXG4gIEBBcGlQcm9wZXJ0eU9wdGlvbmFsKHtcclxuICAgIGRlc2NyaXB0aW9uOiAnQWRkaXRpb25hbCBjb250ZXh0IGluZm9ybWF0aW9uJyxcclxuICAgIHR5cGU6ICdvYmplY3QnLFxyXG4gICAgYWRkaXRpb25hbFByb3BlcnRpZXM6IHRydWUsXHJcbiAgfSlcclxuICBjb250ZXh0PzogUmVjb3JkPHN0cmluZywgdW5rbm93bj47XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBFcnJvciBPYmplY3QgU2NoZW1hXHJcbiAqIEhhdXB0dGVpbCBkZXIgRXJyb3IgUmVzcG9uc2VcclxuICovXHJcbmV4cG9ydCBjbGFzcyBFcnJvck9iamVjdFNjaGVtYSB7XHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnTWFjaGluZS1yZWFkYWJsZSBlcnJvciBjb2RlJyxcclxuICAgIGV4YW1wbGU6ICdWQUxJREFUSU9OX0VSUk9SJyxcclxuICAgIGVudW06IFtcclxuICAgICAgJ0FVVEhfVE9LRU5fTUlTU0lORycsXHJcbiAgICAgICdBVVRIX1RPS0VOX0lOVkFMSUQnLFxyXG4gICAgICAnQVVUSF9UT0tFTl9FWFBJUkVEJyxcclxuICAgICAgJ0FVVEhfSU5WQUxJRF9DUkVERU5USUFMUycsXHJcbiAgICAgICdBVVRIX0lOU1VGRklDSUVOVF9ST0xFJyxcclxuICAgICAgJ0FVVEhfQUNDRVNTX0RFTklFRCcsXHJcbiAgICAgICdWQUxJREFUSU9OX0VSUk9SJyxcclxuICAgICAgJ1VTRVJfTk9UX0ZPVU5EJyxcclxuICAgICAgJ1VTRVJfRU1BSUxfRVhJU1RTJyxcclxuICAgICAgJ1VTRVJfVVNFUk5BTUVfRVhJU1RTJyxcclxuICAgICAgJ1JFU09VUkNFX05PVF9GT1VORCcsXHJcbiAgICAgICdTRVJWRVJfRVJST1InLFxyXG4gICAgXSxcclxuICB9KVxyXG4gIGNvZGU6IHN0cmluZztcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnSHVtYW4tcmVhZGFibGUgZXJyb3IgbWVzc2FnZScsXHJcbiAgICBleGFtcGxlOiAnVmFsaWRhdGlvbiBmYWlsZWQnLFxyXG4gIH0pXHJcbiAgbWVzc2FnZTogc3RyaW5nO1xyXG5cclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdIVFRQIHN0YXR1cyBjb2RlJyxcclxuICAgIGV4YW1wbGU6IDQwMCxcclxuICB9KVxyXG4gIHN0YXR1c0NvZGU6IG51bWJlcjtcclxuXHJcbiAgQEFwaVByb3BlcnR5T3B0aW9uYWwoe1xyXG4gICAgZGVzY3JpcHRpb246ICdBZGRpdGlvbmFsIGVycm9yIGRldGFpbHMnLFxyXG4gICAgdHlwZTogRXJyb3JEZXRhaWxzU2NoZW1hLFxyXG4gIH0pXHJcbiAgZGV0YWlscz86IEVycm9yRGV0YWlsc1NjaGVtYTtcclxufVxyXG5cclxuLyoqXHJcbiAqIFJlc3BvbnNlIE1ldGEgU2NoZW1hXHJcbiAqIE1ldGFkYXRlbiBqZWRlciBSZXNwb25zZVxyXG4gKi9cclxuZXhwb3J0IGNsYXNzIFJlc3BvbnNlTWV0YVNjaGVtYSB7XHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnSVNPIDg2MDEgdGltZXN0YW1wJyxcclxuICAgIGV4YW1wbGU6ICcyMDI2LTAxLTEwVDEyOjAwOjAwLjAwMFonLFxyXG4gIH0pXHJcbiAgdGltZXN0YW1wOiBzdHJpbmc7XHJcblxyXG4gIEBBcGlQcm9wZXJ0eSh7XHJcbiAgICBkZXNjcmlwdGlvbjogJ1JlcXVlc3QgcGF0aCcsXHJcbiAgICBleGFtcGxlOiAnL2FwaS9hdXRoL3JlZ2lzdGVyJyxcclxuICB9KVxyXG4gIHBhdGg6IHN0cmluZztcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnSFRUUCBtZXRob2QnLFxyXG4gICAgZXhhbXBsZTogJ1BPU1QnLFxyXG4gIH0pXHJcbiAgbWV0aG9kOiBzdHJpbmc7XHJcblxyXG4gIEBBcGlQcm9wZXJ0eU9wdGlvbmFsKHtcclxuICAgIGRlc2NyaXB0aW9uOiAnUmVxdWVzdCBJRCBmb3IgdHJhY2luZycsXHJcbiAgICBleGFtcGxlOiAncmVxLTEyMy00NTYtNzg5JyxcclxuICB9KVxyXG4gIHJlcXVlc3RJZD86IHN0cmluZztcclxufVxyXG5cclxuLyoqXHJcbiAqIFN0YW5kYXJkIEVycm9yIFJlc3BvbnNlIFNjaGVtYVxyXG4gKiBXaXJkIGbDvHIgYWxsZSBFcnJvci1Eb2t1bWVudGF0aW9uZW4gdmVyd2VuZGV0XHJcbiAqL1xyXG5leHBvcnQgY2xhc3MgRXJyb3JSZXNwb25zZVNjaGVtYSB7XHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnQWx3YXlzIGZhbHNlIGZvciBlcnJvcnMnLFxyXG4gICAgZXhhbXBsZTogZmFsc2UsXHJcbiAgfSlcclxuICBzdWNjZXNzOiBmYWxzZTtcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnRXJyb3IgZGV0YWlscycsXHJcbiAgICB0eXBlOiBFcnJvck9iamVjdFNjaGVtYSxcclxuICB9KVxyXG4gIGVycm9yOiBFcnJvck9iamVjdFNjaGVtYTtcclxuXHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnUmVzcG9uc2UgbWV0YWRhdGEnLFxyXG4gICAgdHlwZTogUmVzcG9uc2VNZXRhU2NoZW1hLFxyXG4gIH0pXHJcbiAgbWV0YTogUmVzcG9uc2VNZXRhU2NoZW1hO1xyXG59XHJcblxyXG4vKipcclxuICogVmFsaWRhdGlvbiBFcnJvciBSZXNwb25zZSBTY2hlbWFcclxuICogU3BlemlmaXNjaCBmw7xyIDQwMCBCYWQgUmVxdWVzdCBtaXQgVmFsaWRhdGlvbiBEZXRhaWxzXHJcbiAqL1xyXG5leHBvcnQgY2xhc3MgVmFsaWRhdGlvbkVycm9yUmVzcG9uc2VTY2hlbWEgZXh0ZW5kcyBFcnJvclJlc3BvbnNlU2NoZW1hIHtcclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdFcnJvciBkZXRhaWxzIHdpdGggdmFsaWRhdGlvbiBmaWVsZHMnLFxyXG4gICAgdHlwZTogRXJyb3JPYmplY3RTY2hlbWEsXHJcbiAgICBleGFtcGxlOiB7XHJcbiAgICAgIGNvZGU6ICdWQUxJREFUSU9OX0VSUk9SJyxcclxuICAgICAgbWVzc2FnZTogJ1ZhbGlkYXRpb24gZmFpbGVkJyxcclxuICAgICAgc3RhdHVzQ29kZTogNDAwLFxyXG4gICAgICBkZXRhaWxzOiB7XHJcbiAgICAgICAgZmllbGRzOiB7XHJcbiAgICAgICAgICBlbWFpbDogWydJbnZhbGlkIGVtYWlsIGZvcm1hdCddLFxyXG4gICAgICAgICAgcGFzc3dvcmQ6IFsnUGFzc3dvcmQgbXVzdCBiZSBhdCBsZWFzdCA4IGNoYXJhY3RlcnMnXSxcclxuICAgICAgICB9LFxyXG4gICAgICB9LFxyXG4gICAgfSxcclxuICB9KVxyXG4gIGRlY2xhcmUgZXJyb3I6IEVycm9yT2JqZWN0U2NoZW1hO1xyXG59XHJcblxyXG4vKipcclxuICogVW5hdXRob3JpemVkIEVycm9yIFJlc3BvbnNlIFNjaGVtYVxyXG4gKiBTcGV6aWZpc2NoIGbDvHIgNDAxIFVuYXV0aG9yaXplZFxyXG4gKi9cclxuZXhwb3J0IGNsYXNzIFVuYXV0aG9yaXplZEVycm9yUmVzcG9uc2VTY2hlbWEgZXh0ZW5kcyBFcnJvclJlc3BvbnNlU2NoZW1hIHtcclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdFcnJvciBkZXRhaWxzIGZvciBhdXRoZW50aWNhdGlvbiBmYWlsdXJlJyxcclxuICAgIHR5cGU6IEVycm9yT2JqZWN0U2NoZW1hLFxyXG4gICAgZXhhbXBsZToge1xyXG4gICAgICBjb2RlOiAnQVVUSF9UT0tFTl9NSVNTSU5HJyxcclxuICAgICAgbWVzc2FnZTogJ0ludmFsaWQgb3IgbWlzc2luZyBhdXRoZW50aWNhdGlvbiB0b2tlbicsXHJcbiAgICAgIHN0YXR1c0NvZGU6IDQwMSxcclxuICAgIH0sXHJcbiAgfSlcclxuICBkZWNsYXJlIGVycm9yOiBFcnJvck9iamVjdFNjaGVtYTtcclxufVxyXG5cclxuLyoqXHJcbiAqIEZvcmJpZGRlbiBFcnJvciBSZXNwb25zZSBTY2hlbWFcclxuICogU3BlemlmaXNjaCBmw7xyIDQwMyBGb3JiaWRkZW5cclxuICovXHJcbmV4cG9ydCBjbGFzcyBGb3JiaWRkZW5FcnJvclJlc3BvbnNlU2NoZW1hIGV4dGVuZHMgRXJyb3JSZXNwb25zZVNjaGVtYSB7XHJcbiAgQEFwaVByb3BlcnR5KHtcclxuICAgIGRlc2NyaXB0aW9uOiAnRXJyb3IgZGV0YWlscyBmb3IgYXV0aG9yaXphdGlvbiBmYWlsdXJlJyxcclxuICAgIHR5cGU6IEVycm9yT2JqZWN0U2NoZW1hLFxyXG4gICAgZXhhbXBsZToge1xyXG4gICAgICBjb2RlOiAnQVVUSF9JTlNVRkZJQ0lFTlRfUk9MRScsXHJcbiAgICAgIG1lc3NhZ2U6ICdBY2Nlc3MgZGVuaWVkLiBSZXF1aXJlZCByb2xlOiBBRE1JTicsXHJcbiAgICAgIHN0YXR1c0NvZGU6IDQwMyxcclxuICAgIH0sXHJcbiAgfSlcclxuICBkZWNsYXJlIGVycm9yOiBFcnJvck9iamVjdFNjaGVtYTtcclxufVxyXG5cclxuLyoqXHJcbiAqIE5vdCBGb3VuZCBFcnJvciBSZXNwb25zZSBTY2hlbWFcclxuICogU3BlemlmaXNjaCBmw7xyIDQwNCBOb3QgRm91bmRcclxuICovXHJcbmV4cG9ydCBjbGFzcyBOb3RGb3VuZEVycm9yUmVzcG9uc2VTY2hlbWEgZXh0ZW5kcyBFcnJvclJlc3BvbnNlU2NoZW1hIHtcclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdFcnJvciBkZXRhaWxzIGZvciBub3QgZm91bmQnLFxyXG4gICAgdHlwZTogRXJyb3JPYmplY3RTY2hlbWEsXHJcbiAgICBleGFtcGxlOiB7XHJcbiAgICAgIGNvZGU6ICdSRVNPVVJDRV9OT1RfRk9VTkQnLFxyXG4gICAgICBtZXNzYWdlOiAnUmVzb3VyY2Ugbm90IGZvdW5kJyxcclxuICAgICAgc3RhdHVzQ29kZTogNDA0LFxyXG4gICAgfSxcclxuICB9KVxyXG4gIGRlY2xhcmUgZXJyb3I6IEVycm9yT2JqZWN0U2NoZW1hO1xyXG59XHJcblxyXG4vKipcclxuICogQ29uZmxpY3QgRXJyb3IgUmVzcG9uc2UgU2NoZW1hXHJcbiAqIFNwZXppZmlzY2ggZsO8ciA0MDkgQ29uZmxpY3RcclxuICovXHJcbmV4cG9ydCBjbGFzcyBDb25mbGljdEVycm9yUmVzcG9uc2VTY2hlbWEgZXh0ZW5kcyBFcnJvclJlc3BvbnNlU2NoZW1hIHtcclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdFcnJvciBkZXRhaWxzIGZvciBjb25mbGljdCcsXHJcbiAgICB0eXBlOiBFcnJvck9iamVjdFNjaGVtYSxcclxuICAgIGV4YW1wbGU6IHtcclxuICAgICAgY29kZTogJ1VTRVJfRU1BSUxfRVhJU1RTJyxcclxuICAgICAgbWVzc2FnZTogJ0VtYWlsIGlzIGFscmVhZHkgcmVnaXN0ZXJlZCcsXHJcbiAgICAgIHN0YXR1c0NvZGU6IDQwOSxcclxuICAgIH0sXHJcbiAgfSlcclxuICBkZWNsYXJlIGVycm9yOiBFcnJvck9iamVjdFNjaGVtYTtcclxufVxyXG5cclxuLyoqXHJcbiAqIEludGVybmFsIFNlcnZlciBFcnJvciBSZXNwb25zZSBTY2hlbWFcclxuICogU3BlemlmaXNjaCBmw7xyIDUwMCBJbnRlcm5hbCBTZXJ2ZXIgRXJyb3JcclxuICovXHJcbmV4cG9ydCBjbGFzcyBJbnRlcm5hbFNlcnZlckVycm9yUmVzcG9uc2VTY2hlbWEgZXh0ZW5kcyBFcnJvclJlc3BvbnNlU2NoZW1hIHtcclxuICBAQXBpUHJvcGVydHkoe1xyXG4gICAgZGVzY3JpcHRpb246ICdFcnJvciBkZXRhaWxzIGZvciBzZXJ2ZXIgZXJyb3InLFxyXG4gICAgdHlwZTogRXJyb3JPYmplY3RTY2hlbWEsXHJcbiAgICBleGFtcGxlOiB7XHJcbiAgICAgIGNvZGU6ICdTRVJWRVJfRVJST1InLFxyXG4gICAgICBtZXNzYWdlOiAnQW4gdW5leHBlY3RlZCBlcnJvciBvY2N1cnJlZC4gUGxlYXNlIHRyeSBhZ2FpbiBsYXRlci4nLFxyXG4gICAgICBzdGF0dXNDb2RlOiA1MDAsXHJcbiAgICB9LFxyXG4gIH0pXHJcbiAgZGVjbGFyZSBlcnJvcjogRXJyb3JPYmplY3RTY2hlbWE7XHJcbn1cclxuIl0sInZlcnNpb24iOjN9

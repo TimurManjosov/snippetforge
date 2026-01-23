@@ -29,27 +29,22 @@ import { type SafeUser } from '../../users';
  * VORAUSSETZUNG: JwtAuthGuard muss aktiv sein!
  * Sonst ist request.user undefined
  */
-export const CurrentUser = createParamDecorator(
-  /**
-   * @param data - Optionaler Property-Name (z.B. 'email', 'id')
-   * @param ctx - Execution Context
-   * @returns User oder User-Property
-   */
-  (data: keyof SafeUser | undefined, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<Request>();
-    const user = request.user as SafeUser | undefined;
+export const currentUserFactory = (
+  data: keyof SafeUser | undefined,
+  ctx: ExecutionContext,
+) => {
+  const request = ctx.switchToHttp().getRequest<Request>();
+  const user = request.user as SafeUser | undefined;
 
-    // Wenn kein User (Guard nicht aktiv?), undefined zurückgeben
-    if (!user) {
-      return undefined;
-    }
+  if (!user) {
+    return undefined;
+  }
 
-    // Wenn Property angefragt, nur diese zurückgeben
-    if (data) {
-      return user[data];
-    }
+  if (data) {
+    return user[data];
+  }
 
-    // Sonst ganzen User zurückgeben
-    return user;
-  },
-);
+  return user;
+};
+
+export const CurrentUser = createParamDecorator(currentUserFactory);

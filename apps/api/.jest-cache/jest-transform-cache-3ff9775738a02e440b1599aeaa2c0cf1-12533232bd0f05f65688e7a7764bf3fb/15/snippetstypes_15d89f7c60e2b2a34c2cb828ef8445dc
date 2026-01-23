@@ -1,0 +1,265 @@
+892fa7812e39afeadf6c982a1459b434
+"use strict";
+
+// src/modules/snippets/snippets.types.ts
+/* istanbul ignore next */
+function cov_17z1nwwa2h() {
+  var path = "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\snippets\\snippets.types.ts";
+  var hash = "1ed3aeaced8cb1275bb54154c9592b4e6bb2f922";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\snippets\\snippets.types.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 30
+        }
+      },
+      "2": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 44
+        }
+      },
+      "3": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 6,
+          column: 58
+        }
+      },
+      "4": {
+        start: {
+          line: 10,
+          column: 0
+        },
+        end: {
+          line: 13,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 24,
+          column: 33
+        },
+        end: {
+          line: 24,
+          column: 40
+        }
+      },
+      "6": {
+        start: {
+          line: 25,
+          column: 4
+        },
+        end: {
+          line: 25,
+          column: 19
+        }
+      },
+      "7": {
+        start: {
+          line: 35,
+          column: 23
+        },
+        end: {
+          line: 35,
+          column: 47
+        }
+      },
+      "8": {
+        start: {
+          line: 36,
+          column: 4
+        },
+        end: {
+          line: 43,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "toSnippetPreview",
+        decl: {
+          start: {
+            line: 22,
+            column: 9
+          },
+          end: {
+            line: 22,
+            column: 25
+          }
+        },
+        loc: {
+          start: {
+            line: 22,
+            column: 35
+          },
+          end: {
+            line: 26,
+            column: 1
+          }
+        },
+        line: 22
+      },
+      "1": {
+        name: "calculatePaginationMeta",
+        decl: {
+          start: {
+            line: 34,
+            column: 9
+          },
+          end: {
+            line: 34,
+            column: 32
+          }
+        },
+        loc: {
+          start: {
+            line: 34,
+            column: 53
+          },
+          end: {
+            line: 44,
+            column: 1
+          }
+        },
+        line: 34
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      file: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\snippets\\snippets.types.ts",
+      mappings: ";AAAA,yCAAyC;;;AA8NzC,4CAIC;AASD,0DAeC;AA5DD;;GAEG;AACU,QAAA,YAAY,GAAuB;IAC9C,MAAM,EAAE,WAAW;IACnB,KAAK,EAAE,MAAM;CACd,CAAC;AAiBF,+DAA+D;AAC/D,mBAAmB;AACnB,+DAA+D;AAE/D;;;;GAIG;AACH,SAAgB,gBAAgB,CAAC,OAAgB;IAC/C,6DAA6D;IAC7D,MAAM,EAAE,IAAI,EAAE,GAAG,OAAO,EAAE,GAAG,OAAO,CAAC;IACrC,OAAO,OAAO,CAAC;AACjB,CAAC;AAED;;;;;;GAMG;AACH,SAAgB,uBAAuB,CACrC,KAAa,EACb,IAAY,EACZ,KAAa;IAEb,MAAM,UAAU,GAAG,IAAI,CAAC,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC,CAAC;IAE5C,OAAO;QACL,IAAI;QACJ,KAAK;QACL,KAAK;QACL,UAAU;QACV,WAAW,EAAE,IAAI,GAAG,UAAU;QAC9B,eAAe,EAAE,IAAI,GAAG,CAAC;KAC1B,CAAC;AACJ,CAAC",
+      names: [],
+      sources: ["C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\snippets\\snippets.types.ts"],
+      sourcesContent: ["// src/modules/snippets/snippets.types.ts\r\n\r\nimport { type NewSnippet, type Snippet } from '../../lib/db/schema';\r\n\r\n/**\r\n * Snippets Types - Domain Types f\xFCr Snippet-Operations\r\n *\r\n * WARUM separate Types?\r\n * 1. Entkopplung: API-Layer kann andere Typen haben als DB-Layer\r\n * 2. Erweiterbarkeit: Wir k\xF6nnen zus\xE4tzliche Felder hinzuf\xFCgen (z.B. User-Info)\r\n * 3. Type-Safety: TypeScript pr\xFCft alle Transformationen\r\n * 4. Documentation: Types dokumentieren die Datenstruktur\r\n *\r\n * CLEAN CODE REGEL #1: Domain-Driven Design\r\n * - Types repr\xE4sentieren Business-Konzepte, nicht DB-Tabellen\r\n */\r\n\r\n// ============================================================\r\n// BASIC TYPES (Re-export from Schema)\r\n// ============================================================\r\n\r\n/**\r\n * Snippet - Vollst\xE4ndiges Snippet aus DB\r\n * Enth\xE4lt alle Felder inklusive Timestamps\r\n */\r\nexport type { NewSnippet, Snippet };\r\n\r\n// ============================================================\r\n// EXTENDED TYPES\r\n// ============================================================\r\n\r\n/**\r\n * Snippet mit User-Information (f\xFCr API Responses)\r\n *\r\n * Wird sp\xE4ter mit JOIN geholt wenn wir User-Daten anzeigen wollen\r\n * Beispiel: Snippet-Liste zeigt Author-Name\r\n */\r\nexport interface SnippetWithUser extends Snippet {\r\n  user: {\r\n    id: string;\r\n    username: string;\r\n    avatarUrl: string | null;\r\n  };\r\n}\r\n\r\n/**\r\n * Snippet ohne Code (f\xFCr Listen-Ansichten)\r\n *\r\n * PERFORMANCE REGEL #3: Select only needed columns\r\n * Code kann 50KB gro\xDF sein - f\xFCr Listen brauchen wir das nicht!\r\n */\r\nexport interface SnippetPreview {\r\n  id: string;\r\n  title: string;\r\n  description: string | null;\r\n  language: string;\r\n  userId: string;\r\n  isPublic: boolean;\r\n  viewCount: number;\r\n  createdAt: Date;\r\n  updatedAt: Date;\r\n}\r\n\r\n// ============================================================\r\n// STATISTICS TYPES\r\n// ============================================================\r\n\r\n/**\r\n * Snippet Statistics f\xFCr User-Dashboard\r\n *\r\n * Zeigt \xDCbersicht \xFCber alle Snippets eines Users\r\n */\r\nexport interface SnippetStats {\r\n  /** Gesamtanzahl Snippets */\r\n  total: number;\r\n\r\n  /** Anzahl \xF6ffentlicher Snippets */\r\n  public: number;\r\n\r\n  /** Anzahl privater Snippets */\r\n  private: number;\r\n\r\n  /** Summe aller Views */\r\n  totalViews: number;\r\n\r\n  /** Meist-angesehener Snippet (optional) */\r\n  mostViewed?: Snippet;\r\n\r\n  /** Zuletzt erstellter Snippet (optional) */\r\n  latestSnippet?: Snippet;\r\n}\r\n\r\n/**\r\n * Language Statistics\r\n * Zeigt welche Programmiersprachen am h\xE4ufigsten verwendet werden\r\n */\r\nexport interface LanguageStats {\r\n  language: string;\r\n  count: number;\r\n  percentage: number;\r\n}\r\n\r\n// ============================================================\r\n// PAGINATION TYPES\r\n// ============================================================\r\n\r\n/**\r\n * Pagination Metadata\r\n *\r\n * PERFORMANCE REGEL #2: Pagination\r\n * Enth\xE4lt alle Infos die Frontend f\xFCr Pagination braucht\r\n */\r\nexport interface PaginationMeta {\r\n  /** Aktuelle Seite (1-indexed) */\r\n  page: number;\r\n\r\n  /** Items pro Seite */\r\n  limit: number;\r\n\r\n  /** Gesamtanzahl Items */\r\n  total: number;\r\n\r\n  /** Gesamtanzahl Seiten */\r\n  totalPages: number;\r\n\r\n  /** Gibt es eine n\xE4chste Seite? */\r\n  hasNextPage: boolean;\r\n\r\n  /** Gibt es eine vorherige Seite? */\r\n  hasPreviousPage: boolean;\r\n}\r\n\r\n/**\r\n * Paginated Response\r\n * Standard-Format f\xFCr paginierte Listen\r\n */\r\nexport interface PaginatedSnippets {\r\n  data: Snippet[];\r\n  meta: PaginationMeta;\r\n}\r\n\r\n/**\r\n * Paginated Previews (ohne Code)\r\n * F\xFCr Listen-Ansichten\r\n */\r\nexport interface PaginatedSnippetPreviews {\r\n  data: SnippetPreview[];\r\n  meta: PaginationMeta;\r\n}\r\n\r\n// ============================================================\r\n// FILTER & SORT TYPES\r\n// ============================================================\r\n\r\n/**\r\n * Snippet Filter Options\r\n * Alle m\xF6glichen Filter-Parameter f\xFCr Snippet-Suche\r\n */\r\nexport interface SnippetFilters {\r\n  /** Filter nach User ID */\r\n  userId?: string;\r\n\r\n  /** Filter nach Programmiersprache */\r\n  language?: string;\r\n\r\n  /** Filter nach Sichtbarkeit */\r\n  isPublic?: boolean;\r\n\r\n  /** Volltextsuche (Title + Description) */\r\n  search?: string;\r\n\r\n  /** Filter nach Erstellungsdatum (ab) */\r\n  createdAfter?: Date;\r\n\r\n  /** Filter nach Erstellungsdatum (bis) */\r\n  createdBefore?: Date;\r\n}\r\n\r\n/**\r\n * Snippet Sort Options\r\n * Definiert Sortierung von Snippet-Listen\r\n */\r\nexport type SnippetSortBy = 'createdAt' | 'updatedAt' | 'viewCount' | 'title';\r\nexport type SortOrder = 'asc' | 'desc';\r\n\r\nexport interface SnippetSortOptions {\r\n  sortBy: SnippetSortBy;\r\n  order: SortOrder;\r\n}\r\n\r\n/**\r\n * Default Sort Option\r\n */\r\nexport const DEFAULT_SORT: SnippetSortOptions = {\r\n  sortBy: 'createdAt',\r\n  order: 'desc',\r\n};\r\n\r\n// ============================================================\r\n// QUERY OPTIONS (Combined)\r\n// ============================================================\r\n\r\n/**\r\n * Snippet Query Options\r\n * Kombiniert Filter, Sort und Pagination\r\n */\r\nexport interface SnippetQueryOptions {\r\n  filters?: SnippetFilters;\r\n  sort?: SnippetSortOptions;\r\n  page?: number;\r\n  limit?: number;\r\n}\r\n\r\n// ============================================================\r\n// HELPER FUNCTIONS\r\n// ============================================================\r\n\r\n/**\r\n * Konvertiert Snippet zu Preview (entfernt Code)\r\n *\r\n * PERFORMANCE: Spart Bandwidth bei Listen-Ansichten\r\n */\r\nexport function toSnippetPreview(snippet: Snippet): SnippetPreview {\r\n  // eslint-disable-next-line @typescript-eslint/no-unused-vars\r\n  const { code, ...preview } = snippet;\r\n  return preview;\r\n}\r\n\r\n/**\r\n * Berechnet Pagination Meta\r\n *\r\n * @param total - Gesamtanzahl Items\r\n * @param page - Aktuelle Seite (1-indexed)\r\n * @param limit - Items pro Seite\r\n */\r\nexport function calculatePaginationMeta(\r\n  total: number,\r\n  page: number,\r\n  limit: number,\r\n): PaginationMeta {\r\n  const totalPages = Math.ceil(total / limit);\r\n\r\n  return {\r\n    page,\r\n    limit,\r\n    total,\r\n    totalPages,\r\n    hasNextPage: page < totalPages,\r\n    hasPreviousPage: page > 1,\r\n  };\r\n}\r\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "1ed3aeaced8cb1275bb54154c9592b4e6bb2f922"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_17z1nwwa2h = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_17z1nwwa2h();
+cov_17z1nwwa2h().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_17z1nwwa2h().s[1]++;
+exports.DEFAULT_SORT = void 0;
+/* istanbul ignore next */
+cov_17z1nwwa2h().s[2]++;
+exports.toSnippetPreview = toSnippetPreview;
+/* istanbul ignore next */
+cov_17z1nwwa2h().s[3]++;
+exports.calculatePaginationMeta = calculatePaginationMeta;
+/**
+ * Default Sort Option
+ */
+/* istanbul ignore next */
+cov_17z1nwwa2h().s[4]++;
+exports.DEFAULT_SORT = {
+  sortBy: 'createdAt',
+  order: 'desc'
+};
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+/**
+ * Konvertiert Snippet zu Preview (entfernt Code)
+ *
+ * PERFORMANCE: Spart Bandwidth bei Listen-Ansichten
+ */
+function toSnippetPreview(snippet) {
+  /* istanbul ignore next */
+  cov_17z1nwwa2h().f[0]++;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {
+    code,
+    ...preview
+  } =
+  /* istanbul ignore next */
+  (cov_17z1nwwa2h().s[5]++, snippet);
+  /* istanbul ignore next */
+  cov_17z1nwwa2h().s[6]++;
+  return preview;
+}
+/**
+ * Berechnet Pagination Meta
+ *
+ * @param total - Gesamtanzahl Items
+ * @param page - Aktuelle Seite (1-indexed)
+ * @param limit - Items pro Seite
+ */
+function calculatePaginationMeta(total, page, limit) {
+  /* istanbul ignore next */
+  cov_17z1nwwa2h().f[1]++;
+  const totalPages =
+  /* istanbul ignore next */
+  (cov_17z1nwwa2h().s[7]++, Math.ceil(total / limit));
+  /* istanbul ignore next */
+  cov_17z1nwwa2h().s[8]++;
+  return {
+    page,
+    limit,
+    total,
+    totalPages,
+    hasNextPage: page < totalPages,
+    hasPreviousPage: page > 1
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTd6MW53d2EyaCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwicyIsImYiLCJiIiwiaW5wdXRTb3VyY2VNYXAiLCJmaWxlIiwibWFwcGluZ3MiLCJuYW1lcyIsInNvdXJjZXMiLCJzb3VyY2VzQ29udGVudCIsInZlcnNpb24iLCJfY292ZXJhZ2VTY2hlbWEiLCJjb3ZlcmFnZSIsImFjdHVhbENvdmVyYWdlIiwiZXhwb3J0cyIsInRvU25pcHBldFByZXZpZXciLCJjYWxjdWxhdGVQYWdpbmF0aW9uTWV0YSIsIkRFRkFVTFRfU09SVCIsInNvcnRCeSIsIm9yZGVyIiwic25pcHBldCIsImNvZGUiLCJwcmV2aWV3IiwidG90YWwiLCJwYWdlIiwibGltaXQiLCJ0b3RhbFBhZ2VzIiwiTWF0aCIsImNlaWwiLCJoYXNOZXh0UGFnZSIsImhhc1ByZXZpb3VzUGFnZSJdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcdGltdXJcXFByb2dyYW1taW5nXFxQcm9qZWN0c1xcc25pcHBldGZvcmdlXFxhcHBzXFxhcGlcXHNyY1xcbW9kdWxlc1xcc25pcHBldHNcXHNuaXBwZXRzLnR5cGVzLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9tb2R1bGVzL3NuaXBwZXRzL3NuaXBwZXRzLnR5cGVzLnRzXHJcblxyXG5pbXBvcnQgeyB0eXBlIE5ld1NuaXBwZXQsIHR5cGUgU25pcHBldCB9IGZyb20gJy4uLy4uL2xpYi9kYi9zY2hlbWEnO1xyXG5cclxuLyoqXHJcbiAqIFNuaXBwZXRzIFR5cGVzIC0gRG9tYWluIFR5cGVzIGbDvHIgU25pcHBldC1PcGVyYXRpb25zXHJcbiAqXHJcbiAqIFdBUlVNIHNlcGFyYXRlIFR5cGVzP1xyXG4gKiAxLiBFbnRrb3BwbHVuZzogQVBJLUxheWVyIGthbm4gYW5kZXJlIFR5cGVuIGhhYmVuIGFscyBEQi1MYXllclxyXG4gKiAyLiBFcndlaXRlcmJhcmtlaXQ6IFdpciBrw7ZubmVuIHp1c8OkdHpsaWNoZSBGZWxkZXIgaGluenVmw7xnZW4gKHouQi4gVXNlci1JbmZvKVxyXG4gKiAzLiBUeXBlLVNhZmV0eTogVHlwZVNjcmlwdCBwcsO8ZnQgYWxsZSBUcmFuc2Zvcm1hdGlvbmVuXHJcbiAqIDQuIERvY3VtZW50YXRpb246IFR5cGVzIGRva3VtZW50aWVyZW4gZGllIERhdGVuc3RydWt0dXJcclxuICpcclxuICogQ0xFQU4gQ09ERSBSRUdFTCAjMTogRG9tYWluLURyaXZlbiBEZXNpZ25cclxuICogLSBUeXBlcyByZXByw6RzZW50aWVyZW4gQnVzaW5lc3MtS29uemVwdGUsIG5pY2h0IERCLVRhYmVsbGVuXHJcbiAqL1xyXG5cclxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XHJcbi8vIEJBU0lDIFRZUEVTIChSZS1leHBvcnQgZnJvbSBTY2hlbWEpXHJcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxyXG5cclxuLyoqXHJcbiAqIFNuaXBwZXQgLSBWb2xsc3TDpG5kaWdlcyBTbmlwcGV0IGF1cyBEQlxyXG4gKiBFbnRow6RsdCBhbGxlIEZlbGRlciBpbmtsdXNpdmUgVGltZXN0YW1wc1xyXG4gKi9cclxuZXhwb3J0IHR5cGUgeyBOZXdTbmlwcGV0LCBTbmlwcGV0IH07XHJcblxyXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cclxuLy8gRVhURU5ERUQgVFlQRVNcclxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XHJcblxyXG4vKipcclxuICogU25pcHBldCBtaXQgVXNlci1JbmZvcm1hdGlvbiAoZsO8ciBBUEkgUmVzcG9uc2VzKVxyXG4gKlxyXG4gKiBXaXJkIHNww6R0ZXIgbWl0IEpPSU4gZ2Vob2x0IHdlbm4gd2lyIFVzZXItRGF0ZW4gYW56ZWlnZW4gd29sbGVuXHJcbiAqIEJlaXNwaWVsOiBTbmlwcGV0LUxpc3RlIHplaWd0IEF1dGhvci1OYW1lXHJcbiAqL1xyXG5leHBvcnQgaW50ZXJmYWNlIFNuaXBwZXRXaXRoVXNlciBleHRlbmRzIFNuaXBwZXQge1xyXG4gIHVzZXI6IHtcclxuICAgIGlkOiBzdHJpbmc7XHJcbiAgICB1c2VybmFtZTogc3RyaW5nO1xyXG4gICAgYXZhdGFyVXJsOiBzdHJpbmcgfCBudWxsO1xyXG4gIH07XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBTbmlwcGV0IG9obmUgQ29kZSAoZsO8ciBMaXN0ZW4tQW5zaWNodGVuKVxyXG4gKlxyXG4gKiBQRVJGT1JNQU5DRSBSRUdFTCAjMzogU2VsZWN0IG9ubHkgbmVlZGVkIGNvbHVtbnNcclxuICogQ29kZSBrYW5uIDUwS0IgZ3Jvw58gc2VpbiAtIGbDvHIgTGlzdGVuIGJyYXVjaGVuIHdpciBkYXMgbmljaHQhXHJcbiAqL1xyXG5leHBvcnQgaW50ZXJmYWNlIFNuaXBwZXRQcmV2aWV3IHtcclxuICBpZDogc3RyaW5nO1xyXG4gIHRpdGxlOiBzdHJpbmc7XHJcbiAgZGVzY3JpcHRpb246IHN0cmluZyB8IG51bGw7XHJcbiAgbGFuZ3VhZ2U6IHN0cmluZztcclxuICB1c2VySWQ6IHN0cmluZztcclxuICBpc1B1YmxpYzogYm9vbGVhbjtcclxuICB2aWV3Q291bnQ6IG51bWJlcjtcclxuICBjcmVhdGVkQXQ6IERhdGU7XHJcbiAgdXBkYXRlZEF0OiBEYXRlO1xyXG59XHJcblxyXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cclxuLy8gU1RBVElTVElDUyBUWVBFU1xyXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cclxuXHJcbi8qKlxyXG4gKiBTbmlwcGV0IFN0YXRpc3RpY3MgZsO8ciBVc2VyLURhc2hib2FyZFxyXG4gKlxyXG4gKiBaZWlndCDDnGJlcnNpY2h0IMO8YmVyIGFsbGUgU25pcHBldHMgZWluZXMgVXNlcnNcclxuICovXHJcbmV4cG9ydCBpbnRlcmZhY2UgU25pcHBldFN0YXRzIHtcclxuICAvKiogR2VzYW10YW56YWhsIFNuaXBwZXRzICovXHJcbiAgdG90YWw6IG51bWJlcjtcclxuXHJcbiAgLyoqIEFuemFobCDDtmZmZW50bGljaGVyIFNuaXBwZXRzICovXHJcbiAgcHVibGljOiBudW1iZXI7XHJcblxyXG4gIC8qKiBBbnphaGwgcHJpdmF0ZXIgU25pcHBldHMgKi9cclxuICBwcml2YXRlOiBudW1iZXI7XHJcblxyXG4gIC8qKiBTdW1tZSBhbGxlciBWaWV3cyAqL1xyXG4gIHRvdGFsVmlld3M6IG51bWJlcjtcclxuXHJcbiAgLyoqIE1laXN0LWFuZ2VzZWhlbmVyIFNuaXBwZXQgKG9wdGlvbmFsKSAqL1xyXG4gIG1vc3RWaWV3ZWQ/OiBTbmlwcGV0O1xyXG5cclxuICAvKiogWnVsZXR6dCBlcnN0ZWxsdGVyIFNuaXBwZXQgKG9wdGlvbmFsKSAqL1xyXG4gIGxhdGVzdFNuaXBwZXQ/OiBTbmlwcGV0O1xyXG59XHJcblxyXG4vKipcclxuICogTGFuZ3VhZ2UgU3RhdGlzdGljc1xyXG4gKiBaZWlndCB3ZWxjaGUgUHJvZ3JhbW1pZXJzcHJhY2hlbiBhbSBow6R1Zmlnc3RlbiB2ZXJ3ZW5kZXQgd2VyZGVuXHJcbiAqL1xyXG5leHBvcnQgaW50ZXJmYWNlIExhbmd1YWdlU3RhdHMge1xyXG4gIGxhbmd1YWdlOiBzdHJpbmc7XHJcbiAgY291bnQ6IG51bWJlcjtcclxuICBwZXJjZW50YWdlOiBudW1iZXI7XHJcbn1cclxuXHJcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxyXG4vLyBQQUdJTkFUSU9OIFRZUEVTXHJcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxyXG5cclxuLyoqXHJcbiAqIFBhZ2luYXRpb24gTWV0YWRhdGFcclxuICpcclxuICogUEVSRk9STUFOQ0UgUkVHRUwgIzI6IFBhZ2luYXRpb25cclxuICogRW50aMOkbHQgYWxsZSBJbmZvcyBkaWUgRnJvbnRlbmQgZsO8ciBQYWdpbmF0aW9uIGJyYXVjaHRcclxuICovXHJcbmV4cG9ydCBpbnRlcmZhY2UgUGFnaW5hdGlvbk1ldGEge1xyXG4gIC8qKiBBa3R1ZWxsZSBTZWl0ZSAoMS1pbmRleGVkKSAqL1xyXG4gIHBhZ2U6IG51bWJlcjtcclxuXHJcbiAgLyoqIEl0ZW1zIHBybyBTZWl0ZSAqL1xyXG4gIGxpbWl0OiBudW1iZXI7XHJcblxyXG4gIC8qKiBHZXNhbXRhbnphaGwgSXRlbXMgKi9cclxuICB0b3RhbDogbnVtYmVyO1xyXG5cclxuICAvKiogR2VzYW10YW56YWhsIFNlaXRlbiAqL1xyXG4gIHRvdGFsUGFnZXM6IG51bWJlcjtcclxuXHJcbiAgLyoqIEdpYnQgZXMgZWluZSBuw6RjaHN0ZSBTZWl0ZT8gKi9cclxuICBoYXNOZXh0UGFnZTogYm9vbGVhbjtcclxuXHJcbiAgLyoqIEdpYnQgZXMgZWluZSB2b3JoZXJpZ2UgU2VpdGU/ICovXHJcbiAgaGFzUHJldmlvdXNQYWdlOiBib29sZWFuO1xyXG59XHJcblxyXG4vKipcclxuICogUGFnaW5hdGVkIFJlc3BvbnNlXHJcbiAqIFN0YW5kYXJkLUZvcm1hdCBmw7xyIHBhZ2luaWVydGUgTGlzdGVuXHJcbiAqL1xyXG5leHBvcnQgaW50ZXJmYWNlIFBhZ2luYXRlZFNuaXBwZXRzIHtcclxuICBkYXRhOiBTbmlwcGV0W107XHJcbiAgbWV0YTogUGFnaW5hdGlvbk1ldGE7XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBQYWdpbmF0ZWQgUHJldmlld3MgKG9obmUgQ29kZSlcclxuICogRsO8ciBMaXN0ZW4tQW5zaWNodGVuXHJcbiAqL1xyXG5leHBvcnQgaW50ZXJmYWNlIFBhZ2luYXRlZFNuaXBwZXRQcmV2aWV3cyB7XHJcbiAgZGF0YTogU25pcHBldFByZXZpZXdbXTtcclxuICBtZXRhOiBQYWdpbmF0aW9uTWV0YTtcclxufVxyXG5cclxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XHJcbi8vIEZJTFRFUiAmIFNPUlQgVFlQRVNcclxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XHJcblxyXG4vKipcclxuICogU25pcHBldCBGaWx0ZXIgT3B0aW9uc1xyXG4gKiBBbGxlIG3DtmdsaWNoZW4gRmlsdGVyLVBhcmFtZXRlciBmw7xyIFNuaXBwZXQtU3VjaGVcclxuICovXHJcbmV4cG9ydCBpbnRlcmZhY2UgU25pcHBldEZpbHRlcnMge1xyXG4gIC8qKiBGaWx0ZXIgbmFjaCBVc2VyIElEICovXHJcbiAgdXNlcklkPzogc3RyaW5nO1xyXG5cclxuICAvKiogRmlsdGVyIG5hY2ggUHJvZ3JhbW1pZXJzcHJhY2hlICovXHJcbiAgbGFuZ3VhZ2U/OiBzdHJpbmc7XHJcblxyXG4gIC8qKiBGaWx0ZXIgbmFjaCBTaWNodGJhcmtlaXQgKi9cclxuICBpc1B1YmxpYz86IGJvb2xlYW47XHJcblxyXG4gIC8qKiBWb2xsdGV4dHN1Y2hlIChUaXRsZSArIERlc2NyaXB0aW9uKSAqL1xyXG4gIHNlYXJjaD86IHN0cmluZztcclxuXHJcbiAgLyoqIEZpbHRlciBuYWNoIEVyc3RlbGx1bmdzZGF0dW0gKGFiKSAqL1xyXG4gIGNyZWF0ZWRBZnRlcj86IERhdGU7XHJcblxyXG4gIC8qKiBGaWx0ZXIgbmFjaCBFcnN0ZWxsdW5nc2RhdHVtIChiaXMpICovXHJcbiAgY3JlYXRlZEJlZm9yZT86IERhdGU7XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBTbmlwcGV0IFNvcnQgT3B0aW9uc1xyXG4gKiBEZWZpbmllcnQgU29ydGllcnVuZyB2b24gU25pcHBldC1MaXN0ZW5cclxuICovXHJcbmV4cG9ydCB0eXBlIFNuaXBwZXRTb3J0QnkgPSAnY3JlYXRlZEF0JyB8ICd1cGRhdGVkQXQnIHwgJ3ZpZXdDb3VudCcgfCAndGl0bGUnO1xyXG5leHBvcnQgdHlwZSBTb3J0T3JkZXIgPSAnYXNjJyB8ICdkZXNjJztcclxuXHJcbmV4cG9ydCBpbnRlcmZhY2UgU25pcHBldFNvcnRPcHRpb25zIHtcclxuICBzb3J0Qnk6IFNuaXBwZXRTb3J0Qnk7XHJcbiAgb3JkZXI6IFNvcnRPcmRlcjtcclxufVxyXG5cclxuLyoqXHJcbiAqIERlZmF1bHQgU29ydCBPcHRpb25cclxuICovXHJcbmV4cG9ydCBjb25zdCBERUZBVUxUX1NPUlQ6IFNuaXBwZXRTb3J0T3B0aW9ucyA9IHtcclxuICBzb3J0Qnk6ICdjcmVhdGVkQXQnLFxyXG4gIG9yZGVyOiAnZGVzYycsXHJcbn07XHJcblxyXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cclxuLy8gUVVFUlkgT1BUSU9OUyAoQ29tYmluZWQpXHJcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxyXG5cclxuLyoqXHJcbiAqIFNuaXBwZXQgUXVlcnkgT3B0aW9uc1xyXG4gKiBLb21iaW5pZXJ0IEZpbHRlciwgU29ydCB1bmQgUGFnaW5hdGlvblxyXG4gKi9cclxuZXhwb3J0IGludGVyZmFjZSBTbmlwcGV0UXVlcnlPcHRpb25zIHtcclxuICBmaWx0ZXJzPzogU25pcHBldEZpbHRlcnM7XHJcbiAgc29ydD86IFNuaXBwZXRTb3J0T3B0aW9ucztcclxuICBwYWdlPzogbnVtYmVyO1xyXG4gIGxpbWl0PzogbnVtYmVyO1xyXG59XHJcblxyXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cclxuLy8gSEVMUEVSIEZVTkNUSU9OU1xyXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cclxuXHJcbi8qKlxyXG4gKiBLb252ZXJ0aWVydCBTbmlwcGV0IHp1IFByZXZpZXcgKGVudGZlcm50IENvZGUpXHJcbiAqXHJcbiAqIFBFUkZPUk1BTkNFOiBTcGFydCBCYW5kd2lkdGggYmVpIExpc3Rlbi1BbnNpY2h0ZW5cclxuICovXHJcbmV4cG9ydCBmdW5jdGlvbiB0b1NuaXBwZXRQcmV2aWV3KHNuaXBwZXQ6IFNuaXBwZXQpOiBTbmlwcGV0UHJldmlldyB7XHJcbiAgLy8gZXNsaW50LWRpc2FibGUtbmV4dC1saW5lIEB0eXBlc2NyaXB0LWVzbGludC9uby11bnVzZWQtdmFyc1xyXG4gIGNvbnN0IHsgY29kZSwgLi4ucHJldmlldyB9ID0gc25pcHBldDtcclxuICByZXR1cm4gcHJldmlldztcclxufVxyXG5cclxuLyoqXHJcbiAqIEJlcmVjaG5ldCBQYWdpbmF0aW9uIE1ldGFcclxuICpcclxuICogQHBhcmFtIHRvdGFsIC0gR2VzYW10YW56YWhsIEl0ZW1zXHJcbiAqIEBwYXJhbSBwYWdlIC0gQWt0dWVsbGUgU2VpdGUgKDEtaW5kZXhlZClcclxuICogQHBhcmFtIGxpbWl0IC0gSXRlbXMgcHJvIFNlaXRlXHJcbiAqL1xyXG5leHBvcnQgZnVuY3Rpb24gY2FsY3VsYXRlUGFnaW5hdGlvbk1ldGEoXHJcbiAgdG90YWw6IG51bWJlcixcclxuICBwYWdlOiBudW1iZXIsXHJcbiAgbGltaXQ6IG51bWJlcixcclxuKTogUGFnaW5hdGlvbk1ldGEge1xyXG4gIGNvbnN0IHRvdGFsUGFnZXMgPSBNYXRoLmNlaWwodG90YWwgLyBsaW1pdCk7XHJcblxyXG4gIHJldHVybiB7XHJcbiAgICBwYWdlLFxyXG4gICAgbGltaXQsXHJcbiAgICB0b3RhbCxcclxuICAgIHRvdGFsUGFnZXMsXHJcbiAgICBoYXNOZXh0UGFnZTogcGFnZSA8IHRvdGFsUGFnZXMsXHJcbiAgICBoYXNQcmV2aW91c1BhZ2U6IHBhZ2UgPiAxLFxyXG4gIH07XHJcbn1cclxuIl0sIm1hcHBpbmdzIjoiOztBQUFBO0FBQUE7QUFBQSxTQUFBQSxlQUFBO0VBQUEsSUFBQUMsSUFBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxNQUFBLE9BQUFDLFFBQUE7RUFBQSxJQUFBQyxHQUFBO0VBQUEsSUFBQUMsWUFBQTtJQUFBTCxJQUFBO0lBQUFNLFlBQUE7TUFBQTtRQUFBQyxLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7SUFBQTtJQUFBRSxLQUFBO01BQUE7UUFBQUMsSUFBQTtRQUFBQyxJQUFBO1VBQUFOLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFLLEdBQUE7VUFBQVAsS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQUQsSUFBQTtNQUFBO01BQUE7UUFBQUksSUFBQTtRQUFBQyxJQUFBO1VBQUFOLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFLLEdBQUE7VUFBQVAsS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQUQsSUFBQTtNQUFBO0lBQUE7SUFBQU8sU0FBQTtJQUFBQyxDQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO0lBQUE7SUFBQUMsQ0FBQTtNQUFBO01BQUE7SUFBQTtJQUFBQyxDQUFBO0lBQUFDLGNBQUE7TUFBQUMsSUFBQTtNQUFBQyxRQUFBO01BQUFDLEtBQUE7TUFBQUMsT0FBQTtNQUFBQyxjQUFBO01BQUFDLE9BQUE7SUFBQTtJQUFBQyxlQUFBO0lBQUF6QixJQUFBO0VBQUE7RUFBQSxJQUFBMEIsUUFBQSxHQUFBekIsTUFBQSxDQUFBRSxHQUFBLE1BQUFGLE1BQUEsQ0FBQUUsR0FBQTtFQUFBLEtBQUF1QixRQUFBLENBQUEzQixJQUFBLEtBQUEyQixRQUFBLENBQUEzQixJQUFBLEVBQUFDLElBQUEsS0FBQUEsSUFBQTtJQUFBMEIsUUFBQSxDQUFBM0IsSUFBQSxJQUFBSyxZQUFBO0VBQUE7RUFBQSxJQUFBdUIsY0FBQSxHQUFBRCxRQUFBLENBQUEzQixJQUFBO0VBQUE7SUF1TkE7SUFBQUQsY0FBQSxZQUFBQSxDQUFBO01BQUEsT0FBQTZCLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUE3QixjQUFBO0FBQUFBLGNBQUEsR0FBQWlCLENBQUE7Ozs7Ozs7OztBQU9BYSxPQUFBLENBQUFDLGdCQUFBLEdBQUFBLGdCQUFBO0FBSUM7QUFBQS9CLGNBQUEsR0FBQWlCLENBQUE7QUFTRGEsT0FBQSxDQUFBRSx1QkFBQSxHQUFBQSx1QkFBQTtBQTdDQTs7O0FBQUE7QUFBQWhDLGNBQUEsR0FBQWlCLENBQUE7QUFHYWEsT0FBQSxDQUFBRyxZQUFZLEdBQXVCO0VBQzlDQyxNQUFNLEVBQUUsV0FBVztFQUNuQkMsS0FBSyxFQUFFO0NBQ1I7QUFpQkQ7QUFDQTtBQUNBO0FBRUE7Ozs7O0FBS0EsU0FBZ0JKLGdCQUFnQkEsQ0FBQ0ssT0FBZ0I7RUFBQTtFQUFBcEMsY0FBQSxHQUFBa0IsQ0FBQTtFQUMvQztFQUNBLE1BQU07SUFBRW1CLElBQUk7SUFBRSxHQUFHQztFQUFPLENBQUU7RUFBQTtFQUFBLENBQUF0QyxjQUFBLEdBQUFpQixDQUFBLE9BQUdtQixPQUFPO0VBQUM7RUFBQXBDLGNBQUEsR0FBQWlCLENBQUE7RUFDckMsT0FBT3FCLE9BQU87QUFDaEI7QUFFQTs7Ozs7OztBQU9BLFNBQWdCTix1QkFBdUJBLENBQ3JDTyxLQUFhLEVBQ2JDLElBQVksRUFDWkMsS0FBYTtFQUFBO0VBQUF6QyxjQUFBLEdBQUFrQixDQUFBO0VBRWIsTUFBTXdCLFVBQVU7RUFBQTtFQUFBLENBQUExQyxjQUFBLEdBQUFpQixDQUFBLE9BQUcwQixJQUFJLENBQUNDLElBQUksQ0FBQ0wsS0FBSyxHQUFHRSxLQUFLLENBQUM7RUFBQztFQUFBekMsY0FBQSxHQUFBaUIsQ0FBQTtFQUU1QyxPQUFPO0lBQ0x1QixJQUFJO0lBQ0pDLEtBQUs7SUFDTEYsS0FBSztJQUNMRyxVQUFVO0lBQ1ZHLFdBQVcsRUFBRUwsSUFBSSxHQUFHRSxVQUFVO0lBQzlCSSxlQUFlLEVBQUVOLElBQUksR0FBRztHQUN6QjtBQUNIIiwiaWdub3JlTGlzdCI6W119
