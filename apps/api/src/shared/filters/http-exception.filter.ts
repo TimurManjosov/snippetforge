@@ -107,6 +107,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // String Response
     if (typeof response === 'string') {
       message = response;
+      code = this.inferErrorCode(message, status, code);
       return { message, code, details };
     }
 

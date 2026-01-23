@@ -70,6 +70,24 @@ describe('HttpExceptionFilter', () => {
           }),
         );
       });
+
+      it('should include request id from headers', () => {
+        // Arrange
+        const requestWithId = createMockRequest({
+          headers: { 'x-request-id': 'trace-123' },
+        });
+        const exception = new BadRequestException('With request id');
+        const host = createMockArgumentsHost(requestWithId, mockResponse);
+
+        // Act
+        filter.catch(exception, host as any);
+
+        // Assert
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const jsonCall = mockResponse.json.mock.calls[0][0];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(jsonCall.meta.requestId).toBe('trace-123');
+      });
     });
 
     describe('error code inference', () => {
@@ -149,6 +167,45 @@ describe('HttpExceptionFilter', () => {
         );
       });
 
+      it('should infer USER_USERNAME_EXISTS for username conflicts', () => {
+        // Arrange
+        const exception = new ConflictException('Username already taken');
+        const host = createMockArgumentsHost(mockRequest, mockResponse);
+
+        // Act
+        filter.catch(exception, host as any);
+
+        // Assert
+        expect(mockResponse.json).toHaveBeenCalledWith(
+          expect.objectContaining({
+            error: expect.objectContaining({
+              code: ErrorCodes.USER_USERNAME_EXISTS,
+            }),
+          }),
+        );
+      });
+
+      it('should infer AUTH_INSUFFICIENT_ROLE for role-based forbiddance', () => {
+        // Arrange
+        const exception = new HttpException(
+          'role required',
+          HttpStatus.FORBIDDEN,
+        );
+        const host = createMockArgumentsHost(mockRequest, mockResponse);
+
+        // Act
+        filter.catch(exception, host as any);
+
+        // Assert
+        expect(mockResponse.json).toHaveBeenCalledWith(
+          expect.objectContaining({
+            error: expect.objectContaining({
+              code: ErrorCodes.AUTH_INSUFFICIENT_ROLE,
+            }),
+          }),
+        );
+      });
+
       it('should infer USER_NOT_FOUND for user not found', () => {
         // Arrange
         const exception = new NotFoundException('User not found');
@@ -194,6 +251,29 @@ describe('HttpExceptionFilter', () => {
                   password: ['Too short'],
                 }),
               }),
+            }),
+          }),
+        );
+      });
+
+      it('should normalize array messages and expose them as context', () => {
+        // Arrange
+        const exception = new BadRequestException({
+          message: ['first error', 'second error'],
+        });
+        const host = createMockArgumentsHost(mockRequest, mockResponse);
+
+        // Act
+        filter.catch(exception, host as any);
+
+        // Assert
+        expect(mockResponse.json).toHaveBeenCalledWith(
+          expect.objectContaining({
+            error: expect.objectContaining({
+              message: 'first error',
+              details: {
+                context: { messages: ['first error', 'second error'] },
+              },
             }),
           }),
         );

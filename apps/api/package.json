@@ -16,9 +16,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
+    "test:cov:single": "jest --coverage --collectCoverageFrom='!src/**' --collectCoverageOnlyFrom",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:unit": "jest --testPathPatterns=test/unit",
-    "test:e2e": "jest --testPathPatterns=test/e2e --runInBand",
+    "test:unit": "jest test/unit",
+    "test:e2e": "jest test/e2e --runInBand",
     "test:ci": "jest --coverage --ci --runInBand",
     "type-check": "tsc --noEmit"
   },

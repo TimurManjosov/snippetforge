@@ -1,0 +1,199 @@
+eaf41a58b921a0850491a74708a8a4b1
+"use strict";
+
+// src/modules/auth/decorators/public.decorator.ts
+/* istanbul ignore next */
+function cov_1nw2w6c9ap() {
+  var path = "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\public.decorator.ts";
+  var hash = "d56f4a3b4a7ba29b9f5fd7180115c304dcba6388";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\public.decorator.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 48
+        }
+      },
+      "2": {
+        start: {
+          line: 5,
+          column: 17
+        },
+        end: {
+          line: 5,
+          column: 42
+        }
+      },
+      "3": {
+        start: {
+          line: 10,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 35
+        }
+      },
+      "4": {
+        start: {
+          line: 32,
+          column: 15
+        },
+        end: {
+          line: 32,
+          column: 75
+        }
+      },
+      "5": {
+        start: {
+          line: 32,
+          column: 21
+        },
+        end: {
+          line: 32,
+          column: 75
+        }
+      },
+      "6": {
+        start: {
+          line: 33,
+          column: 0
+        },
+        end: {
+          line: 33,
+          column: 24
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 32,
+            column: 15
+          },
+          end: {
+            line: 32,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 21
+          },
+          end: {
+            line: 32,
+            column: 75
+          }
+        },
+        line: 32
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {},
+    inputSourceMap: {
+      file: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\public.decorator.ts",
+      mappings: ";AAAA,kDAAkD;;;AAElD,2CAA6C;AAE7C;;;GAGG;AACU,QAAA,aAAa,GAAG,UAAU,CAAC;AAExC;;;;;;;;;;;;;;;;;;;;GAoBG;AACI,MAAM,MAAM,GAAG,GAAG,EAAE,CAAC,IAAA,oBAAW,EAAC,qBAAa,EAAE,IAAI,CAAC,CAAC;AAAhD,QAAA,MAAM,UAA0C",
+      names: [],
+      sources: ["C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\public.decorator.ts"],
+      sourcesContent: ["// src/modules/auth/decorators/public.decorator.ts\r\n\r\nimport { SetMetadata } from '@nestjs/common';\r\n\r\n/**\r\n * Metadata Key f\xFCr @Public() Decorator\r\n * Wird von JwtAuthGuard gelesen\r\n */\r\nexport const IS_PUBLIC_KEY = 'isPublic';\r\n\r\n/**\r\n * @Public() Decorator - Markiert Route als \xF6ffentlich (keine Auth n\xF6tig)\r\n *\r\n * WARUM brauchen wir das?\r\n * Wenn JwtAuthGuard global aktiv ist, sind ALLE Routes gesch\xFCtzt.\r\n * Manche Routes (Login, Register, Health) m\xFCssen aber \xF6ffentlich sein.\r\n *\r\n * VERWENDUNG:\r\n * @Public()\r\n * @Post('login')\r\n * login() {}\r\n *\r\n * @Public()\r\n * @Get('health')\r\n * healthCheck() {}\r\n *\r\n * WIE ES FUNKTIONIERT:\r\n * 1. SetMetadata speichert { isPublic: true } auf Route\r\n * 2. JwtAuthGuard liest Metadata via Reflector\r\n * 3. Wenn isPublic === true, wird Auth \xFCbersprungen\r\n */\r\nexport const Public = () => SetMetadata(IS_PUBLIC_KEY, true);\r\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "d56f4a3b4a7ba29b9f5fd7180115c304dcba6388"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1nw2w6c9ap = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1nw2w6c9ap();
+cov_1nw2w6c9ap().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1nw2w6c9ap().s[1]++;
+exports.Public = exports.IS_PUBLIC_KEY = void 0;
+const common_1 =
+/* istanbul ignore next */
+(cov_1nw2w6c9ap().s[2]++, require("@nestjs/common"));
+/**
+ * Metadata Key für @Public() Decorator
+ * Wird von JwtAuthGuard gelesen
+ */
+/* istanbul ignore next */
+cov_1nw2w6c9ap().s[3]++;
+exports.IS_PUBLIC_KEY = 'isPublic';
+/**
+ * @Public() Decorator - Markiert Route als öffentlich (keine Auth nötig)
+ *
+ * WARUM brauchen wir das?
+ * Wenn JwtAuthGuard global aktiv ist, sind ALLE Routes geschützt.
+ * Manche Routes (Login, Register, Health) müssen aber öffentlich sein.
+ *
+ * VERWENDUNG:
+ * @Public()
+ * @Post('login')
+ * login() {}
+ *
+ * @Public()
+ * @Get('health')
+ * healthCheck() {}
+ *
+ * WIE ES FUNKTIONIERT:
+ * 1. SetMetadata speichert { isPublic: true } auf Route
+ * 2. JwtAuthGuard liest Metadata via Reflector
+ * 3. Wenn isPublic === true, wird Auth übersprungen
+ */
+/* istanbul ignore next */
+cov_1nw2w6c9ap().s[4]++;
+const Public = () => {
+  /* istanbul ignore next */
+  cov_1nw2w6c9ap().f[0]++;
+  cov_1nw2w6c9ap().s[5]++;
+  return (0, common_1.SetMetadata)(exports.IS_PUBLIC_KEY, true);
+};
+/* istanbul ignore next */
+cov_1nw2w6c9ap().s[6]++;
+exports.Public = Public;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMW53Mnc2YzlhcCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwicyIsImYiLCJiIiwiaW5wdXRTb3VyY2VNYXAiLCJmaWxlIiwibWFwcGluZ3MiLCJuYW1lcyIsInNvdXJjZXMiLCJzb3VyY2VzQ29udGVudCIsInZlcnNpb24iLCJfY292ZXJhZ2VTY2hlbWEiLCJjb3ZlcmFnZSIsImFjdHVhbENvdmVyYWdlIiwiY29tbW9uXzEiLCJyZXF1aXJlIiwiZXhwb3J0cyIsIklTX1BVQkxJQ19LRVkiLCJQdWJsaWMiLCJTZXRNZXRhZGF0YSJdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcdGltdXJcXFByb2dyYW1taW5nXFxQcm9qZWN0c1xcc25pcHBldGZvcmdlXFxhcHBzXFxhcGlcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZGVjb3JhdG9yc1xccHVibGljLmRlY29yYXRvci50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBzcmMvbW9kdWxlcy9hdXRoL2RlY29yYXRvcnMvcHVibGljLmRlY29yYXRvci50c1xyXG5cclxuaW1wb3J0IHsgU2V0TWV0YWRhdGEgfSBmcm9tICdAbmVzdGpzL2NvbW1vbic7XHJcblxyXG4vKipcclxuICogTWV0YWRhdGEgS2V5IGbDvHIgQFB1YmxpYygpIERlY29yYXRvclxyXG4gKiBXaXJkIHZvbiBKd3RBdXRoR3VhcmQgZ2VsZXNlblxyXG4gKi9cclxuZXhwb3J0IGNvbnN0IElTX1BVQkxJQ19LRVkgPSAnaXNQdWJsaWMnO1xyXG5cclxuLyoqXHJcbiAqIEBQdWJsaWMoKSBEZWNvcmF0b3IgLSBNYXJraWVydCBSb3V0ZSBhbHMgw7ZmZmVudGxpY2ggKGtlaW5lIEF1dGggbsO2dGlnKVxyXG4gKlxyXG4gKiBXQVJVTSBicmF1Y2hlbiB3aXIgZGFzP1xyXG4gKiBXZW5uIEp3dEF1dGhHdWFyZCBnbG9iYWwgYWt0aXYgaXN0LCBzaW5kIEFMTEUgUm91dGVzIGdlc2Now7x0enQuXHJcbiAqIE1hbmNoZSBSb3V0ZXMgKExvZ2luLCBSZWdpc3RlciwgSGVhbHRoKSBtw7xzc2VuIGFiZXIgw7ZmZmVudGxpY2ggc2Vpbi5cclxuICpcclxuICogVkVSV0VORFVORzpcclxuICogQFB1YmxpYygpXHJcbiAqIEBQb3N0KCdsb2dpbicpXHJcbiAqIGxvZ2luKCkge31cclxuICpcclxuICogQFB1YmxpYygpXHJcbiAqIEBHZXQoJ2hlYWx0aCcpXHJcbiAqIGhlYWx0aENoZWNrKCkge31cclxuICpcclxuICogV0lFIEVTIEZVTktUSU9OSUVSVDpcclxuICogMS4gU2V0TWV0YWRhdGEgc3BlaWNoZXJ0IHsgaXNQdWJsaWM6IHRydWUgfSBhdWYgUm91dGVcclxuICogMi4gSnd0QXV0aEd1YXJkIGxpZXN0IE1ldGFkYXRhIHZpYSBSZWZsZWN0b3JcclxuICogMy4gV2VubiBpc1B1YmxpYyA9PT0gdHJ1ZSwgd2lyZCBBdXRoIMO8YmVyc3BydW5nZW5cclxuICovXHJcbmV4cG9ydCBjb25zdCBQdWJsaWMgPSAoKSA9PiBTZXRNZXRhZGF0YShJU19QVUJMSUNfS0VZLCB0cnVlKTtcclxuIl0sIm1hcHBpbmdzIjoiOztBQUFBO0FBQUE7QUFBQSxTQUFBQSxlQUFBO0VBQUEsSUFBQUMsSUFBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxNQUFBLE9BQUFDLFFBQUE7RUFBQSxJQUFBQyxHQUFBO0VBQUEsSUFBQUMsWUFBQTtJQUFBTCxJQUFBO0lBQUFNLFlBQUE7TUFBQTtRQUFBQyxLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtJQUFBO0lBQUFFLEtBQUE7TUFBQTtRQUFBQyxJQUFBO1FBQUFDLElBQUE7VUFBQU4sS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQUssR0FBQTtVQUFBUCxLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBRCxJQUFBO01BQUE7SUFBQTtJQUFBTyxTQUFBO0lBQUFDLENBQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtJQUFBO0lBQUFDLENBQUE7TUFBQTtJQUFBO0lBQUFDLENBQUE7SUFBQUMsY0FBQTtNQUFBQyxJQUFBO01BQUFDLFFBQUE7TUFBQUMsS0FBQTtNQUFBQyxPQUFBO01BQUFDLGNBQUE7TUFBQUMsT0FBQTtJQUFBO0lBQUFDLGVBQUE7SUFBQXpCLElBQUE7RUFBQTtFQUFBLElBQUEwQixRQUFBLEdBQUF6QixNQUFBLENBQUFFLEdBQUEsTUFBQUYsTUFBQSxDQUFBRSxHQUFBO0VBQUEsS0FBQXVCLFFBQUEsQ0FBQTNCLElBQUEsS0FBQTJCLFFBQUEsQ0FBQTNCLElBQUEsRUFBQUMsSUFBQSxLQUFBQSxJQUFBO0lBQUEwQixRQUFBLENBQUEzQixJQUFBLElBQUFLLFlBQUE7RUFBQTtFQUFBLElBQUF1QixjQUFBLEdBQUFELFFBQUEsQ0FBQTNCLElBQUE7RUFBQTs7Ozs7Ozs7Ozs7Ozs7OztBQUVBLE1BQUE2QixRQUFBO0FBQUE7QUFBQSxDQUFBOUIsY0FBQSxHQUFBaUIsQ0FBQSxPQUFBYyxPQUFBO0FBRUE7Ozs7QUFBQTtBQUFBL0IsY0FBQSxHQUFBaUIsQ0FBQTtBQUlhZSxPQUFBLENBQUFDLGFBQWEsR0FBRyxVQUFVO0FBRXZDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtBQUFBakMsY0FBQSxHQUFBaUIsQ0FBQTtBQXFCTyxNQUFNaUIsTUFBTSxHQUFHQSxDQUFBLEtBQU07RUFBQTtFQUFBbEMsY0FBQSxHQUFBa0IsQ0FBQTtFQUFBbEIsY0FBQSxHQUFBaUIsQ0FBQTtFQUFBLFdBQUFhLFFBQUEsQ0FBQUssV0FBVyxFQUFDSCxPQUFBLENBQUFDLGFBQWEsRUFBRSxJQUFJLENBQUM7QUFBRCxDQUFDO0FBQUM7QUFBQWpDLGNBQUEsR0FBQWlCLENBQUE7QUFBaERlLE9BQUEsQ0FBQUUsTUFBTSxHQUFBQSxNQUFBIiwiaWdub3JlTGlzdCI6W119

@@ -1,0 +1,364 @@
+083d47a1024f90909358e0aacde5f318
+"use strict";
+
+// src/modules/auth/decorators/current-user.decorator.ts
+/* istanbul ignore next */
+function cov_1ge7enitjo() {
+  var path = "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\current-user.decorator.ts";
+  var hash = "293c3a376d86027eee4dbf73d7555f4c83b843b5";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\current-user.decorator.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 58
+        }
+      },
+      "2": {
+        start: {
+          line: 5,
+          column: 17
+        },
+        end: {
+          line: 5,
+          column: 42
+        }
+      },
+      "3": {
+        start: {
+          line: 31,
+          column: 27
+        },
+        end: {
+          line: 41,
+          column: 1
+        }
+      },
+      "4": {
+        start: {
+          line: 32,
+          column: 20
+        },
+        end: {
+          line: 32,
+          column: 51
+        }
+      },
+      "5": {
+        start: {
+          line: 33,
+          column: 17
+        },
+        end: {
+          line: 33,
+          column: 29
+        }
+      },
+      "6": {
+        start: {
+          line: 34,
+          column: 4
+        },
+        end: {
+          line: 36,
+          column: 5
+        }
+      },
+      "7": {
+        start: {
+          line: 35,
+          column: 8
+        },
+        end: {
+          line: 35,
+          column: 25
+        }
+      },
+      "8": {
+        start: {
+          line: 37,
+          column: 4
+        },
+        end: {
+          line: 39,
+          column: 5
+        }
+      },
+      "9": {
+        start: {
+          line: 38,
+          column: 8
+        },
+        end: {
+          line: 38,
+          column: 26
+        }
+      },
+      "10": {
+        start: {
+          line: 40,
+          column: 4
+        },
+        end: {
+          line: 40,
+          column: 16
+        }
+      },
+      "11": {
+        start: {
+          line: 42,
+          column: 0
+        },
+        end: {
+          line: 42,
+          column: 48
+        }
+      },
+      "12": {
+        start: {
+          line: 43,
+          column: 0
+        },
+        end: {
+          line: 43,
+          column: 85
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 31,
+            column: 27
+          },
+          end: {
+            line: 31,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 31,
+            column: 42
+          },
+          end: {
+            line: 41,
+            column: 1
+          }
+        },
+        line: 31
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 34,
+            column: 4
+          },
+          end: {
+            line: 36,
+            column: 5
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 34,
+            column: 4
+          },
+          end: {
+            line: 36,
+            column: 5
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 34
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 37,
+            column: 4
+          },
+          end: {
+            line: 39,
+            column: 5
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 37,
+            column: 4
+          },
+          end: {
+            line: 39,
+            column: 5
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 37
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      file: "C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\current-user.decorator.ts",
+      mappings: ";AAAA,wDAAwD;;;AAExD,2CAAwE;AAIxE;;;;;;;;;;;;;;;;;;;;;;;;GAwBG;AACI,MAAM,kBAAkB,GAAG,CAChC,IAAgC,EAChC,GAAqB,EACrB,EAAE;IACF,MAAM,OAAO,GAAG,GAAG,CAAC,YAAY,EAAE,CAAC,UAAU,EAAW,CAAC;IACzD,MAAM,IAAI,GAAG,OAAO,CAAC,IAA4B,CAAC;IAElD,IAAI,CAAC,IAAI,EAAE,CAAC;QACV,OAAO,SAAS,CAAC;IACnB,CAAC;IAED,IAAI,IAAI,EAAE,CAAC;QACT,OAAO,IAAI,CAAC,IAAI,CAAC,CAAC;IACpB,CAAC;IAED,OAAO,IAAI,CAAC;AACd,CAAC,CAAC;AAhBW,QAAA,kBAAkB,sBAgB7B;AAEW,QAAA,WAAW,GAAG,IAAA,6BAAoB,EAAC,0BAAkB,CAAC,CAAC",
+      names: [],
+      sources: ["C:\\Users\\timur\\Programming\\Projects\\snippetforge\\apps\\api\\src\\modules\\auth\\decorators\\current-user.decorator.ts"],
+      sourcesContent: ["// src/modules/auth/decorators/current-user.decorator.ts\r\n\r\nimport { createParamDecorator, ExecutionContext } from '@nestjs/common';\r\nimport { Request } from 'express';\r\nimport { type SafeUser } from '../../users';\r\n\r\n/**\r\n * @CurrentUser() Decorator - Injiziert aktuellen User in Controller-Methode\r\n *\r\n * WARUM als Decorator statt request.user?\r\n * 1. Typsicherheit:  Decorator gibt SafeUser zur\xFCck, nicht any\r\n * 2. Clean Code: Controller-Methode zeigt klar welche Daten sie braucht\r\n * 3. Testbar: Decorator kann gemockt werden\r\n *\r\n * VERWENDUNG:\r\n * @Get('me')\r\n * @UseGuards(JwtAuthGuard)\r\n * getProfile(@CurrentUser() user: SafeUser) {\r\n *   return user\r\n * }\r\n *\r\n * // Mit Property-Zugriff\r\n * @Get('my-email')\r\n * @UseGuards(JwtAuthGuard)\r\n * getEmail(@CurrentUser('email') email: string) {\r\n *   return { email }\r\n * }\r\n *\r\n * VORAUSSETZUNG: JwtAuthGuard muss aktiv sein!\r\n * Sonst ist request.user undefined\r\n */\r\nexport const currentUserFactory = (\r\n  data: keyof SafeUser | undefined,\r\n  ctx: ExecutionContext,\r\n) => {\r\n  const request = ctx.switchToHttp().getRequest<Request>();\r\n  const user = request.user as SafeUser | undefined;\r\n\r\n  if (!user) {\r\n    return undefined;\r\n  }\r\n\r\n  if (data) {\r\n    return user[data];\r\n  }\r\n\r\n  return user;\r\n};\r\n\r\nexport const CurrentUser = createParamDecorator(currentUserFactory);\r\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "293c3a376d86027eee4dbf73d7555f4c83b843b5"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1ge7enitjo = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1ge7enitjo();
+cov_1ge7enitjo().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1ge7enitjo().s[1]++;
+exports.CurrentUser = exports.currentUserFactory = void 0;
+const common_1 =
+/* istanbul ignore next */
+(cov_1ge7enitjo().s[2]++, require("@nestjs/common"));
+/**
+ * @CurrentUser() Decorator - Injiziert aktuellen User in Controller-Methode
+ *
+ * WARUM als Decorator statt request.user?
+ * 1. Typsicherheit:  Decorator gibt SafeUser zurück, nicht any
+ * 2. Clean Code: Controller-Methode zeigt klar welche Daten sie braucht
+ * 3. Testbar: Decorator kann gemockt werden
+ *
+ * VERWENDUNG:
+ * @Get('me')
+ * @UseGuards(JwtAuthGuard)
+ * getProfile(@CurrentUser() user: SafeUser) {
+ *   return user
+ * }
+ *
+ * // Mit Property-Zugriff
+ * @Get('my-email')
+ * @UseGuards(JwtAuthGuard)
+ * getEmail(@CurrentUser('email') email: string) {
+ *   return { email }
+ * }
+ *
+ * VORAUSSETZUNG: JwtAuthGuard muss aktiv sein!
+ * Sonst ist request.user undefined
+ */
+/* istanbul ignore next */
+cov_1ge7enitjo().s[3]++;
+const currentUserFactory = (data, ctx) => {
+  /* istanbul ignore next */
+  cov_1ge7enitjo().f[0]++;
+  const request =
+  /* istanbul ignore next */
+  (cov_1ge7enitjo().s[4]++, ctx.switchToHttp().getRequest());
+  const user =
+  /* istanbul ignore next */
+  (cov_1ge7enitjo().s[5]++, request.user);
+  /* istanbul ignore next */
+  cov_1ge7enitjo().s[6]++;
+  if (!user) {
+    /* istanbul ignore next */
+    cov_1ge7enitjo().b[0][0]++;
+    cov_1ge7enitjo().s[7]++;
+    return undefined;
+  } else
+  /* istanbul ignore next */
+  {
+    cov_1ge7enitjo().b[0][1]++;
+  }
+  cov_1ge7enitjo().s[8]++;
+  if (data) {
+    /* istanbul ignore next */
+    cov_1ge7enitjo().b[1][0]++;
+    cov_1ge7enitjo().s[9]++;
+    return user[data];
+  } else
+  /* istanbul ignore next */
+  {
+    cov_1ge7enitjo().b[1][1]++;
+  }
+  cov_1ge7enitjo().s[10]++;
+  return user;
+};
+/* istanbul ignore next */
+cov_1ge7enitjo().s[11]++;
+exports.currentUserFactory = currentUserFactory;
+/* istanbul ignore next */
+cov_1ge7enitjo().s[12]++;
+exports.CurrentUser = (0, common_1.createParamDecorator)(exports.currentUserFactory);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMWdlN2VuaXRqbyIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwidHlwZSIsImxvY2F0aW9ucyIsInVuZGVmaW5lZCIsInMiLCJmIiwiYiIsImlucHV0U291cmNlTWFwIiwiZmlsZSIsIm1hcHBpbmdzIiwibmFtZXMiLCJzb3VyY2VzIiwic291cmNlc0NvbnRlbnQiLCJ2ZXJzaW9uIiwiX2NvdmVyYWdlU2NoZW1hIiwiY292ZXJhZ2UiLCJhY3R1YWxDb3ZlcmFnZSIsImNvbW1vbl8xIiwicmVxdWlyZSIsImN1cnJlbnRVc2VyRmFjdG9yeSIsImRhdGEiLCJjdHgiLCJyZXF1ZXN0Iiwic3dpdGNoVG9IdHRwIiwiZ2V0UmVxdWVzdCIsInVzZXIiLCJleHBvcnRzIiwiQ3VycmVudFVzZXIiLCJjcmVhdGVQYXJhbURlY29yYXRvciJdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcdGltdXJcXFByb2dyYW1taW5nXFxQcm9qZWN0c1xcc25pcHBldGZvcmdlXFxhcHBzXFxhcGlcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZGVjb3JhdG9yc1xcY3VycmVudC11c2VyLmRlY29yYXRvci50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBzcmMvbW9kdWxlcy9hdXRoL2RlY29yYXRvcnMvY3VycmVudC11c2VyLmRlY29yYXRvci50c1xyXG5cclxuaW1wb3J0IHsgY3JlYXRlUGFyYW1EZWNvcmF0b3IsIEV4ZWN1dGlvbkNvbnRleHQgfSBmcm9tICdAbmVzdGpzL2NvbW1vbic7XHJcbmltcG9ydCB7IFJlcXVlc3QgfSBmcm9tICdleHByZXNzJztcclxuaW1wb3J0IHsgdHlwZSBTYWZlVXNlciB9IGZyb20gJy4uLy4uL3VzZXJzJztcclxuXHJcbi8qKlxyXG4gKiBAQ3VycmVudFVzZXIoKSBEZWNvcmF0b3IgLSBJbmppemllcnQgYWt0dWVsbGVuIFVzZXIgaW4gQ29udHJvbGxlci1NZXRob2RlXHJcbiAqXHJcbiAqIFdBUlVNIGFscyBEZWNvcmF0b3Igc3RhdHQgcmVxdWVzdC51c2VyP1xyXG4gKiAxLiBUeXBzaWNoZXJoZWl0OiAgRGVjb3JhdG9yIGdpYnQgU2FmZVVzZXIgenVyw7xjaywgbmljaHQgYW55XHJcbiAqIDIuIENsZWFuIENvZGU6IENvbnRyb2xsZXItTWV0aG9kZSB6ZWlndCBrbGFyIHdlbGNoZSBEYXRlbiBzaWUgYnJhdWNodFxyXG4gKiAzLiBUZXN0YmFyOiBEZWNvcmF0b3Iga2FubiBnZW1vY2t0IHdlcmRlblxyXG4gKlxyXG4gKiBWRVJXRU5EVU5HOlxyXG4gKiBAR2V0KCdtZScpXHJcbiAqIEBVc2VHdWFyZHMoSnd0QXV0aEd1YXJkKVxyXG4gKiBnZXRQcm9maWxlKEBDdXJyZW50VXNlcigpIHVzZXI6IFNhZmVVc2VyKSB7XHJcbiAqICAgcmV0dXJuIHVzZXJcclxuICogfVxyXG4gKlxyXG4gKiAvLyBNaXQgUHJvcGVydHktWnVncmlmZlxyXG4gKiBAR2V0KCdteS1lbWFpbCcpXHJcbiAqIEBVc2VHdWFyZHMoSnd0QXV0aEd1YXJkKVxyXG4gKiBnZXRFbWFpbChAQ3VycmVudFVzZXIoJ2VtYWlsJykgZW1haWw6IHN0cmluZykge1xyXG4gKiAgIHJldHVybiB7IGVtYWlsIH1cclxuICogfVxyXG4gKlxyXG4gKiBWT1JBVVNTRVRaVU5HOiBKd3RBdXRoR3VhcmQgbXVzcyBha3RpdiBzZWluIVxyXG4gKiBTb25zdCBpc3QgcmVxdWVzdC51c2VyIHVuZGVmaW5lZFxyXG4gKi9cclxuZXhwb3J0IGNvbnN0IGN1cnJlbnRVc2VyRmFjdG9yeSA9IChcclxuICBkYXRhOiBrZXlvZiBTYWZlVXNlciB8IHVuZGVmaW5lZCxcclxuICBjdHg6IEV4ZWN1dGlvbkNvbnRleHQsXHJcbikgPT4ge1xyXG4gIGNvbnN0IHJlcXVlc3QgPSBjdHguc3dpdGNoVG9IdHRwKCkuZ2V0UmVxdWVzdDxSZXF1ZXN0PigpO1xyXG4gIGNvbnN0IHVzZXIgPSByZXF1ZXN0LnVzZXIgYXMgU2FmZVVzZXIgfCB1bmRlZmluZWQ7XHJcblxyXG4gIGlmICghdXNlcikge1xyXG4gICAgcmV0dXJuIHVuZGVmaW5lZDtcclxuICB9XHJcblxyXG4gIGlmIChkYXRhKSB7XHJcbiAgICByZXR1cm4gdXNlcltkYXRhXTtcclxuICB9XHJcblxyXG4gIHJldHVybiB1c2VyO1xyXG59O1xyXG5cclxuZXhwb3J0IGNvbnN0IEN1cnJlbnRVc2VyID0gY3JlYXRlUGFyYW1EZWNvcmF0b3IoY3VycmVudFVzZXJGYWN0b3J5KTtcclxuIl0sIm1hcHBpbmdzIjoiOztBQUFBO0FBQUE7QUFBQSxTQUFBQSxlQUFBO0VBQUEsSUFBQUMsSUFBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxNQUFBLE9BQUFDLFFBQUE7RUFBQSxJQUFBQyxHQUFBO0VBQUEsSUFBQUMsWUFBQTtJQUFBTCxJQUFBO0lBQUFNLFlBQUE7TUFBQTtRQUFBQyxLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtJQUFBO0lBQUFFLEtBQUE7TUFBQTtRQUFBQyxJQUFBO1FBQUFDLElBQUE7VUFBQU4sS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQUssR0FBQTtVQUFBUCxLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBRCxJQUFBO01BQUE7SUFBQTtJQUFBTyxTQUFBO01BQUE7UUFBQUQsR0FBQTtVQUFBUCxLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBTyxJQUFBO1FBQUFDLFNBQUE7VUFBQVYsS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7VUFBQUYsS0FBQTtZQUFBQyxJQUFBLEVBQUFVLFNBQUE7WUFBQVQsTUFBQSxFQUFBUztVQUFBO1VBQUFSLEdBQUE7WUFBQUYsSUFBQSxFQUFBVSxTQUFBO1lBQUFULE1BQUEsRUFBQVM7VUFBQTtRQUFBO1FBQUFWLElBQUE7TUFBQTtNQUFBO1FBQUFNLEdBQUE7VUFBQVAsS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQU8sSUFBQTtRQUFBQyxTQUFBO1VBQUFWLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1VBQUFGLEtBQUE7WUFBQUMsSUFBQSxFQUFBVSxTQUFBO1lBQUFULE1BQUEsRUFBQVM7VUFBQTtVQUFBUixHQUFBO1lBQUFGLElBQUEsRUFBQVUsU0FBQTtZQUFBVCxNQUFBLEVBQUFTO1VBQUE7UUFBQTtRQUFBVixJQUFBO01BQUE7SUFBQTtJQUFBVyxDQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7SUFBQTtJQUFBQyxDQUFBO01BQUE7SUFBQTtJQUFBQyxDQUFBO01BQUE7TUFBQTtJQUFBO0lBQUFDLGNBQUE7TUFBQUMsSUFBQTtNQUFBQyxRQUFBO01BQUFDLEtBQUE7TUFBQUMsT0FBQTtNQUFBQyxjQUFBO01BQUFDLE9BQUE7SUFBQTtJQUFBQyxlQUFBO0lBQUE1QixJQUFBO0VBQUE7RUFBQSxJQUFBNkIsUUFBQSxHQUFBNUIsTUFBQSxDQUFBRSxHQUFBLE1BQUFGLE1BQUEsQ0FBQUUsR0FBQTtFQUFBLEtBQUEwQixRQUFBLENBQUE5QixJQUFBLEtBQUE4QixRQUFBLENBQUE5QixJQUFBLEVBQUFDLElBQUEsS0FBQUEsSUFBQTtJQUFBNkIsUUFBQSxDQUFBOUIsSUFBQSxJQUFBSyxZQUFBO0VBQUE7RUFBQSxJQUFBMEIsY0FBQSxHQUFBRCxRQUFBLENBQUE5QixJQUFBO0VBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQSxNQUFBZ0MsUUFBQTtBQUFBO0FBQUEsQ0FBQWpDLGNBQUEsR0FBQW9CLENBQUEsT0FBQWMsT0FBQTtBQUlBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUE7QUFBQWxDLGNBQUEsR0FBQW9CLENBQUE7QUF5Qk8sTUFBTWUsa0JBQWtCLEdBQUdBLENBQ2hDQyxJQUFnQyxFQUNoQ0MsR0FBcUIsS0FDbkI7RUFBQTtFQUFBckMsY0FBQSxHQUFBcUIsQ0FBQTtFQUNGLE1BQU1pQixPQUFPO0VBQUE7RUFBQSxDQUFBdEMsY0FBQSxHQUFBb0IsQ0FBQSxPQUFHaUIsR0FBRyxDQUFDRSxZQUFZLEVBQUUsQ0FBQ0MsVUFBVSxFQUFXO0VBQ3hELE1BQU1DLElBQUk7RUFBQTtFQUFBLENBQUF6QyxjQUFBLEdBQUFvQixDQUFBLE9BQUdrQixPQUFPLENBQUNHLElBQTRCO0VBQUM7RUFBQXpDLGNBQUEsR0FBQW9CLENBQUE7RUFFbEQsSUFBSSxDQUFDcUIsSUFBSSxFQUFFO0lBQUE7SUFBQXpDLGNBQUEsR0FBQXNCLENBQUE7SUFBQXRCLGNBQUEsR0FBQW9CLENBQUE7SUFDVCxPQUFPRCxTQUFTO0VBQ2xCLENBQUM7RUFBQTtFQUFBO0lBQUFuQixjQUFBLEdBQUFzQixDQUFBO0VBQUE7RUFBQXRCLGNBQUEsR0FBQW9CLENBQUE7RUFFRCxJQUFJZ0IsSUFBSSxFQUFFO0lBQUE7SUFBQXBDLGNBQUEsR0FBQXNCLENBQUE7SUFBQXRCLGNBQUEsR0FBQW9CLENBQUE7SUFDUixPQUFPcUIsSUFBSSxDQUFDTCxJQUFJLENBQUM7RUFDbkIsQ0FBQztFQUFBO0VBQUE7SUFBQXBDLGNBQUEsR0FBQXNCLENBQUE7RUFBQTtFQUFBdEIsY0FBQSxHQUFBb0IsQ0FBQTtFQUVELE9BQU9xQixJQUFJO0FBQ2IsQ0FBQztBQUFDO0FBQUF6QyxjQUFBLEdBQUFvQixDQUFBO0FBaEJXc0IsT0FBQSxDQUFBUCxrQkFBa0IsR0FBQUEsa0JBQUE7QUFnQjdCO0FBQUFuQyxjQUFBLEdBQUFvQixDQUFBO0FBRVdzQixPQUFBLENBQUFDLFdBQVcsR0FBRyxJQUFBVixRQUFBLENBQUFXLG9CQUFvQixFQUFDRixPQUFBLENBQUFQLGtCQUFrQixDQUFDIiwiaWdub3JlTGlzdCI6W119

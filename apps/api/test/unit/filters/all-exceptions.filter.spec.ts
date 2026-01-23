@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // test/unit/filters/all-exceptions. filter.spec.ts
 
-import { HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { ErrorCodes } from '../../../src/shared/constants';
 import { AllExceptionsFilter } from '../../../src/shared/filters/all-exceptions.filter';
 import {
@@ -76,6 +76,51 @@ describe('AllExceptionsFilter', () => {
             }),
           }),
         );
+      });
+
+      it('should handle HttpExceptions with matching status', () => {
+        // Arrange
+        const exception = new HttpException(
+          'Http path',
+          HttpStatus.BAD_REQUEST,
+        );
+        const host = createMockArgumentsHost(mockRequest, mockResponse);
+
+        // Act
+        filter.catch(exception, host as any);
+
+        // Assert
+        expect(mockResponse.status).toHaveBeenCalledWith(
+          HttpStatus.BAD_REQUEST,
+        );
+        expect(mockResponse.json).toHaveBeenCalledWith(
+          expect.objectContaining({
+            error: expect.objectContaining({
+              code: ErrorCodes.SERVER_ERROR,
+              message: 'Http path',
+              statusCode: HttpStatus.BAD_REQUEST,
+            }),
+          }),
+        );
+      });
+
+      it('should propagate correlation ids into the meta block', () => {
+        // Arrange
+        const requestWithCorrelation = createMockRequest({
+          headers: { 'x-correlation-id': 'corr-123' },
+        });
+        const exception = new Error('Correlation test');
+        const host = createMockArgumentsHost(
+          requestWithCorrelation,
+          mockResponse,
+        );
+
+        // Act
+        filter.catch(exception, host as any);
+
+        // Assert
+        const jsonCall = mockResponse.json.mock.calls[0][0];
+        expect(jsonCall.meta.requestId).toBe('corr-123');
       });
     });
 

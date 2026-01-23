@@ -195,6 +195,54 @@ describe('ZodValidationPipe', () => {
           'Custom transform error',
         );
       });
+
+      it('should map root-level issues to _root path', () => {
+        // Arrange
+        const rootSchema = z.object({}).superRefine((_, ctx) => {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Root level error',
+            path: [],
+          });
+        });
+        const rootPipe = new ZodValidationPipe(rootSchema);
+
+        // Act & Assert
+        try {
+          rootPipe.transform({});
+          fail('Should have thrown');
+        } catch (error) {
+          const response = (error as BadRequestException).getResponse() as {
+            errors: Record<string, string[]>;
+          };
+          expect(response.errors._root).toContain('Root level error');
+        }
+      });
+
+      it('should aggregate multiple issues for the same field', () => {
+        // Arrange
+        const multiIssueSchema = z.object({
+          code: z
+            .string()
+            .min(5, 'Too short')
+            .regex(/^\d+$/, 'Must be numeric'),
+        });
+        const multiIssuePipe = new ZodValidationPipe(multiIssueSchema);
+
+        // Act & Assert
+        try {
+          multiIssuePipe.transform({ code: 'ABC' });
+          fail('Should have thrown');
+        } catch (error) {
+          const response = (error as BadRequestException).getResponse() as {
+            errors: Record<string, string[]>;
+          };
+          expect(response.errors.code).toEqual([
+            'Too short',
+            'Must be numeric',
+          ]);
+        }
+      });
     });
   });
 });
