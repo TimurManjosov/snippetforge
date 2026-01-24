@@ -228,7 +228,9 @@ describe('AllExceptionsFilter', () => {
     });
 
     it('should identify unique constraint violation', () => {
-      const exception = new Error('duplicate key value violates unique constraint');
+      const exception = new Error(
+        'duplicate key value violates unique constraint',
+      );
 
       filter.catch(exception, mockArgumentsHost);
 
