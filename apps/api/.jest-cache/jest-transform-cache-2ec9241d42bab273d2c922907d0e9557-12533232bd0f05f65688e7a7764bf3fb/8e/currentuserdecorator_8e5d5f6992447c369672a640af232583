@@ -1,0 +1,45 @@
+3eb5c324e3642b0060ad1a03b013d969
+"use strict";
+// src/modules/auth/decorators/current-user.decorator.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CurrentUser = exports.currentUserFactory = void 0;
+const common_1 = require("@nestjs/common");
+/**
+ * @CurrentUser() Decorator - Injiziert aktuellen User in Controller-Methode
+ *
+ * WARUM als Decorator statt request.user?
+ * 1. Typsicherheit:  Decorator gibt SafeUser zurück, nicht any
+ * 2. Clean Code: Controller-Methode zeigt klar welche Daten sie braucht
+ * 3. Testbar: Decorator kann gemockt werden
+ *
+ * VERWENDUNG:
+ * @Get('me')
+ * @UseGuards(JwtAuthGuard)
+ * getProfile(@CurrentUser() user: SafeUser) {
+ *   return user
+ * }
+ *
+ * // Mit Property-Zugriff
+ * @Get('my-email')
+ * @UseGuards(JwtAuthGuard)
+ * getEmail(@CurrentUser('email') email: string) {
+ *   return { email }
+ * }
+ *
+ * VORAUSSETZUNG: JwtAuthGuard muss aktiv sein!
+ * Sonst ist request.user undefined
+ */
+const currentUserFactory = (data, ctx) => {
+    const request = ctx.switchToHttp().getRequest();
+    const user = request.user;
+    if (!user) {
+        return undefined;
+    }
+    if (data) {
+        return user[data];
+    }
+    return user;
+};
+exports.currentUserFactory = currentUserFactory;
+exports.CurrentUser = (0, common_1.createParamDecorator)(exports.currentUserFactory);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvbW9kdWxlcy9hdXRoL2RlY29yYXRvcnMvY3VycmVudC11c2VyLmRlY29yYXRvci50cyIsIm1hcHBpbmdzIjoiO0FBQUEsd0RBQXdEOzs7QUFFeEQsMkNBQXdFO0FBSXhFOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7R0F3Qkc7QUFDSSxNQUFNLGtCQUFrQixHQUFHLENBQ2hDLElBQWdDLEVBQ2hDLEdBQXFCLEVBQ3JCLEVBQUU7SUFDRixNQUFNLE9BQU8sR0FBRyxHQUFHLENBQUMsWUFBWSxFQUFFLENBQUMsVUFBVSxFQUFXLENBQUM7SUFDekQsTUFBTSxJQUFJLEdBQUcsT0FBTyxDQUFDLElBQTRCLENBQUM7SUFFbEQsSUFBSSxDQUFDLElBQUksRUFBRSxDQUFDO1FBQ1YsT0FBTyxTQUFTLENBQUM7SUFDbkIsQ0FBQztJQUVELElBQUksSUFBSSxFQUFFLENBQUM7UUFDVCxPQUFPLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztJQUNwQixDQUFDO0lBRUQsT0FBTyxJQUFJLENBQUM7QUFDZCxDQUFDLENBQUM7QUFoQlcsUUFBQSxrQkFBa0Isc0JBZ0I3QjtBQUVXLFFBQUEsV0FBVyxHQUFHLElBQUEsNkJBQW9CLEVBQUMsMEJBQWtCLENBQUMsQ0FBQyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyIvaG9tZS9ydW5uZXIvd29yay9zbmlwcGV0Zm9yZ2Uvc25pcHBldGZvcmdlL2FwcHMvYXBpL3NyYy9tb2R1bGVzL2F1dGgvZGVjb3JhdG9ycy9jdXJyZW50LXVzZXIuZGVjb3JhdG9yLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9tb2R1bGVzL2F1dGgvZGVjb3JhdG9ycy9jdXJyZW50LXVzZXIuZGVjb3JhdG9yLnRzXG5cbmltcG9ydCB7IGNyZWF0ZVBhcmFtRGVjb3JhdG9yLCBFeGVjdXRpb25Db250ZXh0IH0gZnJvbSAnQG5lc3Rqcy9jb21tb24nO1xuaW1wb3J0IHsgUmVxdWVzdCB9IGZyb20gJ2V4cHJlc3MnO1xuaW1wb3J0IHsgdHlwZSBTYWZlVXNlciB9IGZyb20gJy4uLy4uL3VzZXJzJztcblxuLyoqXG4gKiBAQ3VycmVudFVzZXIoKSBEZWNvcmF0b3IgLSBJbmppemllcnQgYWt0dWVsbGVuIFVzZXIgaW4gQ29udHJvbGxlci1NZXRob2RlXG4gKlxuICogV0FSVU0gYWxzIERlY29yYXRvciBzdGF0dCByZXF1ZXN0LnVzZXI/XG4gKiAxLiBUeXBzaWNoZXJoZWl0OiAgRGVjb3JhdG9yIGdpYnQgU2FmZVVzZXIgenVyw7xjaywgbmljaHQgYW55XG4gKiAyLiBDbGVhbiBDb2RlOiBDb250cm9sbGVyLU1ldGhvZGUgemVpZ3Qga2xhciB3ZWxjaGUgRGF0ZW4gc2llIGJyYXVjaHRcbiAqIDMuIFRlc3RiYXI6IERlY29yYXRvciBrYW5uIGdlbW9ja3Qgd2VyZGVuXG4gKlxuICogVkVSV0VORFVORzpcbiAqIEBHZXQoJ21lJylcbiAqIEBVc2VHdWFyZHMoSnd0QXV0aEd1YXJkKVxuICogZ2V0UHJvZmlsZShAQ3VycmVudFVzZXIoKSB1c2VyOiBTYWZlVXNlcikge1xuICogICByZXR1cm4gdXNlclxuICogfVxuICpcbiAqIC8vIE1pdCBQcm9wZXJ0eS1adWdyaWZmXG4gKiBAR2V0KCdteS1lbWFpbCcpXG4gKiBAVXNlR3VhcmRzKEp3dEF1dGhHdWFyZClcbiAqIGdldEVtYWlsKEBDdXJyZW50VXNlcignZW1haWwnKSBlbWFpbDogc3RyaW5nKSB7XG4gKiAgIHJldHVybiB7IGVtYWlsIH1cbiAqIH1cbiAqXG4gKiBWT1JBVVNTRVRaVU5HOiBKd3RBdXRoR3VhcmQgbXVzcyBha3RpdiBzZWluIVxuICogU29uc3QgaXN0IHJlcXVlc3QudXNlciB1bmRlZmluZWRcbiAqL1xuZXhwb3J0IGNvbnN0IGN1cnJlbnRVc2VyRmFjdG9yeSA9IChcbiAgZGF0YToga2V5b2YgU2FmZVVzZXIgfCB1bmRlZmluZWQsXG4gIGN0eDogRXhlY3V0aW9uQ29udGV4dCxcbikgPT4ge1xuICBjb25zdCByZXF1ZXN0ID0gY3R4LnN3aXRjaFRvSHR0cCgpLmdldFJlcXVlc3Q8UmVxdWVzdD4oKTtcbiAgY29uc3QgdXNlciA9IHJlcXVlc3QudXNlciBhcyBTYWZlVXNlciB8IHVuZGVmaW5lZDtcblxuICBpZiAoIXVzZXIpIHtcbiAgICByZXR1cm4gdW5kZWZpbmVkO1xuICB9XG5cbiAgaWYgKGRhdGEpIHtcbiAgICByZXR1cm4gdXNlcltkYXRhXTtcbiAgfVxuXG4gIHJldHVybiB1c2VyO1xufTtcblxuZXhwb3J0IGNvbnN0IEN1cnJlbnRVc2VyID0gY3JlYXRlUGFyYW1EZWNvcmF0b3IoY3VycmVudFVzZXJGYWN0b3J5KTtcbiJdLCJ2ZXJzaW9uIjozfQ==

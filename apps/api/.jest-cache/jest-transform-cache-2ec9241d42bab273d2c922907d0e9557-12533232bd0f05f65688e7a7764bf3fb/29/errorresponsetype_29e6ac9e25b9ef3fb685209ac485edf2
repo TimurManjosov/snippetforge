@@ -1,0 +1,226 @@
+c559f5ddca4d1dd7e6ccd01db3de15df
+"use strict";
+
+// src/shared/types/error-response.type.ts
+/* istanbul ignore next */
+function cov_2fqiw515zh() {
+  var path = "/home/runner/work/snippetforge/snippetforge/apps/api/src/shared/types/error-response.type.ts";
+  var hash = "15840a2fa1c06736e87e3bdcd16bacc30e3edc6d";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/runner/work/snippetforge/snippetforge/apps/api/src/shared/types/error-response.type.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 50
+        }
+      },
+      "2": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 31,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "createErrorResponse",
+        decl: {
+          start: {
+            line: 16,
+            column: 9
+          },
+          end: {
+            line: 16,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 37
+          },
+          end: {
+            line: 32,
+            column: 1
+          }
+        },
+        line: 16
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 23,
+            column: 16
+          },
+          end: {
+            line: 23,
+            column: 61
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 23,
+            column: 16
+          },
+          end: {
+            line: 23,
+            column: 30
+          }
+        }, {
+          start: {
+            line: 23,
+            column: 34
+          },
+          end: {
+            line: 23,
+            column: 61
+          }
+        }],
+        line: 23
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 29,
+            column: 16
+          },
+          end: {
+            line: 29,
+            column: 67
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 29,
+            column: 16
+          },
+          end: {
+            line: 29,
+            column: 32
+          }
+        }, {
+          start: {
+            line: 29,
+            column: 36
+          },
+          end: {
+            line: 29,
+            column: 67
+          }
+        }],
+        line: 29
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      file: "/home/runner/work/snippetforge/snippetforge/apps/api/src/shared/types/error-response.type.ts",
+      mappings: ";AAAA,0CAA0C;;AAqG1C,kDAwBC;AAnCD;;;;;;;;;;GAUG;AACH,SAAgB,mBAAmB,CAAC,MAQnC;IACC,OAAO;QACL,OAAO,EAAE,KAAK;QACd,KAAK,EAAE;YACL,IAAI,EAAE,MAAM,CAAC,IAAI;YACjB,OAAO,EAAE,MAAM,CAAC,OAAO;YACvB,UAAU,EAAE,MAAM,CAAC,UAAU;YAC7B,GAAG,CAAC,MAAM,CAAC,OAAO,IAAI,EAAE,OAAO,EAAE,MAAM,CAAC,OAAO,EAAE,CAAC;SACnD;QACD,IAAI,EAAE;YACJ,SAAS,EAAE,IAAI,IAAI,EAAE,CAAC,WAAW,EAAE;YACnC,IAAI,EAAE,MAAM,CAAC,IAAI;YACjB,MAAM,EAAE,MAAM,CAAC,MAAM;YACrB,GAAG,CAAC,MAAM,CAAC,SAAS,IAAI,EAAE,SAAS,EAAE,MAAM,CAAC,SAAS,EAAE,CAAC;SACzD;KACF,CAAC;AACJ,CAAC",
+      names: [],
+      sources: ["/home/runner/work/snippetforge/snippetforge/apps/api/src/shared/types/error-response.type.ts"],
+      sourcesContent: ["// src/shared/types/error-response.type.ts\n\nimport { type ErrorCode } from '../constants';\n\n/**\n * Standard Error Response Format\n *\n * WARUM dieses Format?\n * 1. Konsistenz: Frontend kann ALLE Errors gleich parsen\n * 2. Debugging: Meta-Daten helfen bei Fehlersuche\n * 3. Machine-Readable: Error Code f\xFCr programmatische Verarbeitung\n * 4. Human-Readable: Message f\xFCr Anzeige\n *\n * STRUKTUR:\n * {\n *   success: false,              // Schneller Check\n *   error: {\n *     code: \"AUTH_TOKEN_EXPIRED\", // Machine-readable\n *     message: \"Token expired\",   // Human-readable\n *     statusCode: 401,            // HTTP Status\n *     details?: {...}           // Zus\xE4tzliche Infos (Validation Errors)\n *   },\n *   meta: {\n *     timestamp: \"...\",           // Wann der Error auftrat\n *     path: \"/api/auth/me\",       // Welcher Endpoint\n *     method: \"GET\",              // Welche HTTP Methode\n *     requestId?: \"...\"           // F\xFCr Tracing (optional)\n *   }\n * }\n */\n\n/**\n * Error Details - Zus\xE4tzliche Informationen zum Error\n */\nexport interface ErrorDetails {\n  /** Feld-spezifische Validation Errors */\n  fields?: Record<string, string[]>;\n\n  /** Zus\xE4tzliche Kontext-Informationen */\n  context?: Record<string, unknown>;\n}\n\n/**\n * Error Object innerhalb der Response\n */\nexport interface ErrorObject {\n  /** Machine-readable Error Code */\n  code: ErrorCode;\n\n  /** Human-readable Error Message */\n  message: string;\n\n  /** HTTP Status Code */\n  statusCode: number;\n\n  /** Optionale Details (z.B. Validation Errors) */\n  details?: ErrorDetails;\n}\n\n/**\n * Meta-Informationen zur Response\n */\nexport interface ResponseMeta {\n  /** ISO 8601 Timestamp */\n  timestamp: string;\n\n  /** Request Path */\n  path: string;\n\n  /** HTTP Method */\n  method: string;\n\n  /** Request ID f\xFCr Tracing (falls vorhanden) */\n  requestId?: string;\n}\n\n/**\n * Vollst\xE4ndige Error Response\n */\nexport interface ErrorResponse {\n  /** Immer false bei Errors */\n  success: false;\n\n  /** Error Details */\n  error: ErrorObject;\n\n  /** Meta-Informationen */\n  meta: ResponseMeta;\n}\n\n/**\n * Factory Function f\xFCr Error Response\n *\n * WARUM Factory statt Constructor?\n * - Einfacher zu verwenden\n * - Keine Klassen-Instanziierung n\xF6tig\n * - Bessere Tree-Shaking M\xF6glichkeit\n *\n * @param params - Error Parameter\n * @returns Formatierte Error Response\n */\nexport function createErrorResponse(params: {\n  code: ErrorCode;\n  message: string;\n  statusCode: number;\n  path: string;\n  method: string;\n  details?: ErrorDetails;\n  requestId?: string;\n}): ErrorResponse {\n  return {\n    success: false,\n    error: {\n      code: params.code,\n      message: params.message,\n      statusCode: params.statusCode,\n      ...(params.details && { details: params.details }),\n    },\n    meta: {\n      timestamp: new Date().toISOString(),\n      path: params.path,\n      method: params.method,\n      ...(params.requestId && { requestId: params.requestId }),\n    },\n  };\n}\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "15840a2fa1c06736e87e3bdcd16bacc30e3edc6d"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2fqiw515zh = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2fqiw515zh();
+cov_2fqiw515zh().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2fqiw515zh().s[1]++;
+exports.createErrorResponse = createErrorResponse;
+/**
+ * Factory Function für Error Response
+ *
+ * WARUM Factory statt Constructor?
+ * - Einfacher zu verwenden
+ * - Keine Klassen-Instanziierung nötig
+ * - Bessere Tree-Shaking Möglichkeit
+ *
+ * @param params - Error Parameter
+ * @returns Formatierte Error Response
+ */
+function createErrorResponse(params) {
+  /* istanbul ignore next */
+  cov_2fqiw515zh().f[0]++;
+  cov_2fqiw515zh().s[2]++;
+  return {
+    success: false,
+    error: {
+      code: params.code,
+      message: params.message,
+      statusCode: params.statusCode,
+      ...(
+      /* istanbul ignore next */
+      (cov_2fqiw515zh().b[0][0]++, params.details) &&
+      /* istanbul ignore next */
+      (cov_2fqiw515zh().b[0][1]++, {
+        details: params.details
+      }))
+    },
+    meta: {
+      timestamp: new Date().toISOString(),
+      path: params.path,
+      method: params.method,
+      ...(
+      /* istanbul ignore next */
+      (cov_2fqiw515zh().b[1][0]++, params.requestId) &&
+      /* istanbul ignore next */
+      (cov_2fqiw515zh().b[1][1]++, {
+        requestId: params.requestId
+      }))
+    }
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMmZxaXc1MTV6aCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwidHlwZSIsImxvY2F0aW9ucyIsInMiLCJmIiwiYiIsImlucHV0U291cmNlTWFwIiwiZmlsZSIsIm1hcHBpbmdzIiwibmFtZXMiLCJzb3VyY2VzIiwic291cmNlc0NvbnRlbnQiLCJ2ZXJzaW9uIiwiX2NvdmVyYWdlU2NoZW1hIiwiY292ZXJhZ2UiLCJhY3R1YWxDb3ZlcmFnZSIsImV4cG9ydHMiLCJjcmVhdGVFcnJvclJlc3BvbnNlIiwicGFyYW1zIiwic3VjY2VzcyIsImVycm9yIiwiY29kZSIsIm1lc3NhZ2UiLCJzdGF0dXNDb2RlIiwiZGV0YWlscyIsIm1ldGEiLCJ0aW1lc3RhbXAiLCJEYXRlIiwidG9JU09TdHJpbmciLCJtZXRob2QiLCJyZXF1ZXN0SWQiXSwic291cmNlcyI6WyIvaG9tZS9ydW5uZXIvd29yay9zbmlwcGV0Zm9yZ2Uvc25pcHBldGZvcmdlL2FwcHMvYXBpL3NyYy9zaGFyZWQvdHlwZXMvZXJyb3ItcmVzcG9uc2UudHlwZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBzcmMvc2hhcmVkL3R5cGVzL2Vycm9yLXJlc3BvbnNlLnR5cGUudHNcblxuaW1wb3J0IHsgdHlwZSBFcnJvckNvZGUgfSBmcm9tICcuLi9jb25zdGFudHMnO1xuXG4vKipcbiAqIFN0YW5kYXJkIEVycm9yIFJlc3BvbnNlIEZvcm1hdFxuICpcbiAqIFdBUlVNIGRpZXNlcyBGb3JtYXQ/XG4gKiAxLiBLb25zaXN0ZW56OiBGcm9udGVuZCBrYW5uIEFMTEUgRXJyb3JzIGdsZWljaCBwYXJzZW5cbiAqIDIuIERlYnVnZ2luZzogTWV0YS1EYXRlbiBoZWxmZW4gYmVpIEZlaGxlcnN1Y2hlXG4gKiAzLiBNYWNoaW5lLVJlYWRhYmxlOiBFcnJvciBDb2RlIGbDvHIgcHJvZ3JhbW1hdGlzY2hlIFZlcmFyYmVpdHVuZ1xuICogNC4gSHVtYW4tUmVhZGFibGU6IE1lc3NhZ2UgZsO8ciBBbnplaWdlXG4gKlxuICogU1RSVUtUVVI6XG4gKiB7XG4gKiAgIHN1Y2Nlc3M6IGZhbHNlLCAgICAgICAgICAgICAgLy8gU2NobmVsbGVyIENoZWNrXG4gKiAgIGVycm9yOiB7XG4gKiAgICAgY29kZTogXCJBVVRIX1RPS0VOX0VYUElSRURcIiwgLy8gTWFjaGluZS1yZWFkYWJsZVxuICogICAgIG1lc3NhZ2U6IFwiVG9rZW4gZXhwaXJlZFwiLCAgIC8vIEh1bWFuLXJlYWRhYmxlXG4gKiAgICAgc3RhdHVzQ29kZTogNDAxLCAgICAgICAgICAgIC8vIEhUVFAgU3RhdHVzXG4gKiAgICAgZGV0YWlscz86IHsuLi59ICAgICAgICAgICAvLyBadXPDpHR6bGljaGUgSW5mb3MgKFZhbGlkYXRpb24gRXJyb3JzKVxuICogICB9LFxuICogICBtZXRhOiB7XG4gKiAgICAgdGltZXN0YW1wOiBcIi4uLlwiLCAgICAgICAgICAgLy8gV2FubiBkZXIgRXJyb3IgYXVmdHJhdFxuICogICAgIHBhdGg6IFwiL2FwaS9hdXRoL21lXCIsICAgICAgIC8vIFdlbGNoZXIgRW5kcG9pbnRcbiAqICAgICBtZXRob2Q6IFwiR0VUXCIsICAgICAgICAgICAgICAvLyBXZWxjaGUgSFRUUCBNZXRob2RlXG4gKiAgICAgcmVxdWVzdElkPzogXCIuLi5cIiAgICAgICAgICAgLy8gRsO8ciBUcmFjaW5nIChvcHRpb25hbClcbiAqICAgfVxuICogfVxuICovXG5cbi8qKlxuICogRXJyb3IgRGV0YWlscyAtIFp1c8OkdHpsaWNoZSBJbmZvcm1hdGlvbmVuIHp1bSBFcnJvclxuICovXG5leHBvcnQgaW50ZXJmYWNlIEVycm9yRGV0YWlscyB7XG4gIC8qKiBGZWxkLXNwZXppZmlzY2hlIFZhbGlkYXRpb24gRXJyb3JzICovXG4gIGZpZWxkcz86IFJlY29yZDxzdHJpbmcsIHN0cmluZ1tdPjtcblxuICAvKiogWnVzw6R0emxpY2hlIEtvbnRleHQtSW5mb3JtYXRpb25lbiAqL1xuICBjb250ZXh0PzogUmVjb3JkPHN0cmluZywgdW5rbm93bj47XG59XG5cbi8qKlxuICogRXJyb3IgT2JqZWN0IGlubmVyaGFsYiBkZXIgUmVzcG9uc2VcbiAqL1xuZXhwb3J0IGludGVyZmFjZSBFcnJvck9iamVjdCB7XG4gIC8qKiBNYWNoaW5lLXJlYWRhYmxlIEVycm9yIENvZGUgKi9cbiAgY29kZTogRXJyb3JDb2RlO1xuXG4gIC8qKiBIdW1hbi1yZWFkYWJsZSBFcnJvciBNZXNzYWdlICovXG4gIG1lc3NhZ2U6IHN0cmluZztcblxuICAvKiogSFRUUCBTdGF0dXMgQ29kZSAqL1xuICBzdGF0dXNDb2RlOiBudW1iZXI7XG5cbiAgLyoqIE9wdGlvbmFsZSBEZXRhaWxzICh6LkIuIFZhbGlkYXRpb24gRXJyb3JzKSAqL1xuICBkZXRhaWxzPzogRXJyb3JEZXRhaWxzO1xufVxuXG4vKipcbiAqIE1ldGEtSW5mb3JtYXRpb25lbiB6dXIgUmVzcG9uc2VcbiAqL1xuZXhwb3J0IGludGVyZmFjZSBSZXNwb25zZU1ldGEge1xuICAvKiogSVNPIDg2MDEgVGltZXN0YW1wICovXG4gIHRpbWVzdGFtcDogc3RyaW5nO1xuXG4gIC8qKiBSZXF1ZXN0IFBhdGggKi9cbiAgcGF0aDogc3RyaW5nO1xuXG4gIC8qKiBIVFRQIE1ldGhvZCAqL1xuICBtZXRob2Q6IHN0cmluZztcblxuICAvKiogUmVxdWVzdCBJRCBmw7xyIFRyYWNpbmcgKGZhbGxzIHZvcmhhbmRlbikgKi9cbiAgcmVxdWVzdElkPzogc3RyaW5nO1xufVxuXG4vKipcbiAqIFZvbGxzdMOkbmRpZ2UgRXJyb3IgUmVzcG9uc2VcbiAqL1xuZXhwb3J0IGludGVyZmFjZSBFcnJvclJlc3BvbnNlIHtcbiAgLyoqIEltbWVyIGZhbHNlIGJlaSBFcnJvcnMgKi9cbiAgc3VjY2VzczogZmFsc2U7XG5cbiAgLyoqIEVycm9yIERldGFpbHMgKi9cbiAgZXJyb3I6IEVycm9yT2JqZWN0O1xuXG4gIC8qKiBNZXRhLUluZm9ybWF0aW9uZW4gKi9cbiAgbWV0YTogUmVzcG9uc2VNZXRhO1xufVxuXG4vKipcbiAqIEZhY3RvcnkgRnVuY3Rpb24gZsO8ciBFcnJvciBSZXNwb25zZVxuICpcbiAqIFdBUlVNIEZhY3Rvcnkgc3RhdHQgQ29uc3RydWN0b3I/XG4gKiAtIEVpbmZhY2hlciB6dSB2ZXJ3ZW5kZW5cbiAqIC0gS2VpbmUgS2xhc3Nlbi1JbnN0YW56aWllcnVuZyBuw7Z0aWdcbiAqIC0gQmVzc2VyZSBUcmVlLVNoYWtpbmcgTcO2Z2xpY2hrZWl0XG4gKlxuICogQHBhcmFtIHBhcmFtcyAtIEVycm9yIFBhcmFtZXRlclxuICogQHJldHVybnMgRm9ybWF0aWVydGUgRXJyb3IgUmVzcG9uc2VcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIGNyZWF0ZUVycm9yUmVzcG9uc2UocGFyYW1zOiB7XG4gIGNvZGU6IEVycm9yQ29kZTtcbiAgbWVzc2FnZTogc3RyaW5nO1xuICBzdGF0dXNDb2RlOiBudW1iZXI7XG4gIHBhdGg6IHN0cmluZztcbiAgbWV0aG9kOiBzdHJpbmc7XG4gIGRldGFpbHM/OiBFcnJvckRldGFpbHM7XG4gIHJlcXVlc3RJZD86IHN0cmluZztcbn0pOiBFcnJvclJlc3BvbnNlIHtcbiAgcmV0dXJuIHtcbiAgICBzdWNjZXNzOiBmYWxzZSxcbiAgICBlcnJvcjoge1xuICAgICAgY29kZTogcGFyYW1zLmNvZGUsXG4gICAgICBtZXNzYWdlOiBwYXJhbXMubWVzc2FnZSxcbiAgICAgIHN0YXR1c0NvZGU6IHBhcmFtcy5zdGF0dXNDb2RlLFxuICAgICAgLi4uKHBhcmFtcy5kZXRhaWxzICYmIHsgZGV0YWlsczogcGFyYW1zLmRldGFpbHMgfSksXG4gICAgfSxcbiAgICBtZXRhOiB7XG4gICAgICB0aW1lc3RhbXA6IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKSxcbiAgICAgIHBhdGg6IHBhcmFtcy5wYXRoLFxuICAgICAgbWV0aG9kOiBwYXJhbXMubWV0aG9kLFxuICAgICAgLi4uKHBhcmFtcy5yZXF1ZXN0SWQgJiYgeyByZXF1ZXN0SWQ6IHBhcmFtcy5yZXF1ZXN0SWQgfSksXG4gICAgfSxcbiAgfTtcbn1cbiJdLCJtYXBwaW5ncyI6Ijs7QUFBQTtBQUFBO0FBQUEsU0FBQUEsZUFBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxJQUFBO0VBQUEsSUFBQUMsTUFBQSxPQUFBQyxRQUFBO0VBQUEsSUFBQUMsR0FBQTtFQUFBLElBQUFDLFlBQUE7SUFBQUwsSUFBQTtJQUFBTSxZQUFBO01BQUE7UUFBQUMsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO0lBQUE7SUFBQUUsS0FBQTtNQUFBO1FBQUFDLElBQUE7UUFBQUMsSUFBQTtVQUFBTixLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBSyxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFELElBQUE7TUFBQTtJQUFBO0lBQUFPLFNBQUE7TUFBQTtRQUFBRCxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFPLElBQUE7UUFBQUMsU0FBQTtVQUFBVixLQUFBO1lBQUFDLElBQUE7WUFBQUMs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

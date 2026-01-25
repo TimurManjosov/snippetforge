@@ -1,0 +1,199 @@
+f89c41e5f5d123e449208c7f44d47182
+"use strict";
+
+// src/modules/users/users.types.ts
+/* istanbul ignore next */
+function cov_14d2pelald() {
+  var path = "/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/users/users.types.ts";
+  var hash = "442e11da991c37a4bfa374846586163fea063d8e";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/users/users.types.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 32
+        }
+      },
+      "2": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 32
+        }
+      },
+      "3": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 24,
+          column: 6
+        }
+      },
+      "4": {
+        start: {
+          line: 31,
+          column: 4
+        },
+        end: {
+          line: 34,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "toSafeUser",
+        decl: {
+          start: {
+            line: 14,
+            column: 9
+          },
+          end: {
+            line: 14,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 26
+          },
+          end: {
+            line: 25,
+            column: 1
+          }
+        },
+        line: 14
+      },
+      "1": {
+        name: "toFullUser",
+        decl: {
+          start: {
+            line: 30,
+            column: 9
+          },
+          end: {
+            line: 30,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 30,
+            column: 26
+          },
+          end: {
+            line: 35,
+            column: 1
+          }
+        },
+        line: 30
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      file: "/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/users/users.types.ts",
+      mappings: ";AAAA,mCAAmC;;AAyEnC,gCAWC;AAMD,gCAKC;AA9BD;;;;;;;GAOG;AACH,SAAgB,UAAU,CAAC,IAAU;IACnC,OAAO;QACL,EAAE,EAAE,IAAI,CAAC,EAAE;QACX,KAAK,EAAE,IAAI,CAAC,KAAK;QACjB,QAAQ,EAAE,IAAI,CAAC,QAAQ;QACvB,GAAG,EAAE,IAAI,CAAC,GAAG;QACb,SAAS,EAAE,IAAI,CAAC,SAAS;QACzB,IAAI,EAAE,IAAI,CAAC,IAAI;QACf,SAAS,EAAE,IAAI,CAAC,SAAS;QACzB,SAAS,EAAE,IAAI,CAAC,SAAS;KAC1B,CAAC;AACJ,CAAC;AAED;;;GAGG;AACH,SAAgB,UAAU,CAAC,IAAU;IACnC,OAAO;QACL,GAAG,UAAU,CAAC,IAAI,CAAC;QACnB,YAAY,EAAE,IAAI,CAAC,YAAY;KAChC,CAAC;AACJ,CAAC",
+      names: [],
+      sources: ["/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/users/users.types.ts"],
+      sourcesContent: ["// src/modules/users/users.types.ts\n\nimport { type User } from '../../lib/db/schema';\n\n/**\n * User Types - Definiert alle User-bezogenen Interfaces\n *\n * WARUM separate Types statt direkt Schema-Types?\n * 1. Entkopplung:  Service-Layer ist unabh\xE4ngig von DB-Schema\n * 2. Flexibilit\xE4t: Wir k\xF6nnen Fields hinzuf\xFCgen/entfernen ohne Schema zu \xE4ndern\n * 3. Security: Wir k\xF6nnen sensitive Fields (passwordHash) explizit ausschlie\xDFen\n */\n\n/**\n * User ohne sensitive Daten\n * Wird f\xFCr API Responses verwendet (NIEMALS passwordHash zur\xFCckgeben!)\n */\nexport interface SafeUser {\n  id: string;\n  email: string;\n  username: string;\n  bio: string | null;\n  avatarUrl: string | null;\n  role: 'USER' | 'ADMIN' | 'MODERATOR';\n  createdAt: Date;\n  updatedAt: Date;\n}\n\n/**\n * User mit allen Daten (inklusive passwordHash)\n * NUR f\xFCr interne Verwendung (Authentication)\n */\nexport interface FullUser extends SafeUser {\n  passwordHash: string;\n}\n\n/**\n * Daten f\xFCr User-Erstellung\n * Password (nicht Hash!) kommt vom Client\n */\nexport interface CreateUserData {\n  email: string;\n  username: string;\n  password: string; // Klartext - wird im Service gehasht\n}\n\n/**\n * Daten f\xFCr User-Update\n * Alle Felder optional (Partial Update)\n */\nexport interface UpdateUserData {\n  username?: string;\n  bio?: string;\n  avatarUrl?: string;\n}\n\n/**\n * Daten f\xFCr Password-Update\n * Separates Interface f\xFCr Klarheit\n */\nexport interface UpdatePasswordData {\n  currentPassword: string;\n  newPassword: string;\n}\n\n/**\n * Konvertiert DB User zu SafeUser (ohne passwordHash)\n *\n * WARUM als Funktion statt Spread?\n * - Explizit:  Wir sehen genau welche Felder \xFCbernommen werden\n * - Sicher: Neue DB-Felder werden nicht automatisch exponiert\n * - Typsicher: TypeScript pr\xFCft ob alle Felder da sind\n */\nexport function toSafeUser(user: User): SafeUser {\n  return {\n    id: user.id,\n    email: user.email,\n    username: user.username,\n    bio: user.bio,\n    avatarUrl: user.avatarUrl,\n    role: user.role,\n    createdAt: user.createdAt,\n    updatedAt: user.updatedAt,\n  };\n}\n\n/**\n * Konvertiert DB User zu FullUser (mit passwordHash)\n * NUR f\xFCr interne Auth-Logik verwenden!\n */\nexport function toFullUser(user: User): FullUser {\n  return {\n    ...toSafeUser(user),\n    passwordHash: user.passwordHash,\n  };\n}\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "442e11da991c37a4bfa374846586163fea063d8e"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_14d2pelald = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_14d2pelald();
+cov_14d2pelald().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_14d2pelald().s[1]++;
+exports.toSafeUser = toSafeUser;
+/* istanbul ignore next */
+cov_14d2pelald().s[2]++;
+exports.toFullUser = toFullUser;
+/**
+ * Konvertiert DB User zu SafeUser (ohne passwordHash)
+ *
+ * WARUM als Funktion statt Spread?
+ * - Explizit:  Wir sehen genau welche Felder übernommen werden
+ * - Sicher: Neue DB-Felder werden nicht automatisch exponiert
+ * - Typsicher: TypeScript prüft ob alle Felder da sind
+ */
+function toSafeUser(user) {
+  /* istanbul ignore next */
+  cov_14d2pelald().f[0]++;
+  cov_14d2pelald().s[3]++;
+  return {
+    id: user.id,
+    email: user.email,
+    username: user.username,
+    bio: user.bio,
+    avatarUrl: user.avatarUrl,
+    role: user.role,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
+  };
+}
+/**
+ * Konvertiert DB User zu FullUser (mit passwordHash)
+ * NUR für interne Auth-Logik verwenden!
+ */
+function toFullUser(user) {
+  /* istanbul ignore next */
+  cov_14d2pelald().f[1]++;
+  cov_14d2pelald().s[4]++;
+  return {
+    ...toSafeUser(user),
+    passwordHash: user.passwordHash
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTRkMnBlbGFsZCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwicyIsImYiLCJiIiwiaW5wdXRTb3VyY2VNYXAiLCJmaWxlIiwibWFwcGluZ3MiLCJuYW1lcyIsInNvdXJjZXMiLCJzb3VyY2VzQ29udGVudCIsInZlcnNpb24iLCJfY292ZXJhZ2VTY2hlbWEiLCJjb3ZlcmFnZSIsImFjdHVhbENvdmVyYWdlIiwiZXhwb3J0cyIsInRvU2FmZVVzZXIiLCJ0b0Z1bGxVc2VyIiwidXNlciIsImlkIiwiZW1haWwiLCJ1c2VybmFtZSIsImJpbyIsImF2YXRhclVybCIsInJvbGUiLCJjcmVhdGVkQXQiLCJ1cGRhdGVkQXQiLCJwYXNzd29yZEhhc2giXSwic291cmNlcyI6WyIvaG9tZS9ydW5uZXIvd29yay9zbmlwcGV0Zm9yZ2Uvc25pcHBldGZvcmdlL2FwcHMvYXBpL3NyYy9tb2R1bGVzL3VzZXJzL3VzZXJzLnR5cGVzLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9tb2R1bGVzL3VzZXJzL3VzZXJzLnR5cGVzLnRzXG5cbmltcG9ydCB7IHR5cGUgVXNlciB9IGZyb20gJy4uLy4uL2xpYi9kYi9zY2hlbWEnO1xuXG4vKipcbiAqIFVzZXIgVHlwZXMgLSBEZWZpbmllcnQgYWxsZSBVc2VyLWJlem9nZW5lbiBJbnRlcmZhY2VzXG4gKlxuICogV0FSVU0gc2VwYXJhdGUgVHlwZXMgc3RhdHQgZGlyZWt0IFNjaGVtYS1UeXBlcz9cbiAqIDEuIEVudGtvcHBsdW5nOiAgU2VydmljZS1MYXllciBpc3QgdW5hYmjDpG5naWcgdm9uIERCLVNjaGVtYVxuICogMi4gRmxleGliaWxpdMOkdDogV2lyIGvDtm5uZW4gRmllbGRzIGhpbnp1ZsO8Z2VuL2VudGZlcm5lbiBvaG5lIFNjaGVtYSB6dSDDpG5kZXJuXG4gKiAzLiBTZWN1cml0eTogV2lyIGvDtm5uZW4gc2Vuc2l0aXZlIEZpZWxkcyAocGFzc3dvcmRIYXNoKSBleHBsaXppdCBhdXNzY2hsaWXDn2VuXG4gKi9cblxuLyoqXG4gKiBVc2VyIG9obmUgc2Vuc2l0aXZlIERhdGVuXG4gKiBXaXJkIGbDvHIgQVBJIFJlc3BvbnNlcyB2ZXJ3ZW5kZXQgKE5JRU1BTFMgcGFzc3dvcmRIYXNoIHp1csO8Y2tnZWJlbiEpXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgU2FmZVVzZXIge1xuICBpZDogc3RyaW5nO1xuICBlbWFpbDogc3RyaW5nO1xuICB1c2VybmFtZTogc3RyaW5nO1xuICBiaW86IHN0cmluZyB8IG51bGw7XG4gIGF2YXRhclVybDogc3RyaW5nIHwgbnVsbDtcbiAgcm9sZTogJ1VTRVInIHwgJ0FETUlOJyB8ICdNT0RFUkFUT1InO1xuICBjcmVhdGVkQXQ6IERhdGU7XG4gIHVwZGF0ZWRBdDogRGF0ZTtcbn1cblxuLyoqXG4gKiBVc2VyIG1pdCBhbGxlbiBEYXRlbiAoaW5rbHVzaXZlIHBhc3N3b3JkSGFzaClcbiAqIE5VUiBmw7xyIGludGVybmUgVmVyd2VuZHVuZyAoQXV0aGVudGljYXRpb24pXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgRnVsbFVzZXIgZXh0ZW5kcyBTYWZlVXNlciB7XG4gIHBhc3N3b3JkSGFzaDogc3RyaW5nO1xufVxuXG4vKipcbiAqIERhdGVuIGbDvHIgVXNlci1FcnN0ZWxsdW5nXG4gKiBQYXNzd29yZCAobmljaHQgSGFzaCEpIGtvbW10IHZvbSBDbGllbnRcbiAqL1xuZXhwb3J0IGludGVyZmFjZSBDcmVhdGVVc2VyRGF0YSB7XG4gIGVtYWlsOiBzdHJpbmc7XG4gIHVzZXJuYW1lOiBzdHJpbmc7XG4gIHBhc3N3b3JkOiBzdHJpbmc7IC8vIEtsYXJ0ZXh0IC0gd2lyZCBpbSBTZXJ2aWNlIGdlaGFzaHRcbn1cblxuLyoqXG4gKiBEYXRlbiBmw7xyIFVzZXItVXBkYXRlXG4gKiBBbGxlIEZlbGRlciBvcHRpb25hbCAoUGFydGlhbCBVcGRhdGUpXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgVXBkYXRlVXNlckRhdGEge1xuICB1c2VybmFtZT86IHN0cmluZztcbiAgYmlvPzogc3RyaW5nO1xuICBhdmF0YXJVcmw/OiBzdHJpbmc7XG59XG5cbi8qKlxuICogRGF0ZW4gZsO8ciBQYXNzd29yZC1VcGRhdGVcbiAqIFNlcGFyYXRlcyBJbnRlcmZhY2UgZsO8ciBLbGFyaGVpdFxuICovXG5leHBvcnQgaW50ZXJmYWNlIFVwZGF0ZVBhc3N3b3JkRGF0YSB7XG4gIGN1cnJlbnRQYXNzd29yZDogc3RyaW5nO1xuICBuZXdQYXNzd29yZDogc3RyaW5nO1xufVxuXG4vKipcbiAqIEtvbnZlcnRpZXJ0IERCIFVzZXIgenUgU2FmZVVzZXIgKG9obmUgcGFzc3dvcmRIYXNoKVxuICpcbiAqIFdBUlVNIGFscyBGdW5rdGlvbiBzdGF0dCBTcHJlYWQ/XG4gKiAtIEV4cGxpeml0OiAgV2lyIHNlaGVuIGdlbmF1IHdlbGNoZSBGZWxkZXIgw7xiZXJub21tZW4gd2VyZGVuXG4gKiAtIFNpY2hlcjogTmV1ZSBEQi1GZWxkZXIgd2VyZGVuIG5pY2h0IGF1dG9tYXRpc2NoIGV4cG9uaWVydFxuICogLSBUeXBzaWNoZXI6IFR5cGVTY3JpcHQgcHLDvGZ0IG9iIGFsbGUgRmVsZGVyIGRhIHNpbmRcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIHRvU2FmZVVzZXIodXNlcjogVXNlcik6IFNhZmVVc2VyIHtcbiAgcmV0dXJuIHtcbiAgICBpZDogdXNlci5pZCxcbiAgICBlbWFpbDogdXNlci5lbWFpbCxcbiAgICB1c2VybmFtZTogdXNlci51c2VybmFtZSxcbiAgICBiaW86IHVzZXIuYmlvLFxuICAgIGF2YXRhclVybDogdXNlci5hdmF0YXJVcmwsXG4gICAgcm9sZTogdXNlci5yb2xlLFxuICAgIGNyZWF0ZWRBdDogdXNlci5jcmVhdGVkQXQsXG4gICAgdXBkYXRlZEF0OiB1c2VyLnVwZGF0ZWRBdCxcbiAgfTtcbn1cblxuLyoqXG4gKiBLb252ZXJ0aWVydCBEQiBVc2VyIHp1IEZ1bGxVc2VyIChtaXQgcGFzc3dvcmRIYXNoKVxuICogTlVSIGbDvHIgaW50ZXJuZSBBdXRoLUxvZ2lrIHZlcndlbmRlbiFcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIHRvRnVsbFVzZXIodXNlcjogVXNlcik6IEZ1bGxVc2VyIHtcbiAgcmV0dXJuIHtcbiAgICAuLi50b1NhZmVVc2VyKHVzZXIpLFxuICAgIHBhc3N3b3JkSGFzaDogdXNlci5wYXNzd29yZEhhc2gsXG4gIH07XG59XG4iXSwibWFwcGluZ3MiOiI7O0FBQUE7QUFBQTtBQUFBLFNBQUFBLGVBQUE7RUFBQSxJQUFBQyxJQUFBO0VBQUEsSUFBQUMsSUFBQTtFQUFBLElBQUFDLE1BQUEsT0FBQUMsUUFBQTtFQUFBLElBQUFDLEdBQUE7RUFBQSxJQUFBQyxZQUFBO0lBQUFMLElBQUE7SUFBQU0sWUFBQTtNQUFBO1FBQUFDLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7SUFBQTtJQUFBRSxLQUFBO01BQUE7UUFBQUMsSUFBQTtRQUFBQyxJQUFBO1VBQUFOLEtBQUE7WUFBQUMsSUFBQTtZQUFB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

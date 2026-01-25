@@ -1,0 +1,23 @@
+90cc1466d76223a335a36b7464662271
+"use strict";
+// test/mocks/index.ts
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+__exportStar(require("./auth.mock"), exports);
+__exportStar(require("./database.mock"), exports);
+__exportStar(require("./snippets.mock"), exports);
+__exportStar(require("./users.mock"), exports);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS90ZXN0L21vY2tzL2luZGV4LnRzIiwibWFwcGluZ3MiOiI7QUFBQSxzQkFBc0I7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFdEIsOENBQTRCO0FBQzVCLGtEQUFnQztBQUNoQyxrREFBZ0M7QUFDaEMsK0NBQTZCIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIi9ob21lL3J1bm5lci93b3JrL3NuaXBwZXRmb3JnZS9zbmlwcGV0Zm9yZ2UvYXBwcy9hcGkvdGVzdC9tb2Nrcy9pbmRleC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyB0ZXN0L21vY2tzL2luZGV4LnRzXG5cbmV4cG9ydCAqIGZyb20gJy4vYXV0aC5tb2NrJztcbmV4cG9ydCAqIGZyb20gJy4vZGF0YWJhc2UubW9jayc7XG5leHBvcnQgKiBmcm9tICcuL3NuaXBwZXRzLm1vY2snO1xuZXhwb3J0ICogZnJvbSAnLi91c2Vycy5tb2NrJztcbiJdLCJ2ZXJzaW9uIjozfQ==

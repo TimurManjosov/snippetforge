@@ -1,0 +1,435 @@
+13f9da1deb9baa2f50e44ac88333f378
+"use strict";
+
+/* istanbul ignore next */
+function cov_1li6u5xz46() {
+  var path = "/home/runner/work/snippetforge/snippetforge/apps/api/src/lib/db/schema.ts";
+  var hash = "592e852533ce604016e1c42a753955c606f0597b";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/runner/work/snippetforge/snippetforge/apps/api/src/lib/db/schema.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 2,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 61
+        }
+      },
+      "2": {
+        start: {
+          line: 4,
+          column: 18
+        },
+        end: {
+          line: 4,
+          column: 48
+        }
+      },
+      "3": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 6,
+          column: 81
+        }
+      },
+      "4": {
+        start: {
+          line: 8,
+          column: 0
+        },
+        end: {
+          line: 26,
+          column: 4
+        }
+      },
+      "5": {
+        start: {
+          line: 22,
+          column: 15
+        },
+        end: {
+          line: 26,
+          column: 1
+        }
+      },
+      "6": {
+        start: {
+          line: 48,
+          column: 0
+        },
+        end: {
+          line: 137,
+          column: 4
+        }
+      },
+      "7": {
+        start: {
+          line: 86,
+          column: 26
+        },
+        end: {
+          line: 86,
+          column: 42
+        }
+      },
+      "8": {
+        start: {
+          line: 109,
+          column: 25
+        },
+        end: {
+          line: 109,
+          column: 35
+        }
+      },
+      "9": {
+        start: {
+          line: 111,
+          column: 15
+        },
+        end: {
+          line: 137,
+          column: 1
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 22,
+            column: 3
+          },
+          end: {
+            line: 22,
+            column: 4
+          }
+        },
+        loc: {
+          start: {
+            line: 22,
+            column: 15
+          },
+          end: {
+            line: 26,
+            column: 1
+          }
+        },
+        line: 22
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 86,
+            column: 20
+          },
+          end: {
+            line: 86,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 86,
+            column: 26
+          },
+          end: {
+            line: 86,
+            column: 42
+          }
+        },
+        line: 86
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 109,
+            column: 19
+          },
+          end: {
+            line: 109,
+            column: 20
+          }
+        },
+        loc: {
+          start: {
+            line: 109,
+            column: 25
+          },
+          end: {
+            line: 109,
+            column: 35
+          }
+        },
+        line: 109
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 111,
+            column: 3
+          },
+          end: {
+            line: 111,
+            column: 4
+          }
+        },
+        loc: {
+          start: {
+            line: 111,
+            column: 15
+          },
+          end: {
+            line: 137,
+            column: 1
+          }
+        },
+        line: 111
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    b: {},
+    inputSourceMap: {
+      file: "/home/runner/work/snippetforge/snippetforge/apps/api/src/lib/db/schema.ts",
+      mappings: "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",
+      names: [],
+      sources: ["/home/runner/work/snippetforge/snippetforge/apps/api/src/lib/db/schema.ts"],
+      sourcesContent: ["import {\n  boolean,\n  index,\n  integer,\n  pgEnum,\n  pgTable,\n  text,\n  timestamp,\n  uuid,\n  varchar,\n} from 'drizzle-orm/pg-core';\n\n// Role Enum\nexport const roleEnum = pgEnum('role', ['USER', 'ADMIN', 'MODERATOR']);\n\n// Users Table\nexport const users = pgTable(\n  'users',\n  {\n    id: uuid('id').primaryKey().defaultRandom(),\n    email: varchar('email', { length: 255 }).notNull().unique(),\n    username: varchar('username', { length: 30 }).notNull().unique(),\n    passwordHash: varchar('password_hash', { length: 60 }).notNull(),\n    bio: text('bio'),\n    avatarUrl: text('avatar_url'),\n    role: roleEnum('role').default('USER').notNull(),\n    createdAt: timestamp('created_at', { withTimezone: true })\n      .defaultNow()\n      .notNull(),\n    updatedAt: timestamp('updated_at', { withTimezone: true })\n      .defaultNow()\n      .notNull(),\n  },\n  (table) => ({\n    emailIdx: index('users_email_idx').on(table.email),\n    usernameIdx: index('users_username_idx').on(table.username),\n    roleIdx: index('users_role_idx').on(table.role),\n  }),\n);\n\n// Types\nexport type User = typeof users.$inferSelect;\nexport type NewUser = typeof users.$inferInsert;\n\n/**\n * Snippets Table - Code Snippets created by Users\n *\n * BUSINESS RULES:\n * - Each snippet belongs to a user (Foreign Key with CASCADE DELETE)\n * - Title is required, max 200 characters\n * - Code is required, max 50,000 characters\n * - Language is required (e.g. \"typescript\", \"python\")\n * - Description is optional\n * - isPublic defaults to true (Snippets are public by default)\n * - viewCount is automatically incremented\n *\n * PERFORMANCE:\n * - Index on userId (for \"my snippets\" queries)\n * - Index on language (for \"all TypeScript snippets\" queries)\n * - Index on createdAt (for sorting)\n * - Composite index on (isPublic, createdAt) for common query pattern\n *\n * SECURITY:\n * - CASCADE DELETE: When user is deleted, their snippets are also deleted\n */\nexport const snippets = pgTable(\n  'snippets',\n  {\n    // ========================================\n    // PRIMARY KEY\n    // ========================================\n\n    id: uuid('id').primaryKey().defaultRandom(),\n\n    // ========================================\n    // SNIPPET CONTENT\n    // ========================================\n\n    /**\n     * Snippet title\n     * Max 200 characters (for clarity)\n     */\n    title: varchar('title', { length: 200 }).notNull(),\n\n    /**\n     * Optional description\n     * Explains what the code does\n     */\n    description: text('description'),\n\n    /**\n     * The actual code\n     * Max 50,000 characters (prevents excessively large files)\n     */\n    code: text('code').notNull(),\n\n    /**\n     * Programming language\n     * Used for syntax highlighting\n     * Examples: \"typescript\", \"python\", \"javascript\", \"rust\"\n     */\n    language: varchar('language', { length: 50 }).notNull(),\n\n    // ========================================\n    // RELATIONSHIPS\n    // ========================================\n    /**\n     * Foreign Key to Users\n     * CASCADE DELETE: When user is deleted, their snippets are also deleted\n     */\n    userId: uuid('user_id')\n      .notNull()\n      .references(() => users.id, { onDelete: 'cascade' }),\n\n    // ========================================\n    // VISIBILITY & METRICS\n    // ========================================\n\n    /**\n     * Visibility\n     * true = Public (everyone can see)\n     * false = Private (only owner can see)\n     */\n    isPublic: boolean('is_public').default(true).notNull(),\n\n    /**\n     * Number of views\n     * Incremented when someone opens the snippet\n     */\n    viewCount: integer('view_count').default(0).notNull(),\n\n    // ========================================\n    // TIMESTAMPS\n    // ========================================\n\n    createdAt: timestamp('created_at', { withTimezone: true })\n      .defaultNow()\n      .notNull(),\n    updatedAt: timestamp('updated_at', { withTimezone: true })\n      .defaultNow()\n      .$onUpdate(() => new Date())\n      .notNull(),\n  },\n  (table) => ({\n    // ========================================\n    // INDICES (Performance!)\n    // ========================================\n\n    /**\n     * Index on userId\n     * Query: \"All my snippets\" (SELECT * FROM snippets WHERE user_id = ?)\n     * Without index: Full Table Scan\n     * With index: Index Scan (10-1000x faster)\n     */\n    userIdIdx: index('snippets_user_id_idx').on(table.userId),\n\n    /**\n     * Index on language\n     * Query: \"All TypeScript snippets\" (SELECT * FROM snippets WHERE language = 'typescript')\n     */\n    languageIdx: index('snippets_language_idx').on(table.language),\n\n    /**\n     * Index on createdAt\n     * Query: Sort by date (ORDER BY created_at DESC)\n     */\n    createdAtIdx: index('snippets_created_at_idx').on(table.createdAt),\n\n    /**\n     * Composite index for most common query: \"Public snippets sorted by date\"\n     * Query: SELECT * FROM snippets WHERE is_public = true ORDER BY created_at DESC\n     */\n    publicCreatedAtIdx: index('snippets_public_created_at_idx').on(\n      table.isPublic,\n      table.createdAt,\n    ),\n  }),\n);\n\n/**\n * Snippet Type (read from database)\n */\nexport type Snippet = typeof snippets.$inferSelect;\n/**\n * New Snippet Type (for INSERT operations)\n */\nexport type NewSnippet = typeof snippets.$inferInsert;\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "592e852533ce604016e1c42a753955c606f0597b"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1li6u5xz46 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1li6u5xz46();
+cov_1li6u5xz46().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1li6u5xz46().s[1]++;
+exports.snippets = exports.users = exports.roleEnum = void 0;
+const pg_core_1 =
+/* istanbul ignore next */
+(cov_1li6u5xz46().s[2]++, require("drizzle-orm/pg-core"));
+// Role Enum
+/* istanbul ignore next */
+cov_1li6u5xz46().s[3]++;
+exports.roleEnum = (0, pg_core_1.pgEnum)('role', ['USER', 'ADMIN', 'MODERATOR']);
+// Users Table
+/* istanbul ignore next */
+cov_1li6u5xz46().s[4]++;
+exports.users = (0, pg_core_1.pgTable)('users', {
+  id: (0, pg_core_1.uuid)('id').primaryKey().defaultRandom(),
+  email: (0, pg_core_1.varchar)('email', {
+    length: 255
+  }).notNull().unique(),
+  username: (0, pg_core_1.varchar)('username', {
+    length: 30
+  }).notNull().unique(),
+  passwordHash: (0, pg_core_1.varchar)('password_hash', {
+    length: 60
+  }).notNull(),
+  bio: (0, pg_core_1.text)('bio'),
+  avatarUrl: (0, pg_core_1.text)('avatar_url'),
+  role: (0, exports.roleEnum)('role').default('USER').notNull(),
+  createdAt: (0, pg_core_1.timestamp)('created_at', {
+    withTimezone: true
+  }).defaultNow().notNull(),
+  updatedAt: (0, pg_core_1.timestamp)('updated_at', {
+    withTimezone: true
+  }).defaultNow().notNull()
+}, table => {
+  /* istanbul ignore next */
+  cov_1li6u5xz46().f[0]++;
+  cov_1li6u5xz46().s[5]++;
+  return {
+    emailIdx: (0, pg_core_1.index)('users_email_idx').on(table.email),
+    usernameIdx: (0, pg_core_1.index)('users_username_idx').on(table.username),
+    roleIdx: (0, pg_core_1.index)('users_role_idx').on(table.role)
+  };
+});
+/**
+ * Snippets Table - Code Snippets created by Users
+ *
+ * BUSINESS RULES:
+ * - Each snippet belongs to a user (Foreign Key with CASCADE DELETE)
+ * - Title is required, max 200 characters
+ * - Code is required, max 50,000 characters
+ * - Language is required (e.g. "typescript", "python")
+ * - Description is optional
+ * - isPublic defaults to true (Snippets are public by default)
+ * - viewCount is automatically incremented
+ *
+ * PERFORMANCE:
+ * - Index on userId (for "my snippets" queries)
+ * - Index on language (for "all TypeScript snippets" queries)
+ * - Index on createdAt (for sorting)
+ * - Composite index on (isPublic, createdAt) for common query pattern
+ *
+ * SECURITY:
+ * - CASCADE DELETE: When user is deleted, their snippets are also deleted
+ */
+/* istanbul ignore next */
+cov_1li6u5xz46().s[6]++;
+exports.snippets = (0, pg_core_1.pgTable)('snippets', {
+  // ========================================
+  // PRIMARY KEY
+  // ========================================
+  id: (0, pg_core_1.uuid)('id').primaryKey().defaultRandom(),
+  // ========================================
+  // SNIPPET CONTENT
+  // ========================================
+  /**
+   * Snippet title
+   * Max 200 characters (for clarity)
+   */
+  title: (0, pg_core_1.varchar)('title', {
+    length: 200
+  }).notNull(),
+  /**
+   * Optional description
+   * Explains what the code does
+   */
+  description: (0, pg_core_1.text)('description'),
+  /**
+   * The actual code
+   * Max 50,000 characters (prevents excessively large files)
+   */
+  code: (0, pg_core_1.text)('code').notNull(),
+  /**
+   * Programming language
+   * Used for syntax highlighting
+   * Examples: "typescript", "python", "javascript", "rust"
+   */
+  language: (0, pg_core_1.varchar)('language', {
+    length: 50
+  }).notNull(),
+  // ========================================
+  // RELATIONSHIPS
+  // ========================================
+  /**
+   * Foreign Key to Users
+   * CASCADE DELETE: When user is deleted, their snippets are also deleted
+   */
+  userId: (0, pg_core_1.uuid)('user_id').notNull().references(() => {
+    /* istanbul ignore next */
+    cov_1li6u5xz46().f[1]++;
+    cov_1li6u5xz46().s[7]++;
+    return exports.users.id;
+  }, {
+    onDelete: 'cascade'
+  }),
+  // ========================================
+  // VISIBILITY & METRICS
+  // ========================================
+  /**
+   * Visibility
+   * true = Public (everyone can see)
+   * false = Private (only owner can see)
+   */
+  isPublic: (0, pg_core_1.boolean)('is_public').default(true).notNull(),
+  /**
+   * Number of views
+   * Incremented when someone opens the snippet
+   */
+  viewCount: (0, pg_core_1.integer)('view_count').default(0).notNull(),
+  // ========================================
+  // TIMESTAMPS
+  // ========================================
+  createdAt: (0, pg_core_1.timestamp)('created_at', {
+    withTimezone: true
+  }).defaultNow().notNull(),
+  updatedAt: (0, pg_core_1.timestamp)('updated_at', {
+    withTimezone: true
+  }).defaultNow().$onUpdate(() => {
+    /* istanbul ignore next */
+    cov_1li6u5xz46().f[2]++;
+    cov_1li6u5xz46().s[8]++;
+    return new Date();
+  }).notNull()
+}, table => {
+  /* istanbul ignore next */
+  cov_1li6u5xz46().f[3]++;
+  cov_1li6u5xz46().s[9]++;
+  return {
+    // ========================================
+    // INDICES (Performance!)
+    // ========================================
+    /**
+     * Index on userId
+     * Query: "All my snippets" (SELECT * FROM snippets WHERE user_id = ?)
+     * Without index: Full Table Scan
+     * With index: Index Scan (10-1000x faster)
+     */
+    userIdIdx: (0, pg_core_1.index)('snippets_user_id_idx').on(table.userId),
+    /**
+     * Index on language
+     * Query: "All TypeScript snippets" (SELECT * FROM snippets WHERE language = 'typescript')
+     */
+    languageIdx: (0, pg_core_1.index)('snippets_language_idx').on(table.language),
+    /**
+     * Index on createdAt
+     * Query: Sort by date (ORDER BY created_at DESC)
+     */
+    createdAtIdx: (0, pg_core_1.index)('snippets_created_at_idx').on(table.createdAt),
+    /**
+     * Composite index for most common query: "Public snippets sorted by date"
+     * Query: SELECT * FROM snippets WHERE is_public = true ORDER BY created_at DESC
+     */
+    publicCreatedAtIdx: (0, pg_core_1.index)('snippets_public_created_at_idx').on(table.isPublic, table.createdAt)
+  };
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMWxpNnU1eHo0NiIsImFjdHVhbENvdmVyYWdlIiwicyIsInBnX2NvcmVfMSIsInJlcXVpcmUiLCJleHBvcnRzIiwicm9sZUVudW0iLCJwZ0VudW0iLCJ1c2VycyIsInBnVGFibGUiLCJpZCIsInV1aWQiLCJwcmltYXJ5S2V5IiwiZGVmYXVsdFJhbmRvbSIsImVtYWlsIiwidmFyY2hhciIsImxlbmd0aCIsIm5vdE51bGwiLCJ1bmlxdWUiLCJ1c2VybmFtZSIsInBhc3N3b3JkSGFzaCIsImJpbyIsInRleHQiLCJhdmF0YXJVcmwiLCJyb2xlIiwiZGVmYXVsdCIsImNyZWF0ZWRBdCIsInRpbWVzdGFtcCIsIndpdGhUaW1lem9uZSIsImRlZmF1bHROb3ciLCJ1cGRhdGVkQXQiLCJ0YWJsZSIsImYiLCJlbWFpbElkeCIsImluZGV4Iiwib24iLCJ1c2VybmFtZUlkeCIsInJvbGVJZHgiLCJzbmlwcGV0cyIsInRpdGxlIiwiZGVzY3JpcHRpb24iLCJjb2RlIiwibGFuZ3VhZ2UiLCJ1c2VySWQiLCJyZWZlcmVuY2VzIiwib25EZWxldGUiLCJpc1B1YmxpYyIsImJvb2xlYW4iLCJ2aWV3Q291bnQiLCJpbnRlZ2VyIiwiJG9uVXBkYXRlIiwiRGF0ZSIsInVzZXJJZElkeCIsImxhbmd1YWdlSWR4IiwiY3JlYXRlZEF0SWR4IiwicHVibGljQ3JlYXRlZEF0SWR4Il0sInNvdXJjZXMiOlsiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvbGliL2RiL3NjaGVtYS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge1xuICBib29sZWFuLFxuICBpbmRleCxcbiAgaW50ZWdlcixcbiAgcGdFbnVtLFxuICBwZ1RhYmxlLFxuICB0ZXh0LFxuICB0aW1lc3RhbXAsXG4gIHV1aWQsXG4gIHZhcmNoYXIsXG59IGZyb20gJ2RyaXp6bGUtb3JtL3BnLWNvcmUnO1xuXG4vLyBSb2xlIEVudW1cbmV4cG9ydCBjb25zdCByb2xlRW51bSA9IHBnRW51bSgncm9sZScsIFsnVVNFUicsICdBRE1JTicsICdNT0RFUkFUT1InXSk7XG5cbi8vIFVzZXJzIFRhYmxlXG5leHBvcnQgY29uc3QgdXNlcnMgPSBwZ1RhYmxlKFxuICAndXNlcnMnLFxuICB7XG4gICAgaWQ6IHV1aWQoJ2lkJykucHJpbWFyeUtleSgpLmRlZmF1bHRSYW5kb20oKSxcbiAgICBlbWFpbDogdmFyY2hhcignZW1haWwnLCB7IGxlbmd0aDogMjU1IH0pLm5vdE51bGwoKS51bmlxdWUoKSxcbiAgICB1c2VybmFtZTogdmFyY2hhcigndXNlcm5hbWUnLCB7IGxlbmd0aDogMzAgfSkubm90TnVsbCgpLnVuaXF1ZSgpLFxuICAgIHBhc3N3b3JkSGFzaDogdmFyY2hhcigncGFzc3dvcmRfaGFzaCcsIHsgbGVuZ3RoOiA2MCB9KS5ub3ROdWxsKCksXG4gICAgYmlvOiB0ZXh0KCdiaW8nKSxcbiAgICBhdmF0YXJVcmw6IHRleHQoJ2F2YXRhcl91cmwnKSxcbiAgICByb2xlOiByb2xlRW51bSgncm9sZScpLmRlZmF1bHQoJ1VTRVInKS5ub3ROdWxsKCksXG4gICAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoJ2NyZWF0ZWRfYXQnLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KVxuICAgICAgLmRlZmF1bHROb3coKVxuICAgICAgLm5vdE51bGwoKSxcbiAgICB1cGRhdGVkQXQ6IHRpbWVzdGFtcCgndXBkYXRlZF9hdCcsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pXG4gICAgICAuZGVmYXVsdE5vdygpXG4gICAgICAubm90TnVsbCgpLFxuICB9LFxuICAodGFibGUpID0+ICh7XG4gICAgZW1haWxJZHg6IGluZGV4KCd1c2Vyc19lbWFpbF9pZHgnKS5vbih0YWJsZS5lbWFpbCksXG4gICAgdXNlcm5hbWVJZHg6IGluZGV4KCd1c2Vyc191c2VybmFtZV9pZHgnKS5vbih0YWJsZS51c2VybmFtZSksXG4gICAgcm9sZUlkeDogaW5kZXgoJ3VzZXJzX3JvbGVfaWR4Jykub24odGFibGUucm9sZSksXG4gIH0pLFxuKTtcblxuLy8gVHlwZXNcbmV4cG9ydCB0eXBlIFVzZXIgPSB0eXBlb2YgdXNlcnMuJGluZmVyU2VsZWN0O1xuZXhwb3J0IHR5cGUgTmV3VXNlciA9IHR5cGVvZiB1c2Vycy4kaW5mZXJJbnNlcnQ7XG5cbi8qKlxuICogU25pcHBldHMgVGFibGUgLSBDb2RlIFNuaXBwZXRzIGNyZWF0ZWQgYnkgVXNlcnNcbiAqXG4gKiBCVVNJTkVTUyBSVUxFUzpcbiAqIC0gRWFjaCBzbmlwcGV0IGJlbG9uZ3MgdG8gYSB1c2VyIChGb3JlaWduIEtleSB3aXRoIENBU0NBREUgREVMRVRFKVxuICogLSBUaXRsZSBpcyByZXF1aXJlZCwgbWF4IDIwMCBjaGFyYWN0ZXJzXG4gKiAtIENvZGUgaXMgcmVxdWlyZWQsIG1heCA1MCwwMDAgY2hhcmFjdGVyc1xuICogLSBMYW5ndWFnZSBpcyByZXF1aXJlZCAoZS5nLiBcInR5cGVzY3JpcHRcIiwgXCJweXRob25cIilcbiAqIC0gRGVzY3JpcHRpb24gaXMgb3B0aW9uYWxcbiAqIC0gaXNQdWJsaWMgZGVmYXVsdHMgdG8gdHJ1ZSAoU25pcHBldHMgYXJlIHB1YmxpYyBieSBkZWZhdWx0KVxuICogLSB2aWV3Q291bnQgaXMgYXV0b21hdGljYWxseSBpbmNyZW1lbnRlZFxuICpcbiAqIFBFUkZPUk1BTkNFOlxuICogLSBJbmRleCBvbiB1c2VySWQgKGZvciBcIm15IHNuaXBwZXRzXCIgcXVlcmllcylcbiAqIC0gSW5kZXggb24gbGFuZ3VhZ2UgKGZvciBcImFsbCBUeXBlU2NyaXB0IHNuaXBwZXRzXCIgcXVlcmllcylcbiAqIC0gSW5kZXggb24gY3JlYXRlZEF0IChmb3Igc29ydGluZylcbiAqIC0gQ29tcG9zaXRlIGluZGV4IG9uIChpc1B1YmxpYywgY3JlYXRlZEF0KSBmb3IgY29tbW9uIHF1ZXJ5IHBhdHRlcm5cbiAqXG4gKiBTRUNVUklUWTpcbiAqIC0gQ0FTQ0FERSBERUxFVEU6IFdoZW4gdXNlciBpcyBkZWxldGVkLCB0aGVpciBzbmlwcGV0cyBhcmUgYWxzbyBkZWxldGVkXG4gKi9cbmV4cG9ydCBjb25zdCBzbmlwcGV0cyA9IHBnVGFibGUoXG4gICdzbmlwcGV0cycsXG4gIHtcbiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4gICAgLy8gUFJJTUFSWSBLRVlcbiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbiAgICBpZDogdXVpZCgnaWQnKS5wcmltYXJ5S2V5KCkuZGVmYXVsdFJhbmRvbSgpLFxuXG4gICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuICAgIC8vIFNOSVBQRVQgQ09OVEVOVFxuICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuICAgIC8qKlxuICAgICAqIFNuaXBwZXQgdGl0bGVcbiAgICAgKiBNYXggMjAwIGNoYXJhY3RlcnMgKGZvciBjbGFyaXR5KVxuICAgICAqL1xuICAgIHRpdGxlOiB2YXJjaGFyKCd0aXRsZScsIHsgbGVuZ3RoOiAyMDAgfSkubm90TnVsbCgpLFxuXG4gICAgLyoqXG4gICAgICogT3B0aW9uYWwgZGVzY3JpcHRpb25cbiAgICAgKiBFeHBsYWlucyB3aGF0IHRoZSBjb2RlIGRvZXNcbiAgICAgKi9cbiAgICBkZXNjcmlwdGlvbjogdGV4dCgnZGVzY3JpcHRpb24nKSxcblxuICAgIC8qKlxuICAgICAqIFRoZSBhY3R1YWwgY29kZVxuICAgICAqIE1heCA1MCwwMDAgY2hhcmFjdGVycyAocHJldmVudHMgZXhjZXNzaXZlbHkgbGFyZ2UgZmlsZXMpXG4gICAgICovXG4gICAgY29kZTogdGV4dCgnY29kZScpLm5vdE51bGwoKSxcblxuICAgIC8qKlxuICAgICAqIFByb2dyYW1taW5nIGxhbmd1YWdlXG4gICAgICogVXNlZCBmb3Igc3ludGF4IGhpZ2hsaWdodGluZ1xuICAgICAqIEV4YW1wbGVzOiBcInR5cGVzY3JpcHRcIiwgXCJweXRob25cIiwgXCJqYXZhc2NyaXB0XCIsIFwicnVzdFwiXG4gICAgICovXG4gICAgbGFuZ3VhZ2U6IHZhcmNoYXIoJ2xhbmd1YWdlJywgeyBsZW5ndGg6IDUwIH0pLm5vdE51bGwoKSxcblxuICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbiAgICAvLyBSRUxBVElPTlNISVBTXG4gICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuICAgIC8qKlxuICAgICAqIEZvcmVpZ24gS2V5IHRvIFVzZXJzXG4gICAgICogQ0FTQ0FERSBERUxFVEU6IFdoZW4gdXNlciBpcyBkZWxldGVkLCB0aGVpciBzbmlwcGV0cyBhcmUgYWxzbyBkZWxldGVkXG4gICAgICovXG4gICAgdXNlcklkOiB1dWlkKCd1c2VyX2lkJylcbiAgICAgIC5ub3ROdWxsKClcbiAgICAgIC5yZWZlcmVuY2VzKCgpID0+IHVzZXJzLmlkLCB7IG9uRGVsZXRlOiAnY2FzY2FkZScgfSksXG5cbiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4gICAgLy8gVklTSUJJTElUWSAmIE1FVFJJQ1NcbiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbiAgICAvKipcbiAgICAgKiBWaXNpYmlsaXR5XG4gICAgICogdHJ1ZSA9IFB1YmxpYyAoZXZlcnlvbmUgY2FuIHNlZSlcbiAgICAgKiBmYWxzZSA9IFByaXZhdGUgKG9ubHkgb3duZXIgY2FuIHNlZSlcbiAgICAgKi9cbiAgICBpc1B1YmxpYzogYm9vbGVhbignaXNfcHVibGljJykuZGVmYXVsdCh0cnVlKS5ub3ROdWxsKCksXG5cbiAgICAvKipcbiAgICAgKiBOdW1iZXIgb2Ygdmlld3NcbiAgICAgKiBJbmNyZW1lbnRlZCB3aGVuIHNvbWVvbmUgb3BlbnMgdGhlIHNuaXBwZXRcbiAgICAgKi9cbiAgICB2aWV3Q291bnQ6IGludGVnZXIoJ3ZpZXdfY291bnQnKS5kZWZhdWx0KDApLm5vdE51bGwoKSxcblxuICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbiAgICAvLyBUSU1FU1RBTVBTXG4gICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG4gICAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoJ2NyZWF0ZWRfYXQnLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KVxuICAgICAgLmRlZmF1bHROb3coKVxuICAgICAgLm5vdE51bGwoKSxcbiAgICB1cGRhdGVkQXQ6IHRpbWVzdGFtcCgndXBkYXRlZF9hdCcsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pXG4gICAgICAuZGVmYXVsdE5vdygpXG4gICAgICAuJG9uVXBkYXRlKCgpID0+IG5ldyBEYXRlKCkpXG4gICAgICAubm90TnVsbCgpLFxuICB9LFxuICAodGFibGUpID0+ICh7XG4gICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuICAgIC8vIElORElDRVMgKFBlcmZvcm1hbmNlISlcbiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbiAgICAvKipcbiAgICAgKiBJbmRleCBvbiB1c2VySWRcbiAgICAgKiBRdWVyeTogXCJBbGwgbXkgc25pcHBldHNcIiAoU0VMRUNUICogRlJPTSBzbmlwcGV0cyBXSEVSRSB1c2VyX2lkID0gPylcbiAgICAgKiBXaXRob3V0IGluZGV4OiBGdWxsIFRhYmxlIFNjYW5cbiAgICAgKiBXaXRoIGluZGV4OiBJbmRleCBTY2FuICgxMC0xMDAweCBmYXN0ZXIpXG4gICAgICovXG4gICAgdXNlcklkSWR4OiBpbmRleCgnc25pcHBldHNfdXNlcl9pZF9pZHgnKS5vbih0YWJsZS51c2VySWQpLFxuXG4gICAgLyoqXG4gICAgICogSW5kZXggb24gbGFuZ3VhZ2VcbiAgICAgKiBRdWVyeTogXCJBbGwgVHlwZVNjcmlwdCBzbmlwcGV0c1wiIChTRUxFQ1QgKiBGUk9NIHNuaXBwZXRzIFdIRVJFIGxhbmd1YWdlID0gJ3R5cGVzY3JpcHQnKVxuICAgICAqL1xuICAgIGxhbmd1YWdlSWR4OiBpbmRleCgnc25pcHBldHNfbGFuZ3VhZ2VfaWR4Jykub24odGFibGUubGFuZ3VhZ2UpLFxuXG4gICAgLyoqXG4gICAgICogSW5kZXggb24gY3JlYXRlZEF0XG4gICAgICogUXVlcnk6IFNvcnQgYnkgZGF0ZSAoT1JERVIgQlkgY3JlYXRlZF9hdCBERVNDKVxuICAgICAqL1xuICAgIGNyZWF0ZWRBdElkeDogaW5kZXgoJ3NuaXBwZXRzX2NyZWF0ZWRfYXRfaWR4Jykub24odGFibGUuY3JlYXRlZEF0KSxcblxuICAgIC8qKlxuICAgICAqIENvbXBvc2l0ZSBpbmRleCBmb3IgbW9zdCBjb21tb24gcXVlcnk6IFwiUHVibGljIHNuaXBwZXRzIHNvcnRlZCBieSBkYXRlXCJcbiAgICAgKiBRdWVyeTogU0VMRUNUICogRlJPTSBzbmlwcGV0cyBXSEVSRSBpc19wdWJsaWMgPSB0cnVlIE9SREVSIEJZIGNyZWF0ZWRfYXQgREVTQ1xuICAgICAqL1xuICAgIHB1YmxpY0NyZWF0ZWRBdElkeDogaW5kZXgoJ3NuaXBwZXRzX3B1YmxpY19jcmVhdGVkX2F0X2lkeCcpLm9uKFxuICAgICAgdGFibGUuaXNQdWJsaWMsXG4gICAgICB0YWJsZS5jcmVhdGVkQXQsXG4gICAgKSxcbiAgfSksXG4pO1xuXG4vKipcbiAqIFNuaXBwZXQgVHlwZSAocmVhZCBmcm9tIGRhdGFiYXNlKVxuICovXG5leHBvcnQgdHlwZSBTbmlwcGV0ID0gdHlwZW9mIHNuaXBwZXRzLiRpbmZlclNlbGVjdDtcbi8qKlxuICogTmV3IFNuaXBwZXQgVHlwZSAoZm9yIElOU0VSVCBvcGVyYXRpb25zKVxuICovXG5leHBvcnQgdHlwZSBOZXdTbmlwcGV0ID0gdHlwZW9mIHNuaXBwZXRzLiRpbmZlckluc2VydDtcbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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QUUsQ0FBQztFQUV0RDtFQUNBO0VBQ0E7RUFFQTs7Ozs7RUFLQUMsUUFBUSxFQUFFLElBQUEzQyxTQUFBLENBQUE0QyxPQUFPLEVBQUMsV0FBVyxDQUFDLENBQUN0QixPQUFPLENBQUMsSUFBSSxDQUFDLENBQUNSLE9BQU8sRUFBRTtFQUV0RDs7OztFQUlBK0IsU0FBUyxFQUFFLElBQUE3QyxTQUFBLENBQUE4QyxPQUFPLEVBQUMsWUFBWSxDQUFDLENBQUN4QixPQUFPLENBQUMsQ0FBQyxDQUFDLENBQUNSLE9BQU8sRUFBRTtFQUVyRDtFQUNBO0VBQ0E7RUFFQVMsU0FBUyxFQUFFLElBQUF2QixTQUFBLENBQUF3QixTQUFTLEVBQUMsWUFBWSxFQUFFO0lBQUVDLFlBQVksRUFBRTtFQUFJLENBQUUsQ0FBQyxDQUN2REMsVUFBVSxFQUFFLENBQ1paLE9BQU8sRUFBRTtFQUNaYSxTQUFTLEVBQUUsSUFBQTNCLFNBQUEsQ0FBQXdCLFNBQVMsRUFBQyxZQUFZLEVBQUU7SUFBRUMsWUFBWSxFQUFFO0VBQUksQ0FBRSxDQUFDLENBQ3ZEQyxVQUFVLEVBQUUsQ0FDWnFCLFNBQVMsQ0FBQyxNQUFNO0lBQUE7SUFBQWxELGNBQUEsR0FBQWdDLENBQUE7SUFBQWhDLGNBQUEsR0FBQUUsQ0FBQTtJQUFBLFdBQUlpRCxJQUFJLEVBQUU7RUFBRixDQUFFLENBQUMsQ0FDM0JsQyxPQUFPO0NBQ1gsRUFDQWMsS0FBSyxJQUFNO0VBQUE7RUFBQS9CLGNBQUEsR0FBQWdDLENBQUE7RUFBQWhDLGNBQUEsR0FBQUUsQ0FBQTtFQUFBO0lBQ1Y7SUFDQTtJQUNBO0lBRUE7Ozs7OztJQU1Ba0QsU0FBUyxFQUFFLElBQUFqRCxTQUFBLENBQUErQixLQUFLLEVBQUMsc0JBQXNCLENBQUMsQ0FBQ0MsRUFBRSxDQUFDSixLQUFLLENBQUNZLE1BQU0sQ0FBQztJQUV6RDs7OztJQUlBVSxXQUFXLEVBQUUsSUFBQWxELFNBQUEsQ0FBQStCLEtBQUssRUFBQyx1QkFBdUIsQ0FBQyxDQUFDQyxFQUFFLENBQUNKLEtBQUssQ0FBQ1csUUFBUSxDQUFDO0lBRTlEOzs7O0lBSUFZLFlBQVksRUFBRSxJQUFBbkQsU0FBQSxDQUFBK0IsS0FBSyxFQUFDLHlCQUF5QixDQUFDLENBQUNDLEVBQUUsQ0FBQ0osS0FBSyxDQUFDTCxTQUFTLENBQUM7SUFFbEU7Ozs7SUFJQTZCLGtCQUFrQixFQUFFLElBQUFwRCxTQUFBLENBQUErQixLQUFLLEVBQUMsZ0NBQWdDLENBQUMsQ0FBQ0MsRUFBRSxDQUM1REosS0FBSyxDQUFDZSxRQUFRLEVBQ2RmLEtBQUssQ0FBQ0wsU0FBUztHQUVsQjtDQUFDLENBQ0giLCJpZ25vcmVMaXN0IjpbXX0=
