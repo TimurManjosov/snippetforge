@@ -1,0 +1,61 @@
+34f22098ef24533a03ba11e1c217a579
+"use strict";
+
+// src/modules/auth/auth.types.ts
+/* istanbul ignore next */
+function cov_1rk1aw969t() {
+  var path = "/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/auth/auth.types.ts";
+  var hash = "bc5ccbbe5675b56370f5196fd32922fb6d396973";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/auth/auth.types.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 62
+        }
+      }
+    },
+    fnMap: {},
+    branchMap: {},
+    s: {
+      "0": 0
+    },
+    f: {},
+    b: {},
+    inputSourceMap: {
+      file: "/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/auth/auth.types.ts",
+      mappings: ";AAAA,iCAAiC",
+      names: [],
+      sources: ["/home/runner/work/snippetforge/snippetforge/apps/api/src/modules/auth/auth.types.ts"],
+      sourcesContent: ["// src/modules/auth/auth.types.ts\n\nimport { type SafeUser } from '../users';\n\n/**\n * Auth Types - Alle Authentication-bezogenen Interfaces\n *\n * WARUM separate Types?\n * - Klare Trennung zwischen Auth und User Concerns\n * - JWT Payload ist nicht gleich User\n * - Token Response ist nicht gleich User Response\n */\n\n/**\n * JWT Payload - Was im Token gespeichert wird\n *\n * WICHTIG: Nur minimale Daten im Token!\n * - sub (subject): Standard JWT Claim f\xFCr User ID\n * - email:  F\xFCr schnellen Lookup\n * - role: F\xFCr Authorization ohne DB-Query\n *\n * NICHT im Token:\n * - username (kann sich \xE4ndern)\n * - bio, avatarUrl (unn\xF6tig, zu gro\xDF)\n * - passwordHash (NIEMALS!)\n */\nexport interface JwtPayload {\n  sub: string; // User ID (UUID)\n  email: string; // User Email\n  role: string; // User Role (USER, ADMIN, MODERATOR)\n  iat?: number; // Issued At (automatisch von JWT)\n  exp?: number; // Expiration (automatisch von JWT)\n}\n\n/**\n * Token Response - Was bei Login/Register zur\xFCckgegeben wird\n */\nexport interface TokenResponse {\n  accessToken: string;\n  tokenType: 'Bearer';\n  expiresIn: number; // Sekunden bis Expiration\n}\n\n/**\n * Auth Response - Vollst\xE4ndige Response bei Login/Register\n * Enth\xE4lt Token UND User-Daten\n */\nexport interface AuthResponse {\n  user: SafeUser;\n  tokens: TokenResponse;\n}\n\n/**\n * Request mit authentifiziertem User\n * Erweitert Express Request nach JWT-Validierung\n *\n * VERWENDUNG:\n * Nach JwtAuthGuard enth\xE4lt request.user den SafeUser\n */\nexport interface AuthenticatedRequest extends Request {\n  user: SafeUser;\n}\n\n/**\n * Decoded JWT Token (nach Validierung)\n * Passport gibt dies an Strategy. validate()\n */\nexport interface DecodedJwtToken extends JwtPayload {\n  iat: number;\n  exp: number;\n}\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "bc5ccbbe5675b56370f5196fd32922fb6d396973"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1rk1aw969t = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1rk1aw969t();
+cov_1rk1aw969t().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMXJrMWF3OTY5dCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsImJyYW5jaE1hcCIsInMiLCJmIiwiYiIsImlucHV0U291cmNlTWFwIiwiZmlsZSIsIm1hcHBpbmdzIiwibmFtZXMiLCJzb3VyY2VzIiwic291cmNlc0NvbnRlbnQiLCJ2ZXJzaW9uIiwiX2NvdmVyYWdlU2NoZW1hIiwiY292ZXJhZ2UiLCJhY3R1YWxDb3ZlcmFnZSJdLCJzb3VyY2VzIjpbIi9ob21lL3J1bm5lci93b3JrL3NuaXBwZXRmb3JnZS9zbmlwcGV0Zm9yZ2UvYXBwcy9hcGkvc3JjL21vZHVsZXMvYXV0aC9hdXRoLnR5cGVzLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9tb2R1bGVzL2F1dGgvYXV0aC50eXBlcy50c1xuXG5pbXBvcnQgeyB0eXBlIFNhZmVVc2VyIH0gZnJvbSAnLi4vdXNlcnMnO1xuXG4vKipcbiAqIEF1dGggVHlwZXMgLSBBbGxlIEF1dGhlbnRpY2F0aW9uLWJlem9nZW5lbiBJbnRlcmZhY2VzXG4gKlxuICogV0FSVU0gc2VwYXJhdGUgVHlwZXM/XG4gKiAtIEtsYXJlIFRyZW5udW5nIHp3aXNjaGVuIEF1dGggdW5kIFVzZXIgQ29uY2VybnNcbiAqIC0gSldUIFBheWxvYWQgaXN0IG5pY2h0IGdsZWljaCBVc2VyXG4gKiAtIFRva2VuIFJlc3BvbnNlIGlzdCBuaWNodCBnbGVpY2ggVXNlciBSZXNwb25zZVxuICovXG5cbi8qKlxuICogSldUIFBheWxvYWQgLSBXYXMgaW0gVG9rZW4gZ2VzcGVpY2hlcnQgd2lyZFxuICpcbiAqIFdJQ0hUSUc6IE51ciBtaW5pbWFsZSBEYXRlbiBpbSBUb2tlbiFcbiAqIC0gc3ViIChzdWJqZWN0KTogU3RhbmRhcmQgSldUIENsYWltIGbDvHIgVXNlciBJRFxuICogLSBlbWFpbDogIEbDvHIgc2NobmVsbGVuIExvb2t1cFxuICogLSByb2xlOiBGw7xyIEF1dGhvcml6YXRpb24gb2huZSBEQi1RdWVyeVxuICpcbiAqIE5JQ0hUIGltIFRva2VuOlxuICogLSB1c2VybmFtZSAoa2FubiBzaWNoIMOkbmRlcm4pXG4gKiAtIGJpbywgYXZhdGFyVXJsICh1bm7DtnRpZywgenUgZ3Jvw58pXG4gKiAtIHBhc3N3b3JkSGFzaCAoTklFTUFMUyEpXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgSnd0UGF5bG9hZCB7XG4gIHN1Yjogc3RyaW5nOyAvLyBVc2VyIElEIChVVUlEKVxuICBlbWFpbDogc3RyaW5nOyAvLyBVc2VyIEVtYWlsXG4gIHJvbGU6IHN0cmluZzsgLy8gVXNlciBSb2xlIChVU0VSLCBBRE1JTiwgTU9ERVJBVE9SKVxuICBpYXQ/OiBudW1iZXI7IC8vIElzc3VlZCBBdCAoYXV0b21hdGlzY2ggdm9uIEpXVClcbiAgZXhwPzogbnVtYmVyOyAvLyBFeHBpcmF0aW9uIChhdXRvbWF0aXNjaCB2b24gSldUKVxufVxuXG4vKipcbiAqIFRva2VuIFJlc3BvbnNlIC0gV2FzIGJlaSBMb2dpbi9SZWdpc3RlciB6dXLDvGNrZ2VnZWJlbiB3aXJkXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgVG9rZW5SZXNwb25zZSB7XG4gIGFjY2Vzc1Rva2VuOiBzdHJpbmc7XG4gIHRva2VuVHlwZTogJ0JlYXJlcic7XG4gIGV4cGlyZXNJbjogbnVtYmVyOyAvLyBTZWt1bmRlbiBiaXMgRXhwaXJhdGlvblxufVxuXG4vKipcbiAqIEF1dGggUmVzcG9uc2UgLSBWb2xsc3TDpG5kaWdlIFJlc3BvbnNlIGJlaSBMb2dpbi9SZWdpc3RlclxuICogRW50aMOkbHQgVG9rZW4gVU5EIFVzZXItRGF0ZW5cbiAqL1xuZXhwb3J0IGludGVyZmFjZSBBdXRoUmVzcG9uc2Uge1xuICB1c2VyOiBTYWZlVXNlcjtcbiAgdG9rZW5zOiBUb2tlblJlc3BvbnNlO1xufVxuXG4vKipcbiAqIFJlcXVlc3QgbWl0IGF1dGhlbnRpZml6aWVydGVtIFVzZXJcbiAqIEVyd2VpdGVydCBFeHByZXNzIFJlcXVlc3QgbmFjaCBKV1QtVmFsaWRpZXJ1bmdcbiAqXG4gKiBWRVJXRU5EVU5HOlxuICogTmFjaCBKd3RBdXRoR3VhcmQgZW50aMOkbHQgcmVxdWVzdC51c2VyIGRlbiBTYWZlVXNlclxuICovXG5leHBvcnQgaW50ZXJmYWNlIEF1dGhlbnRpY2F0ZWRSZXF1ZXN0IGV4dGVuZHMgUmVxdWVzdCB7XG4gIHVzZXI6IFNhZmVVc2VyO1xufVxuXG4vKipcbiAqIERlY29kZWQgSldUIFRva2VuIChuYWNoIFZhbGlkaWVydW5nKVxuICogUGFzc3BvcnQgZ2lidCBkaWVzIGFuIFN0cmF0ZWd5LiB2YWxpZGF0ZSgpXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgRGVjb2RlZEp3dFRva2VuIGV4dGVuZHMgSnd0UGF5bG9hZCB7XG4gIGlhdDogbnVtYmVyO1xuICBleHA6IG51bWJlcjtcbn1cbiJdLCJtYXBwaW5ncyI6Ijs7QUFBQTtBQUFBO0FBQUEsU0FBQUEsZUFBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxJQUFBO0VBQUEsSUFBQUMsTUFBQSxPQUFBQyxRQUFBO0VBQUEsSUFBQUMsR0FBQTtFQUFBLElBQUFDLFlBQUE7SUFBQUwsSUFBQTtJQUFBTSxZQUFBO01BQUE7UUFBQUMsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7SUFBQTtJQUFBRSxLQUFBO0lBQUFDLFNBQUE7SUFBQUMsQ0FBQTtNQUFBO0lBQUE7SUFBQUMsQ0FBQTtJQUFBQyxDQUFBO0lBQUFDLGNBQUE7TUFBQUMsSUFBQTtNQUFBQyxRQUFBO01BQUFDLEtBQUE7TUFBQUMsT0FBQTtNQUFBQyxjQUFBO01BQUFDLE9BQUE7SUFBQTtJQUFBQyxlQUFBO0lBQUF0QixJQUFBO0VBQUE7RUFBQSxJQUFBdUIsUUFBQSxHQUFBdEIsTUFBQSxDQUFBRSxHQUFBLE1BQUFGLE1BQUEsQ0FBQUUsR0FBQTtFQUFBLEtBQUFvQixRQUFBLENBQUF4QixJQUFBLEtBQUF3QixRQUFBLENBQUF4QixJQUFBLEVBQUFDLElBQUEsS0FBQUEsSUFBQTtJQUFBdUIsUUFBQSxDQUFBeEIsSUFBQSxJQUFBSyxZQUFBO0VBQUE7RUFBQSxJQUFBb0IsY0FBQSxHQUFBRCxRQUFBLENBQUF4QixJQUFBO0VBQUEiLCJpZ25vcmVMaXN0IjpbXX0=

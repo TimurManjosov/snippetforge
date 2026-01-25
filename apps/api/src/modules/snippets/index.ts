@@ -10,3 +10,5 @@ export { SnippetsRepository } from './snippets.repository';
 export { SnippetsService } from './snippets.service';
 // Types
 export * from './snippets.types';
+// DTOs
+export * from './dto';

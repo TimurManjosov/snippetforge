@@ -1,0 +1,70 @@
+4b29aacd923d6f89d87556c0d1aff789
+"use strict";
+// src/modules/snippets/dto/update-snippet.dto.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpdateSnippetSchema = void 0;
+exports.validateUpdateSnippetDto = validateUpdateSnippetDto;
+exports.safeValidateUpdateSnippetDto = safeValidateUpdateSnippetDto;
+const zod_1 = require("zod");
+/**
+ * Update Snippet DTO - Validation für Snippet-Updates
+ *
+ * WARUM partial statt separate Fields?
+ * 1. DRY: Keine Duplizierung der Validation Rules
+ * 2. Consistency: Update verwendet gleiche Rules wie Create
+ * 3. Flexibility: Frontend kann beliebige Felder updaten
+ * 4. Type Safety: TypeScript prüft alle möglichen Updates
+ *
+ * VALIDATION RULES:
+ * - Alle Felder sind optional (partial update)
+ * - Aber wenn vorhanden, gelten die gleichen Rules wie bei Create
+ * - title: 1-200 Zeichen
+ * - description: Max 1000 Zeichen
+ * - code: 1-50000 Zeichen
+ * - language: Valides Format
+ * - isPublic: Boolean
+ *
+ * WICHTIG: User kann nur eigene Snippets updaten (wird im Service geprüft)
+ */
+exports.UpdateSnippetSchema = zod_1.z.object({
+    title: zod_1.z
+        .string()
+        .min(1, 'Title cannot be empty')
+        .max(200, 'Title must be at most 200 characters')
+        .transform((val) => val.trim())
+        .optional(),
+    description: zod_1.z
+        .string()
+        .max(1000, 'Description must be at most 1000 characters')
+        .nullable()
+        .transform((val) => (val ? val.trim() : val))
+        .optional(),
+    code: zod_1.z
+        .string()
+        .min(1, 'Code cannot be empty')
+        .max(50000, 'Code must be at most 50000 characters')
+        .optional(),
+    language: zod_1.z
+        .string()
+        .min(1, 'Language cannot be empty')
+        .max(50, 'Language must be at most 50 characters')
+        .transform((val) => val.toLowerCase().trim())
+        .refine((val) => /^[a-z0-9-]+$/.test(val), 'Language must be lowercase alphanumeric with hyphens')
+        .optional(),
+    isPublic: zod_1.z.boolean().optional(),
+});
+/**
+ * Validation Function
+ * Kann auch außerhalb von NestJS verwendet werden
+ */
+function validateUpdateSnippetDto(data) {
+    return exports.UpdateSnippetSchema.parse(data);
+}
+/**
+ * Safe Validation (wirft keinen Error)
+ * Gibt Result-Object zurück
+ */
+function safeValidateUpdateSnippetDto(data) {
+    return exports.UpdateSnippetSchema.safeParse(data);
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvbW9kdWxlcy9zbmlwcGV0cy9kdG8vdXBkYXRlLXNuaXBwZXQuZHRvLnRzIiwibWFwcGluZ3MiOiI7QUFBQSxpREFBaUQ7OztBQWdGakQsNERBRUM7QUFNRCxvRUFFQztBQXhGRCw2QkFBd0I7QUFFeEI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7R0FtQkc7QUFFVSxRQUFBLG1CQUFtQixHQUFHLE9BQUMsQ0FBQyxNQUFNLENBQUM7SUFDMUMsS0FBSyxFQUFFLE9BQUM7U0FDTCxNQUFNLEVBQUU7U0FDUixHQUFHLENBQUMsQ0FBQyxFQUFFLHVCQUF1QixDQUFDO1NBQy9CLEdBQUcsQ0FBQyxHQUFHLEVBQUUsc0NBQXNDLENBQUM7U0FDaEQsU0FBUyxDQUFDLENBQUMsR0FBRyxFQUFFLEVBQUUsQ0FBQyxHQUFHLENBQUMsSUFBSSxFQUFFLENBQUM7U0FDOUIsUUFBUSxFQUFFO0lBRWIsV0FBVyxFQUFFLE9BQUM7U0FDWCxNQUFNLEVBQUU7U0FDUixHQUFHLENBQUMsSUFBSSxFQUFFLDZDQUE2QyxDQUFDO1NBQ3hELFFBQVEsRUFBRTtTQUNWLFNBQVMsQ0FBQyxDQUFDLEdBQUcsRUFBRSxFQUFFLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxJQUFJLEVBQUUsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUM7U0FDNUMsUUFBUSxFQUFFO0lBRWIsSUFBSSxFQUFFLE9BQUM7U0FDSixNQUFNLEVBQUU7U0FDUixHQUFHLENBQUMsQ0FBQyxFQUFFLHNCQUFzQixDQUFDO1NBQzlCLEdBQUcsQ0FBQyxLQUFLLEVBQUUsdUNBQXVDLENBQUM7U0FDbkQsUUFBUSxFQUFFO0lBRWIsUUFBUSxFQUFFLE9BQUM7U0FDUixNQUFNLEVBQUU7U0FDUixHQUFHLENBQUMsQ0FBQyxFQUFFLDBCQUEwQixDQUFDO1NBQ2xDLEdBQUcsQ0FBQyxFQUFFLEVBQUUsd0NBQXdDLENBQUM7U0FDakQsU0FBUyxDQUFDLENBQUMsR0FBRyxFQUFFLEVBQUUsQ0FBQyxHQUFHLENBQUMsV0FBVyxFQUFFLENBQUMsSUFBSSxFQUFFLENBQUM7U0FDNUMsTUFBTSxDQUNMLENBQUMsR0FBRyxFQUFFLEVBQUUsQ0FBQyxjQUFjLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUNqQyxzREFBc0QsQ0FDdkQ7U0FDQSxRQUFRLEVBQUU7SUFFYixRQUFRLEVBQUUsT0FBQyxDQUFDLE9BQU8sRUFBRSxDQUFDLFFBQVEsRUFBRTtDQUNqQyxDQUFDLENBQUM7QUFrQkg7OztHQUdHO0FBQ0gsU0FBZ0Isd0JBQXdCLENBQUMsSUFBYTtJQUNwRCxPQUFPLDJCQUFtQixDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQztBQUN6QyxDQUFDO0FBRUQ7OztHQUdHO0FBQ0gsU0FBZ0IsNEJBQTRCLENBQUMsSUFBYTtJQUN4RCxPQUFPLDJCQUFtQixDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsQ0FBQztBQUM3QyxDQUFDIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIi9ob21lL3J1bm5lci93b3JrL3NuaXBwZXRmb3JnZS9zbmlwcGV0Zm9yZ2UvYXBwcy9hcGkvc3JjL21vZHVsZXMvc25pcHBldHMvZHRvL3VwZGF0ZS1zbmlwcGV0LmR0by50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBzcmMvbW9kdWxlcy9zbmlwcGV0cy9kdG8vdXBkYXRlLXNuaXBwZXQuZHRvLnRzXG5cbmltcG9ydCB7IHogfSBmcm9tICd6b2QnO1xuXG4vKipcbiAqIFVwZGF0ZSBTbmlwcGV0IERUTyAtIFZhbGlkYXRpb24gZsO8ciBTbmlwcGV0LVVwZGF0ZXNcbiAqXG4gKiBXQVJVTSBwYXJ0aWFsIHN0YXR0IHNlcGFyYXRlIEZpZWxkcz9cbiAqIDEuIERSWTogS2VpbmUgRHVwbGl6aWVydW5nIGRlciBWYWxpZGF0aW9uIFJ1bGVzXG4gKiAyLiBDb25zaXN0ZW5jeTogVXBkYXRlIHZlcndlbmRldCBnbGVpY2hlIFJ1bGVzIHdpZSBDcmVhdGVcbiAqIDMuIEZsZXhpYmlsaXR5OiBGcm9udGVuZCBrYW5uIGJlbGllYmlnZSBGZWxkZXIgdXBkYXRlblxuICogNC4gVHlwZSBTYWZldHk6IFR5cGVTY3JpcHQgcHLDvGZ0IGFsbGUgbcO2Z2xpY2hlbiBVcGRhdGVzXG4gKlxuICogVkFMSURBVElPTiBSVUxFUzpcbiAqIC0gQWxsZSBGZWxkZXIgc2luZCBvcHRpb25hbCAocGFydGlhbCB1cGRhdGUpXG4gKiAtIEFiZXIgd2VubiB2b3JoYW5kZW4sIGdlbHRlbiBkaWUgZ2xlaWNoZW4gUnVsZXMgd2llIGJlaSBDcmVhdGVcbiAqIC0gdGl0bGU6IDEtMjAwIFplaWNoZW5cbiAqIC0gZGVzY3JpcHRpb246IE1heCAxMDAwIFplaWNoZW5cbiAqIC0gY29kZTogMS01MDAwMCBaZWljaGVuXG4gKiAtIGxhbmd1YWdlOiBWYWxpZGVzIEZvcm1hdFxuICogLSBpc1B1YmxpYzogQm9vbGVhblxuICpcbiAqIFdJQ0hUSUc6IFVzZXIga2FubiBudXIgZWlnZW5lIFNuaXBwZXRzIHVwZGF0ZW4gKHdpcmQgaW0gU2VydmljZSBnZXByw7xmdClcbiAqL1xuXG5leHBvcnQgY29uc3QgVXBkYXRlU25pcHBldFNjaGVtYSA9IHoub2JqZWN0KHtcbiAgdGl0bGU6IHpcbiAgICAuc3RyaW5nKClcbiAgICAubWluKDEsICdUaXRsZSBjYW5ub3QgYmUgZW1wdHknKVxuICAgIC5tYXgoMjAwLCAnVGl0bGUgbXVzdCBiZSBhdCBtb3N0IDIwMCBjaGFyYWN0ZXJzJylcbiAgICAudHJhbnNmb3JtKCh2YWwpID0+IHZhbC50cmltKCkpXG4gICAgLm9wdGlvbmFsKCksXG5cbiAgZGVzY3JpcHRpb246IHpcbiAgICAuc3RyaW5nKClcbiAgICAubWF4KDEwMDAsICdEZXNjcmlwdGlvbiBtdXN0IGJlIGF0IG1vc3QgMTAwMCBjaGFyYWN0ZXJzJylcbiAgICAubnVsbGFibGUoKVxuICAgIC50cmFuc2Zvcm0oKHZhbCkgPT4gKHZhbCA/IHZhbC50cmltKCkgOiB2YWwpKVxuICAgIC5vcHRpb25hbCgpLFxuXG4gIGNvZGU6IHpcbiAgICAuc3RyaW5nKClcbiAgICAubWluKDEsICdDb2RlIGNhbm5vdCBiZSBlbXB0eScpXG4gICAgLm1heCg1MDAwMCwgJ0NvZGUgbXVzdCBiZSBhdCBtb3N0IDUwMDAwIGNoYXJhY3RlcnMnKVxuICAgIC5vcHRpb25hbCgpLFxuXG4gIGxhbmd1YWdlOiB6XG4gICAgLnN0cmluZygpXG4gICAgLm1pbigxLCAnTGFuZ3VhZ2UgY2Fubm90IGJlIGVtcHR5JylcbiAgICAubWF4KDUwLCAnTGFuZ3VhZ2UgbXVzdCBiZSBhdCBtb3N0IDUwIGNoYXJhY3RlcnMnKVxuICAgIC50cmFuc2Zvcm0oKHZhbCkgPT4gdmFsLnRvTG93ZXJDYXNlKCkudHJpbSgpKVxuICAgIC5yZWZpbmUoXG4gICAgICAodmFsKSA9PiAvXlthLXowLTktXSskLy50ZXN0KHZhbCksXG4gICAgICAnTGFuZ3VhZ2UgbXVzdCBiZSBsb3dlcmNhc2UgYWxwaGFudW1lcmljIHdpdGggaHlwaGVucycsXG4gICAgKVxuICAgIC5vcHRpb25hbCgpLFxuXG4gIGlzUHVibGljOiB6LmJvb2xlYW4oKS5vcHRpb25hbCgpLFxufSk7XG5cbi8qKlxuICogVHlwZVNjcmlwdCBUeXBlIGF1cyBTY2hlbWEgZ2VuZXJpZXJ0XG4gKlxuICogRXF1aXZhbGVudCB6dTpcbiAqIGludGVyZmFjZSBVcGRhdGVTbmlwcGV0RHRvIHtcbiAqICAgdGl0bGU/OiBzdHJpbmdcbiAqICAgZGVzY3JpcHRpb24/OiBzdHJpbmcgfCBudWxsXG4gKiAgIGNvZGU/OiBzdHJpbmdcbiAqICAgbGFuZ3VhZ2U/OiBzdHJpbmdcbiAqICAgaXNQdWJsaWM/OiBib29sZWFuXG4gKiB9XG4gKlxuICogQUJFUjogQXV0b21hdGlzY2ggc3luY2hyb24gbWl0IFZhbGlkYXRpb24gUnVsZXMhXG4gKi9cbmV4cG9ydCB0eXBlIFVwZGF0ZVNuaXBwZXREdG8gPSB6LmluZmVyPHR5cGVvZiBVcGRhdGVTbmlwcGV0U2NoZW1hPjtcblxuLyoqXG4gKiBWYWxpZGF0aW9uIEZ1bmN0aW9uXG4gKiBLYW5uIGF1Y2ggYXXDn2VyaGFsYiB2b24gTmVzdEpTIHZlcndlbmRldCB3ZXJkZW5cbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIHZhbGlkYXRlVXBkYXRlU25pcHBldER0byhkYXRhOiB1bmtub3duKTogVXBkYXRlU25pcHBldER0byB7XG4gIHJldHVybiBVcGRhdGVTbmlwcGV0U2NoZW1hLnBhcnNlKGRhdGEpO1xufVxuXG4vKipcbiAqIFNhZmUgVmFsaWRhdGlvbiAod2lyZnQga2VpbmVuIEVycm9yKVxuICogR2lidCBSZXN1bHQtT2JqZWN0IHp1csO8Y2tcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIHNhZmVWYWxpZGF0ZVVwZGF0ZVNuaXBwZXREdG8oZGF0YTogdW5rbm93bikge1xuICByZXR1cm4gVXBkYXRlU25pcHBldFNjaGVtYS5zYWZlUGFyc2UoZGF0YSk7XG59XG4iXSwidmVyc2lvbiI6M30=
