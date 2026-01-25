@@ -1,0 +1,100 @@
+944692a448fdbf0ff7470fa6349a0bdc
+"use strict";
+// src/shared/pipes/zod-validation.pipe.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ZodValidationPipe = void 0;
+const common_1 = require("@nestjs/common");
+const zod_1 = require("zod");
+const constants_1 = require("../constants");
+/**
+ * ZodValidationPipe - Validiert Input mit Zod Schemas
+ *
+ * VERWENDUNG:
+ * @Post('register')
+ * async register(
+ *   @Body(new ZodValidationPipe(RegisterSchema)) dto: RegisterDto
+ * ) {
+ *   // dto ist GARANTIERT valide
+ * }
+ *
+ * ERROR FORMAT:
+ * Wirft BadRequestException mit speziellem Format,
+ * das von HttpExceptionFilter erkannt wird.
+ *
+ * PERFORMANCE:
+ * - Zod ist schnell (native JS, kein Reflection)
+ * - Parse + Transform in einem Schritt
+ * - Fehler werden früh erkannt (Fail Fast)
+ */
+let ZodValidationPipe = class ZodValidationPipe {
+    schema;
+    constructor(schema) {
+        this.schema = schema;
+    }
+    /**
+     * Transform - Validiert und transformiert Input
+     */
+    transform(value) {
+        try {
+            // Zod validiert UND transformiert (z.B. email lowercase)
+            return this.schema.parse(value);
+        }
+        catch (error) {
+            if (error instanceof zod_1.ZodError) {
+                // Formatiere Zod Errors
+                const formattedErrors = this.formatZodErrors(error);
+                // BadRequestException mit Custom Format
+                // HttpExceptionFilter erkennt 'errors' Property
+                throw new common_1.BadRequestException({
+                    message: 'Validation failed',
+                    code: constants_1.ErrorCodes.VALIDATION_ERROR,
+                    errors: formattedErrors,
+                });
+            }
+            // Unbekannter Error - weiterwerfen
+            throw error;
+        }
+    }
+    /**
+     * Formatiert Zod Errors in Frontend-freundliches Format
+     *
+     * INPUT (Zod Format):
+     * [
+     *   { path: ['email'], message: 'Invalid email' },
+     *   { path: ['password'], message: 'Too short' }
+     * ]
+     *
+     * OUTPUT:
+     * {
+     *   email: ['Invalid email'],
+     *   password: ['Too short']
+     * }
+     */
+    formatZodErrors(error) {
+        const formattedErrors = {};
+        for (const issue of error.issues) {
+            // Path kann nested sein: ['user', 'email'] → 'user.email'
+            const path = issue.path.length > 0 ? issue.path.join('.') : '_root'; // Für root-level Errors
+            if (!formattedErrors[path]) {
+                formattedErrors[path] = [];
+            }
+            formattedErrors[path].push(issue.message);
+        }
+        return formattedErrors;
+    }
+};
+exports.ZodValidationPipe = ZodValidationPipe;
+exports.ZodValidationPipe = ZodValidationPipe = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [Object])
+], ZodValidationPipe);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvc2hhcmVkL3BpcGVzL3pvZC12YWxpZGF0aW9uLnBpcGUudHMiLCJtYXBwaW5ncyI6IjtBQUFBLDBDQUEwQzs7Ozs7Ozs7Ozs7O0FBRTFDLDJDQUFnRjtBQUNoRiw2QkFBK0M7QUFDL0MsNENBQTBDO0FBRTFDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7O0dBbUJHO0FBRUksSUFBTSxpQkFBaUIsR0FBdkIsTUFBTSxpQkFBaUI7SUFDUjtJQUFwQixZQUFvQixNQUFvQjtRQUFwQixXQUFNLEdBQU4sTUFBTSxDQUFjO0lBQUcsQ0FBQztJQUU1Qzs7T0FFRztJQUNILFNBQVMsQ0FBQyxLQUFjO1FBQ3RCLElBQUksQ0FBQztZQUNILHlEQUF5RDtZQUN6RCxPQUFPLElBQUksQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQ2xDLENBQUM7UUFBQyxPQUFPLEtBQUssRUFBRSxDQUFDO1lBQ2YsSUFBSSxLQUFLLFlBQVksY0FBUSxFQUFFLENBQUM7Z0JBQzlCLHdCQUF3QjtnQkFDeEIsTUFBTSxlQUFlLEdBQUcsSUFBSSxDQUFDLGVBQWUsQ0FBQyxLQUFLLENBQUMsQ0FBQztnQkFFcEQsd0NBQXdDO2dCQUN4QyxnREFBZ0Q7Z0JBQ2hELE1BQU0sSUFBSSw0QkFBbUIsQ0FBQztvQkFDNUIsT0FBTyxFQUFFLG1CQUFtQjtvQkFDNUIsSUFBSSxFQUFFLHNCQUFVLENBQUMsZ0JBQWdCO29CQUNqQyxNQUFNLEVBQUUsZUFBZTtpQkFDeEIsQ0FBQyxDQUFDO1lBQ0wsQ0FBQztZQUVELG1DQUFtQztZQUNuQyxNQUFNLEtBQUssQ0FBQztRQUNkLENBQUM7SUFDSCxDQUFDO0lBRUQ7Ozs7Ozs7Ozs7Ozs7O09BY0c7SUFDSyxlQUFlLENBQUMsS0FBZTtRQUNyQyxNQUFNLGVBQWUsR0FBNkIsRUFBRSxDQUFDO1FBRXJELEtBQUssTUFBTSxLQUFLLElBQUksS0FBSyxDQUFDLE1BQU0sRUFBRSxDQUFDO1lBQ2pDLDBEQUEwRDtZQUMxRCxNQUFNLElBQUksR0FBRyxLQUFLLENBQUMsSUFBSSxDQUFDLE1BQU0sR0FBRyxDQUFDLENBQUMsQ0FBQyxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxPQUFPLENBQUMsQ0FBQyx3QkFBd0I7WUFFN0YsSUFBSSxDQUFDLGVBQWUsQ0FBQyxJQUFJLENBQUMsRUFBRSxDQUFDO2dCQUMzQixlQUFlLENBQUMsSUFBSSxDQUFDLEdBQUcsRUFBRSxDQUFDO1lBQzdCLENBQUM7WUFFRCxlQUFlLENBQUMsSUFBSSxDQUFDLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUM1QyxDQUFDO1FBRUQsT0FBTyxlQUFlLENBQUM7SUFDekIsQ0FBQztDQUNGLENBQUE7QUE1RFksOENBQWlCOzRCQUFqQixpQkFBaUI7SUFEN0IsSUFBQSxtQkFBVSxHQUFFOztHQUNBLGlCQUFpQixDQTREN0IiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvc2hhcmVkL3BpcGVzL3pvZC12YWxpZGF0aW9uLnBpcGUudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL3NoYXJlZC9waXBlcy96b2QtdmFsaWRhdGlvbi5waXBlLnRzXG5cbmltcG9ydCB7IEJhZFJlcXVlc3RFeGNlcHRpb24sIEluamVjdGFibGUsIFBpcGVUcmFuc2Zvcm0gfSBmcm9tICdAbmVzdGpzL2NvbW1vbic7XG5pbXBvcnQgeyBab2RFcnJvciwgdHlwZSBab2RTY2hlbWEgfSBmcm9tICd6b2QnO1xuaW1wb3J0IHsgRXJyb3JDb2RlcyB9IGZyb20gJy4uL2NvbnN0YW50cyc7XG5cbi8qKlxuICogWm9kVmFsaWRhdGlvblBpcGUgLSBWYWxpZGllcnQgSW5wdXQgbWl0IFpvZCBTY2hlbWFzXG4gKlxuICogVkVSV0VORFVORzpcbiAqIEBQb3N0KCdyZWdpc3RlcicpXG4gKiBhc3luYyByZWdpc3RlcihcbiAqICAgQEJvZHkobmV3IFpvZFZhbGlkYXRpb25QaXBlKFJlZ2lzdGVyU2NoZW1hKSkgZHRvOiBSZWdpc3RlckR0b1xuICogKSB7XG4gKiAgIC8vIGR0byBpc3QgR0FSQU5USUVSVCB2YWxpZGVcbiAqIH1cbiAqXG4gKiBFUlJPUiBGT1JNQVQ6XG4gKiBXaXJmdCBCYWRSZXF1ZXN0RXhjZXB0aW9uIG1pdCBzcGV6aWVsbGVtIEZvcm1hdCxcbiAqIGRhcyB2b24gSHR0cEV4Y2VwdGlvbkZpbHRlciBlcmthbm50IHdpcmQuXG4gKlxuICogUEVSRk9STUFOQ0U6XG4gKiAtIFpvZCBpc3Qgc2NobmVsbCAobmF0aXZlIEpTLCBrZWluIFJlZmxlY3Rpb24pXG4gKiAtIFBhcnNlICsgVHJhbnNmb3JtIGluIGVpbmVtIFNjaHJpdHRcbiAqIC0gRmVobGVyIHdlcmRlbiBmcsO8aCBlcmthbm50IChGYWlsIEZhc3QpXG4gKi9cbkBJbmplY3RhYmxlKClcbmV4cG9ydCBjbGFzcyBab2RWYWxpZGF0aW9uUGlwZTxUPiBpbXBsZW1lbnRzIFBpcGVUcmFuc2Zvcm08dW5rbm93biwgVD4ge1xuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHNjaGVtYTogWm9kU2NoZW1hPFQ+KSB7fVxuXG4gIC8qKlxuICAgKiBUcmFuc2Zvcm0gLSBWYWxpZGllcnQgdW5kIHRyYW5zZm9ybWllcnQgSW5wdXRcbiAgICovXG4gIHRyYW5zZm9ybSh2YWx1ZTogdW5rbm93bik6IFQge1xuICAgIHRyeSB7XG4gICAgICAvLyBab2QgdmFsaWRpZXJ0IFVORCB0cmFuc2Zvcm1pZXJ0ICh6LkIuIGVtYWlsIGxvd2VyY2FzZSlcbiAgICAgIHJldHVybiB0aGlzLnNjaGVtYS5wYXJzZSh2YWx1ZSk7XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIGlmIChlcnJvciBpbnN0YW5jZW9mIFpvZEVycm9yKSB7XG4gICAgICAgIC8vIEZvcm1hdGllcmUgWm9kIEVycm9yc1xuICAgICAgICBjb25zdCBmb3JtYXR0ZWRFcnJvcnMgPSB0aGlzLmZvcm1hdFpvZEVycm9ycyhlcnJvcik7XG5cbiAgICAgICAgLy8gQmFkUmVxdWVzdEV4Y2VwdGlvbiBtaXQgQ3VzdG9tIEZvcm1hdFxuICAgICAgICAvLyBIdHRwRXhjZXB0aW9uRmlsdGVyIGVya2VubnQgJ2Vycm9ycycgUHJvcGVydHlcbiAgICAgICAgdGhyb3cgbmV3IEJhZFJlcXVlc3RFeGNlcHRpb24oe1xuICAgICAgICAgIG1lc3NhZ2U6ICdWYWxpZGF0aW9uIGZhaWxlZCcsXG4gICAgICAgICAgY29kZTogRXJyb3JDb2Rlcy5WQUxJREFUSU9OX0VSUk9SLFxuICAgICAgICAgIGVycm9yczogZm9ybWF0dGVkRXJyb3JzLFxuICAgICAgICB9KTtcbiAgICAgIH1cblxuICAgICAgLy8gVW5iZWthbm50ZXIgRXJyb3IgLSB3ZWl0ZXJ3ZXJmZW5cbiAgICAgIHRocm93IGVycm9yO1xuICAgIH1cbiAgfVxuXG4gIC8qKlxuICAgKiBGb3JtYXRpZXJ0IFpvZCBFcnJvcnMgaW4gRnJvbnRlbmQtZnJldW5kbGljaGVzIEZvcm1hdFxuICAgKlxuICAgKiBJTlBVVCAoWm9kIEZvcm1hdCk6XG4gICAqIFtcbiAgICogICB7IHBhdGg6IFsnZW1haWwnXSwgbWVzc2FnZTogJ0ludmFsaWQgZW1haWwnIH0sXG4gICAqICAgeyBwYXRoOiBbJ3Bhc3N3b3JkJ10sIG1lc3NhZ2U6ICdUb28gc2hvcnQnIH1cbiAgICogXVxuICAgKlxuICAgKiBPVVRQVVQ6XG4gICAqIHtcbiAgICogICBlbWFpbDogWydJbnZhbGlkIGVtYWlsJ10sXG4gICAqICAgcGFzc3dvcmQ6IFsnVG9vIHNob3J0J11cbiAgICogfVxuICAgKi9cbiAgcHJpdmF0ZSBmb3JtYXRab2RFcnJvcnMoZXJyb3I6IFpvZEVycm9yKTogUmVjb3JkPHN0cmluZywgc3RyaW5nW10+IHtcbiAgICBjb25zdCBmb3JtYXR0ZWRFcnJvcnM6IFJlY29yZDxzdHJpbmcsIHN0cmluZ1tdPiA9IHt9O1xuXG4gICAgZm9yIChjb25zdCBpc3N1ZSBvZiBlcnJvci5pc3N1ZXMpIHtcbiAgICAgIC8vIFBhdGgga2FubiBuZXN0ZWQgc2VpbjogWyd1c2VyJywgJ2VtYWlsJ10g4oaSICd1c2VyLmVtYWlsJ1xuICAgICAgY29uc3QgcGF0aCA9IGlzc3VlLnBhdGgubGVuZ3RoID4gMCA/IGlzc3VlLnBhdGguam9pbignLicpIDogJ19yb290JzsgLy8gRsO8ciByb290LWxldmVsIEVycm9yc1xuXG4gICAgICBpZiAoIWZvcm1hdHRlZEVycm9yc1twYXRoXSkge1xuICAgICAgICBmb3JtYXR0ZWRFcnJvcnNbcGF0aF0gPSBbXTtcbiAgICAgIH1cblxuICAgICAgZm9ybWF0dGVkRXJyb3JzW3BhdGhdLnB1c2goaXNzdWUubWVzc2FnZSk7XG4gICAgfVxuXG4gICAgcmV0dXJuIGZvcm1hdHRlZEVycm9ycztcbiAgfVxufVxuIl0sInZlcnNpb24iOjN9

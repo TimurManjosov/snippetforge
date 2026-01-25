@@ -1,0 +1,88 @@
+ba8485feb6e5fdabdb1de420d50cde4c
+"use strict";
+// src/modules/auth/guards/roles.guard.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var RolesGuard_1;
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RolesGuard = void 0;
+const common_1 = require("@nestjs/common");
+const core_1 = require("@nestjs/core");
+const roles_decorator_1 = require("../decorators/roles.decorator");
+/**
+ * RolesGuard - Role-Based Access Control (RBAC)
+ *
+ * WIE ES FUNKTIONIERT:
+ * 1. Route ist mit @Roles('ADMIN', 'MODERATOR') dekoriert
+ * 2. User ist bereits authentifiziert (JwtAuthGuard lief vorher)
+ * 3. RolesGuard prüft ob user.role in erlaubten Rollen ist
+ * 4. Wenn ja: Route wird ausgeführt
+ * 5. Wenn nein: 403 Forbidden
+ *
+ * WICHTIG: RolesGuard muss NACH JwtAuthGuard kommen!
+ * @UseGuards(JwtAuthGuard, RolesGuard) ← Richtige Reihenfolge
+ *
+ * VERWENDUNG:
+ * @Roles('ADMIN')
+ * @UseGuards(JwtAuthGuard, RolesGuard)
+ * @Delete('users/:id')
+ * deleteUser() {}
+ *
+ * @Roles('ADMIN', 'MODERATOR')  // Einer von beiden reicht
+ * @UseGuards(JwtAuthGuard, RolesGuard)
+ * @Put('posts/:id/moderate')
+ * moderatePost() {}
+ */
+let RolesGuard = RolesGuard_1 = class RolesGuard {
+    reflector;
+    logger = new common_1.Logger(RolesGuard_1.name);
+    constructor(reflector) {
+        this.reflector = reflector;
+    }
+    /**
+     * canActivate - Prüft ob User die erforderliche Rolle hat
+     *
+     * @param context - Execution Context
+     * @returns true wenn erlaubt
+     * @throws ForbiddenException wenn Rolle nicht ausreicht
+     */
+    canActivate(context) {
+        // 1. Hole erlaubte Rollen von Route/Controller
+        const requiredRoles = this.reflector.getAllAndOverride(roles_decorator_1.ROLES_KEY, [context.getHandler(), context.getClass()]);
+        // 2. Wenn keine Rollen definiert, alle erlauben
+        if (!requiredRoles || requiredRoles.length === 0) {
+            return true;
+        }
+        // 3. Hole User aus Request (wurde von JwtAuthGuard gesetzt)
+        const request = context.switchToHttp().getRequest();
+        const user = request.user;
+        // 4. Defensive Check: User sollte existieren (JwtAuthGuard lief vorher)
+        if (!user) {
+            this.logger.error('RolesGuard: No user found in request. JwtAuthGuard missing?');
+            throw new common_1.ForbiddenException('Authentication required');
+        }
+        // 5. Prüfe ob User-Rolle in erlaubten Rollen ist
+        const hasRole = requiredRoles.includes(user.role);
+        if (!hasRole) {
+            this.logger.warn(`Access denied: User ${user.id} with role ${user.role} ` +
+                `tried to access route requiring ${requiredRoles.join(' or ')}`);
+            throw new common_1.ForbiddenException(`Access denied. Required role: ${requiredRoles.join(' or ')}`);
+        }
+        this.logger.debug(`Access granted: User ${user.id} with role ${user.role}`);
+        return true;
+    }
+};
+exports.RolesGuard = RolesGuard;
+exports.RolesGuard = RolesGuard = RolesGuard_1 = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [typeof (_a = typeof core_1.Reflector !== "undefined" && core_1.Reflector) === "function" ? _a : Object])
+], RolesGuard);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvbW9kdWxlcy9hdXRoL2d1YXJkcy9yb2xlcy5ndWFyZC50cyIsIm1hcHBpbmdzIjoiO0FBQUEseUNBQXlDOzs7Ozs7Ozs7Ozs7OztBQUV6QywyQ0FNd0I7QUFDeEIsdUNBQXlDO0FBR3pDLG1FQUEwRDtBQUUxRDs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7R0F1Qkc7QUFFSSxJQUFNLFVBQVUsa0JBQWhCLE1BQU0sVUFBVTtJQUdEO0lBRkgsTUFBTSxHQUFHLElBQUksZUFBTSxDQUFDLFlBQVUsQ0FBQyxJQUFJLENBQUMsQ0FBQztJQUV0RCxZQUFvQixTQUFvQjtRQUFwQixjQUFTLEdBQVQsU0FBUyxDQUFXO0lBQUcsQ0FBQztJQUU1Qzs7Ozs7O09BTUc7SUFDSCxXQUFXLENBQUMsT0FBeUI7UUFDbkMsK0NBQStDO1FBQy9DLE1BQU0sYUFBYSxHQUFHLElBQUksQ0FBQyxTQUFTLENBQUMsaUJBQWlCLENBQ3BELDJCQUFTLEVBQ1QsQ0FBQyxPQUFPLENBQUMsVUFBVSxFQUFFLEVBQUUsT0FBTyxDQUFDLFFBQVEsRUFBRSxDQUFDLENBQzNDLENBQUM7UUFFRixnREFBZ0Q7UUFDaEQsSUFBSSxDQUFDLGFBQWEsSUFBSSxhQUFhLENBQUMsTUFBTSxLQUFLLENBQUMsRUFBRSxDQUFDO1lBQ2pELE9BQU8sSUFBSSxDQUFDO1FBQ2QsQ0FBQztRQUVELDREQUE0RDtRQUM1RCxNQUFNLE9BQU8sR0FBRyxPQUFPLENBQUMsWUFBWSxFQUFFLENBQUMsVUFBVSxFQUFXLENBQUM7UUFDN0QsTUFBTSxJQUFJLEdBQUcsT0FBTyxDQUFDLElBQTRCLENBQUM7UUFFbEQsd0VBQXdFO1FBQ3hFLElBQUksQ0FBQyxJQUFJLEVBQUUsQ0FBQztZQUNWLElBQUksQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUNmLDZEQUE2RCxDQUM5RCxDQUFDO1lBQ0YsTUFBTSxJQUFJLDJCQUFrQixDQUFDLHlCQUF5QixDQUFDLENBQUM7UUFDMUQsQ0FBQztRQUVELGlEQUFpRDtRQUNqRCxNQUFNLE9BQU8sR0FBRyxhQUFhLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUVsRCxJQUFJLENBQUMsT0FBTyxFQUFFLENBQUM7WUFDYixJQUFJLENBQUMsTUFBTSxDQUFDLElBQUksQ0FDZCx1QkFBdUIsSUFBSSxDQUFDLEVBQUUsY0FBYyxJQUFJLENBQUMsSUFBSSxHQUFHO2dCQUN0RCxtQ0FBbUMsYUFBYSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsRUFBRSxDQUNsRSxDQUFDO1lBQ0YsTUFBTSxJQUFJLDJCQUFrQixDQUMxQixpQ0FBaUMsYUFBYSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsRUFBRSxDQUM5RCxDQUFDO1FBQ0osQ0FBQztRQUVELElBQUksQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUFDLHdCQUF3QixJQUFJLENBQUMsRUFBRSxjQUFjLElBQUksQ0FBQyxJQUFJLEVBQUUsQ0FBQyxDQUFDO1FBQzVFLE9BQU8sSUFBSSxDQUFDO0lBQ2QsQ0FBQztDQUNGLENBQUE7QUFwRFksZ0NBQVU7cUJBQVYsVUFBVTtJQUR0QixJQUFBLG1CQUFVLEdBQUU7eURBSW9CLGdCQUFTLG9CQUFULGdCQUFTO0dBSDdCLFVBQVUsQ0FvRHRCIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIi9ob21lL3J1bm5lci93b3JrL3NuaXBwZXRmb3JnZS9zbmlwcGV0Zm9yZ2UvYXBwcy9hcGkvc3JjL21vZHVsZXMvYXV0aC9ndWFyZHMvcm9sZXMuZ3VhcmQudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL21vZHVsZXMvYXV0aC9ndWFyZHMvcm9sZXMuZ3VhcmQudHNcblxuaW1wb3J0IHtcbiAgQ2FuQWN0aXZhdGUsXG4gIEV4ZWN1dGlvbkNvbnRleHQsXG4gIEZvcmJpZGRlbkV4Y2VwdGlvbixcbiAgSW5qZWN0YWJsZSxcbiAgTG9nZ2VyLFxufSBmcm9tICdAbmVzdGpzL2NvbW1vbic7XG5pbXBvcnQgeyBSZWZsZWN0b3IgfSBmcm9tICdAbmVzdGpzL2NvcmUnO1xuaW1wb3J0IHsgUmVxdWVzdCB9IGZyb20gJ2V4cHJlc3MnO1xuaW1wb3J0IHsgdHlwZSBTYWZlVXNlciB9IGZyb20gJy4uLy4uL3VzZXJzJztcbmltcG9ydCB7IFJPTEVTX0tFWSB9IGZyb20gJy4uL2RlY29yYXRvcnMvcm9sZXMuZGVjb3JhdG9yJztcblxuLyoqXG4gKiBSb2xlc0d1YXJkIC0gUm9sZS1CYXNlZCBBY2Nlc3MgQ29udHJvbCAoUkJBQylcbiAqXG4gKiBXSUUgRVMgRlVOS1RJT05JRVJUOlxuICogMS4gUm91dGUgaXN0IG1pdCBAUm9sZXMoJ0FETUlOJywgJ01PREVSQVRPUicpIGRla29yaWVydFxuICogMi4gVXNlciBpc3QgYmVyZWl0cyBhdXRoZW50aWZpemllcnQgKEp3dEF1dGhHdWFyZCBsaWVmIHZvcmhlcilcbiAqIDMuIFJvbGVzR3VhcmQgcHLDvGZ0IG9iIHVzZXIucm9sZSBpbiBlcmxhdWJ0ZW4gUm9sbGVuIGlzdFxuICogNC4gV2VubiBqYTogUm91dGUgd2lyZCBhdXNnZWbDvGhydFxuICogNS4gV2VubiBuZWluOiA0MDMgRm9yYmlkZGVuXG4gKlxuICogV0lDSFRJRzogUm9sZXNHdWFyZCBtdXNzIE5BQ0ggSnd0QXV0aEd1YXJkIGtvbW1lbiFcbiAqIEBVc2VHdWFyZHMoSnd0QXV0aEd1YXJkLCBSb2xlc0d1YXJkKSDihpAgUmljaHRpZ2UgUmVpaGVuZm9sZ2VcbiAqXG4gKiBWRVJXRU5EVU5HOlxuICogQFJvbGVzKCdBRE1JTicpXG4gKiBAVXNlR3VhcmRzKEp3dEF1dGhHdWFyZCwgUm9sZXNHdWFyZClcbiAqIEBEZWxldGUoJ3VzZXJzLzppZCcpXG4gKiBkZWxldGVVc2VyKCkge31cbiAqXG4gKiBAUm9sZXMoJ0FETUlOJywgJ01PREVSQVRPUicpICAvLyBFaW5lciB2b24gYmVpZGVuIHJlaWNodFxuICogQFVzZUd1YXJkcyhKd3RBdXRoR3VhcmQsIFJvbGVzR3VhcmQpXG4gKiBAUHV0KCdwb3N0cy86aWQvbW9kZXJhdGUnKVxuICogbW9kZXJhdGVQb3N0KCkge31cbiAqL1xuQEluamVjdGFibGUoKVxuZXhwb3J0IGNsYXNzIFJvbGVzR3VhcmQgaW1wbGVtZW50cyBDYW5BY3RpdmF0ZSB7XG4gIHByaXZhdGUgcmVhZG9ubHkgbG9nZ2VyID0gbmV3IExvZ2dlcihSb2xlc0d1YXJkLm5hbWUpO1xuXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgcmVmbGVjdG9yOiBSZWZsZWN0b3IpIHt9XG5cbiAgLyoqXG4gICAqIGNhbkFjdGl2YXRlIC0gUHLDvGZ0IG9iIFVzZXIgZGllIGVyZm9yZGVybGljaGUgUm9sbGUgaGF0XG4gICAqXG4gICAqIEBwYXJhbSBjb250ZXh0IC0gRXhlY3V0aW9uIENvbnRleHRcbiAgICogQHJldHVybnMgdHJ1ZSB3ZW5uIGVybGF1YnRcbiAgICogQHRocm93cyBGb3JiaWRkZW5FeGNlcHRpb24gd2VubiBSb2xsZSBuaWNodCBhdXNyZWljaHRcbiAgICovXG4gIGNhbkFjdGl2YXRlKGNvbnRleHQ6IEV4ZWN1dGlvbkNvbnRleHQpOiBib29sZWFuIHtcbiAgICAvLyAxLiBIb2xlIGVybGF1YnRlIFJvbGxlbiB2b24gUm91dGUvQ29udHJvbGxlclxuICAgIGNvbnN0IHJlcXVpcmVkUm9sZXMgPSB0aGlzLnJlZmxlY3Rvci5nZXRBbGxBbmRPdmVycmlkZTxzdHJpbmdbXT4oXG4gICAgICBST0xFU19LRVksXG4gICAgICBbY29udGV4dC5nZXRIYW5kbGVyKCksIGNvbnRleHQuZ2V0Q2xhc3MoKV0sXG4gICAgKTtcblxuICAgIC8vIDIuIFdlbm4ga2VpbmUgUm9sbGVuIGRlZmluaWVydCwgYWxsZSBlcmxhdWJlblxuICAgIGlmICghcmVxdWlyZWRSb2xlcyB8fCByZXF1aXJlZFJvbGVzLmxlbmd0aCA9PT0gMCkge1xuICAgICAgcmV0dXJuIHRydWU7XG4gICAgfVxuXG4gICAgLy8gMy4gSG9sZSBVc2VyIGF1cyBSZXF1ZXN0ICh3dXJkZSB2b24gSnd0QXV0aEd1YXJkIGdlc2V0enQpXG4gICAgY29uc3QgcmVxdWVzdCA9IGNvbnRleHQuc3dpdGNoVG9IdHRwKCkuZ2V0UmVxdWVzdDxSZXF1ZXN0PigpO1xuICAgIGNvbnN0IHVzZXIgPSByZXF1ZXN0LnVzZXIgYXMgU2FmZVVzZXIgfCB1bmRlZmluZWQ7XG5cbiAgICAvLyA0LiBEZWZlbnNpdmUgQ2hlY2s6IFVzZXIgc29sbHRlIGV4aXN0aWVyZW4gKEp3dEF1dGhHdWFyZCBsaWVmIHZvcmhlcilcbiAgICBpZiAoIXVzZXIpIHtcbiAgICAgIHRoaXMubG9nZ2VyLmVycm9yKFxuICAgICAgICAnUm9sZXNHdWFyZDogTm8gdXNlciBmb3VuZCBpbiByZXF1ZXN0LiBKd3RBdXRoR3VhcmQgbWlzc2luZz8nLFxuICAgICAgKTtcbiAgICAgIHRocm93IG5ldyBGb3JiaWRkZW5FeGNlcHRpb24oJ0F1dGhlbnRpY2F0aW9uIHJlcXVpcmVkJyk7XG4gICAgfVxuXG4gICAgLy8gNS4gUHLDvGZlIG9iIFVzZXItUm9sbGUgaW4gZXJsYXVidGVuIFJvbGxlbiBpc3RcbiAgICBjb25zdCBoYXNSb2xlID0gcmVxdWlyZWRSb2xlcy5pbmNsdWRlcyh1c2VyLnJvbGUpO1xuXG4gICAgaWYgKCFoYXNSb2xlKSB7XG4gICAgICB0aGlzLmxvZ2dlci53YXJuKFxuICAgICAgICBgQWNjZXNzIGRlbmllZDogVXNlciAke3VzZXIuaWR9IHdpdGggcm9sZSAke3VzZXIucm9sZX0gYCArXG4gICAgICAgICAgYHRyaWVkIHRvIGFjY2VzcyByb3V0ZSByZXF1aXJpbmcgJHtyZXF1aXJlZFJvbGVzLmpvaW4oJyBvciAnKX1gLFxuICAgICAgKTtcbiAgICAgIHRocm93IG5ldyBGb3JiaWRkZW5FeGNlcHRpb24oXG4gICAgICAgIGBBY2Nlc3MgZGVuaWVkLiBSZXF1aXJlZCByb2xlOiAke3JlcXVpcmVkUm9sZXMuam9pbignIG9yICcpfWAsXG4gICAgICApO1xuICAgIH1cblxuICAgIHRoaXMubG9nZ2VyLmRlYnVnKGBBY2Nlc3MgZ3JhbnRlZDogVXNlciAke3VzZXIuaWR9IHdpdGggcm9sZSAke3VzZXIucm9sZX1gKTtcbiAgICByZXR1cm4gdHJ1ZTtcbiAgfVxufVxuIl0sInZlcnNpb24iOjN9

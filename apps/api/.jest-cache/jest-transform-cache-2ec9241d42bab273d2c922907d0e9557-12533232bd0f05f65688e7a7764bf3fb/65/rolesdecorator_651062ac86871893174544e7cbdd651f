@@ -1,0 +1,32 @@
+cee8c6c9afe4426ba8269bb995023c1f
+"use strict";
+// src/modules/auth/decorators/roles.decorator.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Roles = exports.ROLES_KEY = void 0;
+const common_1 = require("@nestjs/common");
+/**
+ * Metadata Key für @Roles() Decorator
+ * Wird von RolesGuard gelesen
+ */
+exports.ROLES_KEY = 'roles';
+/**
+ * @Roles() Decorator - Definiert welche Rollen Zugriff haben
+ *
+ * VERWENDUNG:
+ * @Roles('ADMIN')
+ * @UseGuards(JwtAuthGuard, RolesGuard)
+ * deleteUser() {}
+ *
+ * // Mehrere Rollen (OR - eine reicht)
+ * @Roles('ADMIN', 'MODERATOR')
+ * @UseGuards(JwtAuthGuard, RolesGuard)
+ * moderateContent() {}
+ *
+ * WICHTIG: Immer mit RolesGuard kombinieren!
+ * @Roles() alleine macht nichts.
+ *
+ * @param roles - Erlaubte Rollen (mindestens eine muss User haben)
+ */
+const Roles = (...roles) => (0, common_1.SetMetadata)(exports.ROLES_KEY, roles);
+exports.Roles = Roles;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvc25pcHBldGZvcmdlL3NuaXBwZXRmb3JnZS9hcHBzL2FwaS9zcmMvbW9kdWxlcy9hdXRoL2RlY29yYXRvcnMvcm9sZXMuZGVjb3JhdG9yLnRzIiwibWFwcGluZ3MiOiI7QUFBQSxpREFBaUQ7OztBQUVqRCwyQ0FBNkM7QUFFN0M7OztHQUdHO0FBQ1UsUUFBQSxTQUFTLEdBQUcsT0FBTyxDQUFDO0FBUWpDOzs7Ozs7Ozs7Ozs7Ozs7OztHQWlCRztBQUNJLE1BQU0sS0FBSyxHQUFHLENBQUMsR0FBRyxLQUFhLEVBQUUsRUFBRSxDQUFDLElBQUEsb0JBQVcsRUFBQyxpQkFBUyxFQUFFLEtBQUssQ0FBQyxDQUFDO0FBQTVELFFBQUEsS0FBSyxTQUF1RCIsIm5hbWVzIjpbXSwic291cmNlcyI6WyIvaG9tZS9ydW5uZXIvd29yay9zbmlwcGV0Zm9yZ2Uvc25pcHBldGZvcmdlL2FwcHMvYXBpL3NyYy9tb2R1bGVzL2F1dGgvZGVjb3JhdG9ycy9yb2xlcy5kZWNvcmF0b3IudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL21vZHVsZXMvYXV0aC9kZWNvcmF0b3JzL3JvbGVzLmRlY29yYXRvci50c1xuXG5pbXBvcnQgeyBTZXRNZXRhZGF0YSB9IGZyb20gJ0BuZXN0anMvY29tbW9uJztcblxuLyoqXG4gKiBNZXRhZGF0YSBLZXkgZsO8ciBAUm9sZXMoKSBEZWNvcmF0b3JcbiAqIFdpcmQgdm9uIFJvbGVzR3VhcmQgZ2VsZXNlblxuICovXG5leHBvcnQgY29uc3QgUk9MRVNfS0VZID0gJ3JvbGVzJztcblxuLyoqXG4gKiBFcmxhdWJ0ZSBSb2xsZW4gKGF1cyBEQiBTY2hlbWEpXG4gKiBUeXBlLVNhZmV0eTogTnVyIGRpZXNlIFdlcnRlIGvDtm5uZW4gw7xiZXJnZWJlbiB3ZXJkZW5cbiAqL1xuZXhwb3J0IHR5cGUgUm9sZSA9ICdVU0VSJyB8ICdBRE1JTicgfCAnTU9ERVJBVE9SJztcblxuLyoqXG4gKiBAUm9sZXMoKSBEZWNvcmF0b3IgLSBEZWZpbmllcnQgd2VsY2hlIFJvbGxlbiBadWdyaWZmIGhhYmVuXG4gKlxuICogVkVSV0VORFVORzpcbiAqIEBSb2xlcygnQURNSU4nKVxuICogQFVzZUd1YXJkcyhKd3RBdXRoR3VhcmQsIFJvbGVzR3VhcmQpXG4gKiBkZWxldGVVc2VyKCkge31cbiAqXG4gKiAvLyBNZWhyZXJlIFJvbGxlbiAoT1IgLSBlaW5lIHJlaWNodClcbiAqIEBSb2xlcygnQURNSU4nLCAnTU9ERVJBVE9SJylcbiAqIEBVc2VHdWFyZHMoSnd0QXV0aEd1YXJkLCBSb2xlc0d1YXJkKVxuICogbW9kZXJhdGVDb250ZW50KCkge31cbiAqXG4gKiBXSUNIVElHOiBJbW1lciBtaXQgUm9sZXNHdWFyZCBrb21iaW5pZXJlbiFcbiAqIEBSb2xlcygpIGFsbGVpbmUgbWFjaHQgbmljaHRzLlxuICpcbiAqIEBwYXJhbSByb2xlcyAtIEVybGF1YnRlIFJvbGxlbiAobWluZGVzdGVucyBlaW5lIG11c3MgVXNlciBoYWJlbilcbiAqL1xuZXhwb3J0IGNvbnN0IFJvbGVzID0gKC4uLnJvbGVzOiBSb2xlW10pID0+IFNldE1ldGFkYXRhKFJPTEVTX0tFWSwgcm9sZXMpO1xuIl0sInZlcnNpb24iOjN9
