@@ -190,6 +190,20 @@ apps/api/
 | POST | `/api/auth/login` | Login with email and password | No |
 | GET | `/api/auth/me` | Get current user profile | Yes |
 
+### Snippets
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/snippets` | List public snippet previews | No |
+| POST | `/api/snippets` | Create a new snippet | Yes |
+| GET | `/api/snippets/me` | List current user snippets | Yes |
+| GET | `/api/snippets/me/stats` | Get current user snippet statistics | Yes |
+| GET | `/api/snippets/language/:language` | List snippets by language | No |
+| GET | `/api/snippets/:id` | Get snippet by id | Yes |
+| PATCH | `/api/snippets/:id` | Update a snippet | Yes |
+| PATCH | `/api/snippets/:id/toggle-public` | Toggle snippet visibility | Yes |
+| DELETE | `/api/snippets/:id` | Delete a snippet | Yes |
+
 ---
 
 ## 📝 Example Requests

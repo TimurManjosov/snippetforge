@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, JwtAuthGuard } from './modules/auth';
+import { SnippetsModule } from './modules/snippets';
 import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
 
@@ -40,6 +41,7 @@ import { DatabaseModule } from './shared/database';
     // 3. Feature Modules
     UsersModule,
     AuthModule,
+    SnippetsModule,
   ],
   controllers: [AppController],
   providers: [
