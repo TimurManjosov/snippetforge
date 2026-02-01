@@ -97,9 +97,9 @@ export function createSwaggerConfig() {
       // ========================================
       .addTag('Health', 'Health check and status endpoints')
       .addTag('Auth', 'Authentication endpoints (register, login, profile)')
+      .addTag('Snippets', 'Code snippet CRUD operations')
       // Zukünftige Tags:
       // .addTag('Users', 'User management endpoints')
-      // .addTag('Snippets', 'Code snippet CRUD operations')
 
       .build()
   );
