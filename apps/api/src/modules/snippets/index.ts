@@ -4,6 +4,10 @@
  * Public API des SnippetsModule
  */
 
+// Module
+export { SnippetsModule } from './snippets.module';
+// Controller
+export { SnippetsController } from './snippets.controller';
 // Repository
 export { SnippetsRepository } from './snippets.repository';
 // Service

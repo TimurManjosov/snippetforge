@@ -38,7 +38,7 @@ let JwtStrategy = JwtStrategy_1 = class JwtStrategy extends (0, passport_1.Passp
             return user;
         }
         catch (error) {
-            this.logger.warn(`JWT validation failed:  User ${payload.sub} not found`);
+            this.logger.warn(`JWT validation failed: User ${payload.sub} not found`);
             throw new common_1.UnauthorizedException('User not found or has been deleted');
         }
     }

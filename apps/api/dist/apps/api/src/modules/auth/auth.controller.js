@@ -48,7 +48,9 @@ var AuthController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const pipes_1 = require("../../shared/pipes");
+const swagger_2 = require("../../shared/swagger");
 const auth_service_1 = require("./auth.service");
 const current_user_decorator_1 = require("./decorators/current-user.decorator");
 const public_decorator_1 = require("./decorators/public.decorator");
@@ -79,6 +81,58 @@ __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Post)('register'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Register a new user account',
+        description: `
+Creates a new user account and returns authentication tokens.
+The user is immediately logged in after registration.
+
+**Password Requirements:**
+- Minimum 8 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+
+**Username Requirements:**
+- 3-30 characters
+- Only letters, numbers, and underscores
+    `,
+    }),
+    (0, swagger_1.ApiBody)({
+        type: swagger_2.RegisterRequestSchema,
+        description: 'User registration data',
+        examples: {
+            valid: {
+                summary: 'Valid registration',
+                value: {
+                    email: 'newuser@example.com',
+                    username: 'newuser',
+                    password: 'SecurePass123',
+                },
+            },
+            minimal: {
+                summary: 'Minimal valid data',
+                value: {
+                    email: 'min@test.com',
+                    username: 'usr',
+                    password: 'Test1234',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.CREATED,
+        description: 'User successfully registered',
+        type: swagger_2.AuthResponseSchema,
+    }),
+    (0, swagger_1.ApiBadRequestResponse)({
+        description: 'Validation error - Invalid input data',
+        type: swagger_2.ValidationErrorResponseSchema,
+    }),
+    (0, swagger_1.ApiConflictResponse)({
+        description: 'Email or username already exists',
+        type: swagger_2.ConflictErrorResponseSchema,
+    }),
     __param(0, (0, common_1.Body)(new pipes_1.ZodValidationPipe(registerDto.RegisterSchema))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -88,6 +142,45 @@ __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Post)('login'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Login with email and password',
+        description: `
+Authenticates a user with email and password.
+Returns JWT tokens on successful authentication.
+
+**Token Usage:**
+Include the access token in the Authorization header:
+\`\`\`
+Authorization: Bearer <accessToken>
+\`\`\`
+    `,
+    }),
+    (0, swagger_1.ApiBody)({
+        type: swagger_2.LoginRequestSchema,
+        description: 'User credentials',
+        examples: {
+            valid: {
+                summary: 'Valid credentials',
+                value: {
+                    email: 'user@example.com',
+                    password: 'SecurePass123',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Login successful',
+        type: swagger_2.AuthResponseSchema,
+    }),
+    (0, swagger_1.ApiBadRequestResponse)({
+        description: 'Validation error - Invalid input format',
+        type: swagger_2.ValidationErrorResponseSchema,
+    }),
+    (0, swagger_1.ApiUnauthorizedResponse)({
+        description: 'Invalid email or password',
+        type: swagger_2.UnauthorizedErrorResponseSchema,
+    }),
     __param(0, (0, common_1.Body)(new pipes_1.ZodValidationPipe(loginDto.LoginSchema))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -97,12 +190,32 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)('me'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiBearerAuth)('JWT-Auth'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get current user profile',
+        description: `
+Returns the profile of the currently authenticated user.
+Requires a valid JWT token in the Authorization header.
+
+**Note:** This endpoint validates the token and returns fresh user data from the database.
+    `,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Current user profile',
+        type: swagger_2.UserResponseSchema,
+    }),
+    (0, swagger_1.ApiUnauthorizedResponse)({
+        description: 'Missing or invalid authentication token',
+        type: swagger_2.UnauthorizedErrorResponseSchema,
+    }),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Object)
 ], AuthController.prototype, "getMe", null);
 exports.AuthController = AuthController = AuthController_1 = __decorate([
+    (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);

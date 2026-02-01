@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, JwtAuthGuard } from './modules/auth';
 import { UsersModule } from './modules/users';
+import { SnippetsModule } from './modules/snippets/snippets.module';
 import { DatabaseModule } from './shared/database';
 
 /**
@@ -40,6 +41,7 @@ import { DatabaseModule } from './shared/database';
     // 3. Feature Modules
     UsersModule,
     AuthModule,
+    SnippetsModule,
   ],
   controllers: [AppController],
   providers: [
