@@ -200,7 +200,7 @@ apps/api/
 | GET | `/api/snippets/me/stats` | Get current user snippet statistics | Yes |
 | GET | `/api/snippets/language/:language` | List snippets by language | No |
 | GET | `/api/snippets/:id` | Get snippet by id | Yes |
-| PATCH | `/api/snippets/:id` | Update a snippet | Yes |
+| PUT | `/api/snippets/:id` | Update a snippet | Yes |
 | PATCH | `/api/snippets/:id/toggle-public` | Toggle snippet visibility | Yes |
 | DELETE | `/api/snippets/:id` | Delete a snippet | Yes |
 

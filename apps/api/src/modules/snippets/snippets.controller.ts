@@ -13,6 +13,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -29,6 +30,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { type Request } from 'express';
 import { z } from 'zod';
 import { CurrentUser, JwtAuthGuard, Public } from '../auth';
 import { type SafeUser } from '../users';
@@ -49,7 +51,9 @@ import * as createSnippetDto from './dto/create-snippet.dto';
 import * as updateSnippetDto from './dto/update-snippet.dto';
 import { OwnershipGuard } from './guards';
 import { SnippetsService } from './snippets.service';
-import { toSnippetPreview } from './snippets.types';
+import { type Snippet, toSnippetPreview } from './snippets.types';
+
+type OwnershipRequest = Request & { snippet?: Snippet };
 
 const PaginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).optional(),
@@ -336,8 +340,15 @@ export class SnippetsController {
     @CurrentUser() user: SafeUser,
     @Body(new ZodValidationPipe(updateSnippetDto.UpdateSnippetSchema))
     dto: updateSnippetDto.UpdateSnippetDto,
+    @Req() request: OwnershipRequest,
   ) {
-    return this.snippetsService.update(id, user.id, user.role, dto);
+    return this.snippetsService.update(
+      id,
+      user.id,
+      user.role,
+      dto,
+      request.snippet,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -416,7 +427,8 @@ export class SnippetsController {
   async delete(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
     @CurrentUser() user: SafeUser,
+    @Req() request: OwnershipRequest,
   ) {
-    await this.snippetsService.delete(id, user.id, user.role);
+    await this.snippetsService.delete(id, user.id, user.role, request.snippet);
   }
 }
