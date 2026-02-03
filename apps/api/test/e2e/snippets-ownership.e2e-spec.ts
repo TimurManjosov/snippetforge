@@ -122,7 +122,7 @@ describe('Snippets Ownership (E2E)', () => {
   describe('DELETE /api/snippets/:id', () => {
     let deleteSnippetId: string;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       const snippetResponse = await request(app.getHttpServer())
         .post('/api/snippets')
         .set('Authorization', `Bearer ${ownerToken}`)
