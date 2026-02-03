@@ -277,11 +277,12 @@ export class SnippetsService {
       language?: string;
       isPublic?: boolean;
     },
+    existingSnippet?: Snippet,
   ): Promise<Snippet> {
     this.logger.debug(`Updating snippet: ${id} by user: ${userId}`);
 
     // 1. Snippet holen und Ownership prüfen
-    const snippet = await this.repository.findById(id);
+    const snippet = existingSnippet ?? (await this.repository.findById(id));
 
     if (!snippet) {
       throw new NotFoundException(`Snippet with ID ${id} not found`);
@@ -370,11 +371,16 @@ export class SnippetsService {
    * @throws NotFoundException wenn nicht gefunden
    * @throws ForbiddenException wenn kein Owner
    */
-  async delete(id: string, userId: string, userRole: string): Promise<void> {
+  async delete(
+    id: string,
+    userId: string,
+    userRole: string,
+    existingSnippet?: Snippet,
+  ): Promise<void> {
     this.logger.debug(`Deleting snippet: ${id} by user: ${userId}`);
 
     // 1. Snippet holen und Ownership prüfen
-    const snippet = await this.repository.findById(id);
+    const snippet = existingSnippet ?? (await this.repository.findById(id));
 
     if (!snippet) {
       throw new NotFoundException(`Snippet with ID ${id} not found`);
