@@ -2,6 +2,7 @@
 
 import { Module } from '@nestjs/common';
 import { SnippetsController } from './snippets.controller';
+import { OwnershipGuard } from './guards';
 import { SnippetsRepository } from './snippets.repository';
 import { SnippetsService } from './snippets.service';
 
@@ -15,7 +16,7 @@ import { SnippetsService } from './snippets.service';
  */
 @Module({
   controllers: [SnippetsController],
-  providers: [SnippetsRepository, SnippetsService],
+  providers: [SnippetsRepository, SnippetsService, OwnershipGuard],
   exports: [SnippetsService],
 })
 export class SnippetsModule {}

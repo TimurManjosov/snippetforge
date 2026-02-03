@@ -8,6 +8,8 @@
 export { SnippetsRepository } from './snippets.repository';
 // Service
 export { SnippetsService } from './snippets.service';
+// Guards
+export * from './guards';
 // Module
 export { SnippetsModule } from './snippets.module';
 // Types

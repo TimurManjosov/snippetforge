@@ -113,7 +113,11 @@ export function createMockResponse() {
  */
 export function createMockExecutionContext(
   overrides: {
-    request?: Partial<{ user: unknown; headers: Record<string, string> }>;
+    request?: Partial<{
+      user: unknown;
+      headers: Record<string, string>;
+      params: Record<string, string>;
+    }>;
     handler?: unknown;
     class?: unknown;
   } = {},
@@ -121,6 +125,7 @@ export function createMockExecutionContext(
   const mockRequest = {
     user: undefined,
     headers: {},
+    params: {},
     ...overrides.request,
   };
 

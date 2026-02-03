@@ -2,8 +2,14 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { SnippetsController } from '../../../src/modules/snippets/snippets.controller';
+import { OwnershipGuard } from '../../../src/modules/snippets/guards';
+import { SnippetsRepository } from '../../../src/modules/snippets/snippets.repository';
 import { SnippetsService } from '../../../src/modules/snippets/snippets.service';
-import { createMockSnippet, createMockSnippets } from '../../mocks';
+import {
+  createMockSnippet,
+  createMockSnippets,
+  createMockSnippetsRepository,
+} from '../../mocks';
 import { type SnippetStats } from '../../../src/modules/snippets';
 import { type SafeUser } from '../../../src/modules/users';
 
@@ -30,6 +36,8 @@ const mockUser: SafeUser = {
   updatedAt: new Date('2026-01-02'),
 };
 
+const mockRepository = createMockSnippetsRepository();
+
 describe('SnippetsController', () => {
   let controller: SnippetsController;
 
@@ -41,6 +49,11 @@ describe('SnippetsController', () => {
           provide: SnippetsService,
           useValue: mockService,
         },
+        {
+          provide: SnippetsRepository,
+          useValue: mockRepository,
+        },
+        OwnershipGuard,
       ],
     }).compile();
 
@@ -121,8 +134,9 @@ describe('SnippetsController', () => {
     mockService.update.mockResolvedValue(snippet);
 
     const dto = { title: 'Updated' };
+    const request = { snippet };
 
-    const result = await controller.update(snippet.id, mockUser, dto);
+    const result = await controller.update(snippet.id, mockUser, dto, request);
 
     expect(result).toEqual(snippet);
     expect(mockService.update).toHaveBeenCalledWith(
@@ -130,6 +144,7 @@ describe('SnippetsController', () => {
       mockUser.id,
       mockUser.role,
       dto,
+      snippet,
     );
   });
 
@@ -150,13 +165,17 @@ describe('SnippetsController', () => {
   it('deletes a snippet', async () => {
     mockService.delete.mockResolvedValue(undefined);
 
-    const result = await controller.delete('snippet-id', mockUser);
+    const snippet = createMockSnippet({ userId: mockUser.id });
+    const request = { snippet };
 
-    expect(result).toEqual({ message: 'Snippet deleted successfully' });
+    const result = await controller.delete('snippet-id', mockUser, request);
+
+    expect(result).toBeUndefined();
     expect(mockService.delete).toHaveBeenCalledWith(
       'snippet-id',
       mockUser.id,
       mockUser.role,
+      snippet,
     );
   });
 

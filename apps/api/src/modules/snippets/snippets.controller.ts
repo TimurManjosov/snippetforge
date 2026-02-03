@@ -11,7 +11,9 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -20,6 +22,7 @@ import {
   ApiBody,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
+  ApiNoContentResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -27,13 +30,13 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { type Request } from 'express';
 import { z } from 'zod';
 import { CurrentUser, JwtAuthGuard, Public } from '../auth';
 import { type SafeUser } from '../users';
 import {
   CreateSnippetRequestSchema,
   ForbiddenErrorResponseSchema,
-  MessageResponseSchema,
   NotFoundErrorResponseSchema,
   PaginatedSnippetPreviewsResponseSchema,
   SnippetPreviewResponseSchema,
@@ -46,8 +49,11 @@ import {
 import { ZodValidationPipe } from '../../shared/pipes';
 import * as createSnippetDto from './dto/create-snippet.dto';
 import * as updateSnippetDto from './dto/update-snippet.dto';
+import { OwnershipGuard } from './guards';
 import { SnippetsService } from './snippets.service';
-import { toSnippetPreview } from './snippets.types';
+import { type Snippet, toSnippetPreview } from './snippets.types';
+
+type OwnershipRequest = Request & { snippet?: Snippet };
 
 const PaginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).optional(),
@@ -291,8 +297,8 @@ export class SnippetsController {
     return this.snippetsService.findByIdAndIncrementViews(id, user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @UseGuards(JwtAuthGuard, OwnershipGuard)
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({
@@ -334,8 +340,15 @@ export class SnippetsController {
     @CurrentUser() user: SafeUser,
     @Body(new ZodValidationPipe(updateSnippetDto.UpdateSnippetSchema))
     dto: updateSnippetDto.UpdateSnippetDto,
+    @Req() request: OwnershipRequest,
   ) {
-    return this.snippetsService.update(id, user.id, user.role, dto);
+    return this.snippetsService.update(
+      id,
+      user.id,
+      user.role,
+      dto,
+      request.snippet,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -379,9 +392,9 @@ export class SnippetsController {
     return this.snippetsService.togglePublic(id, user.id, user.role);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, OwnershipGuard)
   @Delete(':id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({
     summary: 'Delete a snippet',
@@ -392,10 +405,8 @@ export class SnippetsController {
     description: 'Snippet UUID',
     format: 'uuid',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiNoContentResponse({
     description: 'Snippet deleted successfully',
-    type: MessageResponseSchema,
   })
   @ApiUnauthorizedResponse({
     description: 'Missing or invalid authentication token',
@@ -416,8 +427,8 @@ export class SnippetsController {
   async delete(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
     @CurrentUser() user: SafeUser,
+    @Req() request: OwnershipRequest,
   ) {
-    await this.snippetsService.delete(id, user.id, user.role);
-    return { message: 'Snippet deleted successfully' };
+    await this.snippetsService.delete(id, user.id, user.role, request.snippet);
   }
 }
