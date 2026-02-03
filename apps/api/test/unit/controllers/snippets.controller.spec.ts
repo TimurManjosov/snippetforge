@@ -168,8 +168,9 @@ describe('SnippetsController', () => {
     const snippet = createMockSnippet({ userId: mockUser.id });
     const request = { snippet };
 
-    await controller.delete('snippet-id', mockUser, request);
+    const result = await controller.delete('snippet-id', mockUser, request);
 
+    expect(result).toBeUndefined();
     expect(mockService.delete).toHaveBeenCalledWith(
       'snippet-id',
       mockUser.id,
