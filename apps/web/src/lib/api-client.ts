@@ -42,6 +42,14 @@ const parseJsonSafely = async (response: Response): Promise<unknown | null> => {
   }
 };
 
+interface ApiErrorResponseBody {
+  message?: string;
+  error?: {
+    message?: string;
+    details?: unknown;
+  };
+}
+
 const normalizeError = async (response: Response): Promise<ApiClientError> => {
   const fallback = new ApiClientError(
     response.status,
@@ -53,7 +61,7 @@ const normalizeError = async (response: Response): Promise<ApiClientError> => {
     return fallback;
   }
 
-  const errorBody = body as { message?: string; error?: { message?: string; details?: unknown } };
+  const errorBody = body as ApiErrorResponseBody;
   const message = errorBody.error?.message ?? errorBody.message ?? fallback.message;
   const details = errorBody.error?.details;
 

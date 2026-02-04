@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Keep stable references for hydration without re-running effects.
   const clearSessionRef = useRef<() => void>(() => undefined);
   const refreshUserRef = useRef<() => Promise<void>>(async () => undefined);
 
