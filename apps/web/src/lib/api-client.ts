@@ -84,7 +84,10 @@ export class ApiClient {
     options: RequestOptions = {},
   ): Promise<T | undefined> {
     if (!this.baseUrl) {
-      throw new ApiClientError(0, "Missing API base URL");
+      throw new ApiClientError(
+        500,
+        "API base URL is not configured. Set NEXT_PUBLIC_API_URL.",
+      );
     }
 
     const headers: HeadersInit = {
@@ -134,15 +137,5 @@ export class ApiClient {
   }
 }
 
-let sharedApiToken: string | null = null;
-
-export const setApiToken = (token: string | null) => {
-  sharedApiToken = token;
-};
-
-export const getApiToken = () => sharedApiToken;
-
-export const apiClient = new ApiClient(
-  process.env.NEXT_PUBLIC_API_URL ?? "",
-  () => sharedApiToken,
-);
+export const createApiClient = (baseUrl: string, getToken: TokenProvider) =>
+  new ApiClient(baseUrl, getToken);

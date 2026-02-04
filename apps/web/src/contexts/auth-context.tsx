@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { ApiClientError, apiClient, type ApiError, setApiToken } from "@/lib/api-client";
+import { ApiClientError, createApiClient, type ApiError } from "@/lib/api-client";
 import { clearToken, readToken, writeToken } from "@/utils/storage";
 import type { AuthResponse, LoginDto, RegisterDto, SafeUser } from "@/types/auth";
 
@@ -36,32 +36,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // Keep stable references for hydration without re-running effects.
-  const clearSessionRef = useRef<(() => void) | null>(null);
-  const refreshUserRef = useRef<(() => Promise<void>) | null>(null);
-
+  const tokenRef = useRef<string | null>(null);
+  const apiClientRef = useRef(
+    createApiClient(process.env.NEXT_PUBLIC_API_URL ?? "", () => tokenRef.current),
+  );
   const clearSession = useCallback(() => {
     setUser(null);
     setToken(null);
-    setApiToken(null);
+    tokenRef.current = null;
     clearToken();
   }, []);
 
+  const clearSessionRef = useRef(clearSession);
   clearSessionRef.current = clearSession;
 
   const refreshUser = useCallback(async () => {
     setError(null);
 
     try {
-      const currentUser = await apiClient.get<SafeUser>("/auth/me");
+      const currentUser = await apiClientRef.current.get<SafeUser>("/auth/me");
       if (!currentUser) {
-        throw new ApiClientError(500, "Failed to retrieve user information");
+        throw new ApiClientError(422, "User data missing from response");
       }
       setUser(currentUser);
     } catch (err) {
       const apiError = err as ApiError;
       if (apiError?.status === 401) {
-        clearSessionRef.current?.();
+        clearSessionRef.current();
         return;
       }
 
@@ -70,16 +71,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  const refreshUserRef = useRef(refreshUser);
   refreshUserRef.current = refreshUser;
 
   const handleAuthSuccess = useCallback(
     async (response?: AuthResponse) => {
       if (!response) {
-        throw new ApiClientError(500, "Failed to complete authentication");
+        throw new ApiClientError(422, "Authentication response missing data");
       }
       const newToken = response.tokens.accessToken;
       setToken(newToken);
-      setApiToken(newToken);
+      tokenRef.current = newToken;
       writeToken(newToken);
       await refreshUser();
     },
@@ -92,7 +94,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setError(null);
 
       try {
-        const response = await apiClient.post<AuthResponse>("/auth/register", dto);
+        const response = await apiClientRef.current.post<AuthResponse>("/auth/register", dto);
         await handleAuthSuccess(response);
       } catch (err) {
         setError(extractErrorMessage(err));
@@ -110,7 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setError(null);
 
       try {
-        const response = await apiClient.post<AuthResponse>("/auth/login", dto);
+        const response = await apiClientRef.current.post<AuthResponse>("/auth/login", dto);
         await handleAuthSuccess(response);
       } catch (err) {
         setError(extractErrorMessage(err));
@@ -135,10 +137,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       setToken(storedToken);
-      setApiToken(storedToken);
+      tokenRef.current = storedToken;
 
       try {
-        await refreshUserRef.current?.();
+        await refreshUserRef.current();
+      } catch {
+        // Error state already set by refreshUser.
       } finally {
         setIsLoading(false);
       }

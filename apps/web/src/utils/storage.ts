@@ -1,11 +1,11 @@
-export const SF_TOKEN_KEY = "SF_TOKEN";
+export const AUTH_TOKEN_KEY = "SF_TOKEN";
 
 export const readToken = (): string | null => {
   if (typeof window === "undefined") {
     return null;
   }
 
-  return window.localStorage.getItem(SF_TOKEN_KEY);
+  return window.localStorage.getItem(AUTH_TOKEN_KEY);
 };
 
 export const writeToken = (token: string): void => {
@@ -13,7 +13,7 @@ export const writeToken = (token: string): void => {
     return;
   }
 
-  window.localStorage.setItem(SF_TOKEN_KEY, token);
+  window.localStorage.setItem(AUTH_TOKEN_KEY, token);
 };
 
 export const clearToken = (): void => {
@@ -21,5 +21,5 @@ export const clearToken = (): void => {
     return;
   }
 
-  window.localStorage.removeItem(SF_TOKEN_KEY);
+  window.localStorage.removeItem(AUTH_TOKEN_KEY);
 };
