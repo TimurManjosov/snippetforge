@@ -21,8 +21,8 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -32,8 +32,7 @@ import {
 } from '@nestjs/swagger';
 import { type Request } from 'express';
 import { z } from 'zod';
-import { CurrentUser, JwtAuthGuard, Public } from '../auth';
-import { type SafeUser } from '../users';
+import { ZodValidationPipe } from '../../shared/pipes';
 import {
   CreateSnippetRequestSchema,
   ForbiddenErrorResponseSchema,
@@ -46,7 +45,8 @@ import {
   UpdateSnippetRequestSchema,
   ValidationErrorResponseSchema,
 } from '../../shared/swagger';
-import { ZodValidationPipe } from '../../shared/pipes';
+import { CurrentUser, JwtAuthGuard, Public } from '../auth';
+import { type SafeUser } from '../users';
 import * as createSnippetDto from './dto/create-snippet.dto';
 import * as updateSnippetDto from './dto/update-snippet.dto';
 import { OwnershipGuard } from './guards';
@@ -342,11 +342,15 @@ export class SnippetsController {
     dto: updateSnippetDto.UpdateSnippetDto,
     @Req() request: OwnershipRequest,
   ) {
+    const cleanDto = {
+      ...dto,
+      description: dto.description === null ? undefined : dto.description,
+    };
     return this.snippetsService.update(
       id,
       user.id,
       user.role,
-      dto,
+      cleanDto,
       request.snippet,
     );
   }
