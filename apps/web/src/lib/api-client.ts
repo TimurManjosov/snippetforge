@@ -134,15 +134,15 @@ export class ApiClient {
   }
 }
 
-let inMemoryToken: string | null = null;
+let sharedApiToken: string | null = null;
 
 export const setApiToken = (token: string | null) => {
-  inMemoryToken = token;
+  sharedApiToken = token;
 };
 
-export const getApiToken = () => inMemoryToken;
+export const getApiToken = () => sharedApiToken;
 
 export const apiClient = new ApiClient(
   process.env.NEXT_PUBLIC_API_URL ?? "",
-  () => inMemoryToken,
+  () => sharedApiToken,
 );
