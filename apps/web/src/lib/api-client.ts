@@ -66,7 +66,7 @@ export class ApiClient {
     path: string,
     body?: unknown,
     options: RequestOptions = {},
-  ): Promise<T> {
+  ): Promise<T | undefined> {
     if (!this.baseUrl) {
       throw {
         status: 0,
@@ -97,7 +97,7 @@ export class ApiClient {
     }
 
     if (response.status === 204) {
-      return undefined as T;
+      return undefined;
     }
 
     const data = await parseJsonSafely(response);

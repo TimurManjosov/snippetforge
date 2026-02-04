@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { apiClient, type ApiError, setApiToken } from "@/lib/api-client";
 import { clearToken, readToken, writeToken } from "@/utils/storage";
@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const clearSessionRef = useRef<() => void>(() => undefined);
 
   const clearSession = useCallback(() => {
     setUser(null);
@@ -44,26 +45,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     clearToken();
   }, []);
 
+  clearSessionRef.current = clearSession;
+
   const refreshUser = useCallback(async () => {
     setError(null);
 
     try {
       const currentUser = await apiClient.get<SafeUser>("/auth/me");
+      if (!currentUser) {
+        throw { status: 500, message: "Empty response" } as ApiError;
+      }
       setUser(currentUser);
     } catch (err) {
       const apiError = err as ApiError;
       if (apiError?.status === 401) {
-        clearSession();
+        clearSessionRef.current();
         return;
       }
 
       setError(extractErrorMessage(err));
       throw err;
     }
-  }, [clearSession]);
+  }, []);
 
   const handleAuthSuccess = useCallback(
-    async (response: AuthResponse) => {
+    async (response?: AuthResponse) => {
+      if (!response) {
+        throw { status: 500, message: "Empty response" } as ApiError;
+      }
       const newToken = response.tokens.accessToken;
       setToken(newToken);
       setApiToken(newToken);
@@ -132,7 +141,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     hydrate();
-  }, [refreshUser]);
+  }, []);
 
   const value = useMemo<AuthContextValue>(
     () => ({
