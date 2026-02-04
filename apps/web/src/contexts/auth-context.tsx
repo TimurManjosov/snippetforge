@@ -141,7 +141,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     hydrate();
-  }, []);
+  }, [refreshUser]);
 
   const value = useMemo<AuthContextValue>(
     () => ({

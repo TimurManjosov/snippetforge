@@ -280,7 +280,7 @@ If frontend tests are not set up yet, verify the auth layer manually:
    npm run dev
    ```
 2. Ensure `NEXT_PUBLIC_API_URL` points to the API base (e.g. `http://localhost:3001/api`).
-3. In the browser console, call `window.localStorage.getItem(\`SF_TOKEN\`)` after a login/register flow to confirm token persistence.
+3. In the browser console, call `window.localStorage.getItem('SF_TOKEN')` after a login/register flow to confirm token persistence.
 4. Trigger `AuthProvider` hydration by refreshing the page and confirm `/auth/me` is called once when a token exists.
 5. If `/auth/me` returns 401, confirm the token is cleared from memory + `localStorage`.
 
