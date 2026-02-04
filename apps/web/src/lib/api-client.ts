@@ -11,6 +11,18 @@ interface RequestOptions {
   headers?: HeadersInit;
 }
 
+export class ApiClientError extends Error implements ApiError {
+  status: number;
+  details?: unknown;
+
+  constructor(status: number, message: string, details?: unknown) {
+    super(message);
+    this.name = "ApiClientError";
+    this.status = status;
+    this.details = details;
+  }
+}
+
 const normalizeBaseUrl = (baseUrl: string, path: string): string => {
   const trimmedBase = baseUrl.replace(/\/+$/, "");
   const trimmedPath = path.startsWith("/") ? path : `/${path}`;
@@ -30,11 +42,11 @@ const parseJsonSafely = async (response: Response): Promise<unknown | null> => {
   }
 };
 
-const normalizeError = async (response: Response): Promise<ApiError> => {
-  const fallback: ApiError = {
-    status: response.status,
-    message: response.statusText || "Request failed",
-  };
+const normalizeError = async (response: Response): Promise<ApiClientError> => {
+  const fallback = new ApiClientError(
+    response.status,
+    response.statusText || "Request failed",
+  );
 
   const body = await parseJsonSafely(response);
   if (!body || typeof body !== "object") {
@@ -45,11 +57,7 @@ const normalizeError = async (response: Response): Promise<ApiError> => {
   const message = errorBody.error?.message ?? errorBody.message ?? fallback.message;
   const details = errorBody.error?.details;
 
-  return {
-    status: response.status,
-    message,
-    details,
-  };
+  return new ApiClientError(response.status, message, details);
 };
 
 export class ApiClient {
@@ -68,10 +76,7 @@ export class ApiClient {
     options: RequestOptions = {},
   ): Promise<T | undefined> {
     if (!this.baseUrl) {
-      throw {
-        status: 0,
-        message: "Missing API base URL",
-      } satisfies ApiError;
+      throw new ApiClientError(0, "Missing API base URL");
     }
 
     const headers: HeadersInit = {

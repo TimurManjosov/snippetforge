@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { apiClient, type ApiError, setApiToken } from "@/lib/api-client";
+import { ApiClientError, apiClient, type ApiError, setApiToken } from "@/lib/api-client";
 import { clearToken, readToken, writeToken } from "@/utils/storage";
 import type { AuthResponse, LoginDto, RegisterDto, SafeUser } from "@/types/auth";
 
@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const clearSessionRef = useRef<() => void>(() => undefined);
+  const refreshUserRef = useRef<() => Promise<void>>(async () => undefined);
 
   const clearSession = useCallback(() => {
     setUser(null);
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const currentUser = await apiClient.get<SafeUser>("/auth/me");
       if (!currentUser) {
-        throw { status: 500, message: "Empty response" } as ApiError;
+        throw new ApiClientError(500, "Empty response");
       }
       setUser(currentUser);
     } catch (err) {
@@ -68,10 +69,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  refreshUserRef.current = refreshUser;
+
   const handleAuthSuccess = useCallback(
     async (response?: AuthResponse) => {
       if (!response) {
-        throw { status: 500, message: "Empty response" } as ApiError;
+        throw new ApiClientError(500, "Empty response");
       }
       const newToken = response.tokens.accessToken;
       setToken(newToken);
@@ -134,14 +137,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setApiToken(storedToken);
 
       try {
-        await refreshUser();
+        await refreshUserRef.current();
       } finally {
         setIsLoading(false);
       }
     };
 
     hydrate();
-  }, [refreshUser]);
+  }, []);
 
   const value = useMemo<AuthContextValue>(
     () => ({
