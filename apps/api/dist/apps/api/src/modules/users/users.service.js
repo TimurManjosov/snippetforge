@@ -63,16 +63,17 @@ let UsersService = UsersService_1 = class UsersService {
     }
     async create(data) {
         this.logger.debug(`Creating user: ${data.email}`);
-        const existingUser = await this.usersRepository.findByEmailOrUsername(data.email, data.username);
+        const normalizedEmail = data.email.toLowerCase();
+        const existingUser = await this.usersRepository.findByEmailOrUsername(normalizedEmail, data.username);
         if (existingUser) {
-            if (existingUser.email === data.email.toLowerCase()) {
+            if (existingUser.email === normalizedEmail) {
                 throw new common_1.ConflictException('Email is already registered');
             }
             throw new common_1.ConflictException('Username is already taken');
         }
         const passwordHash = await this.hashPassword(data.password);
         const user = await this.usersRepository.create({
-            email: data.email,
+            email: normalizedEmail,
             username: data.username,
             passwordHash,
         });
@@ -105,6 +106,12 @@ let UsersService = UsersService_1 = class UsersService {
         const existingUser = await this.usersRepository.findById(id);
         if (!existingUser) {
             throw new common_1.NotFoundException(`User with ID ${id} not found`);
+        }
+        if (data.username && data.username !== existingUser.username) {
+            const userWithSameUsername = await this.usersRepository.findByUsername(data.username);
+            if (userWithSameUsername && userWithSameUsername.id !== id) {
+                throw new common_1.ConflictException('Username is already taken');
+            }
         }
         const updatedUser = await this.usersRepository.update(id, data);
         if (!updatedUser) {
@@ -140,23 +147,14 @@ let UsersService = UsersService_1 = class UsersService {
     async validateCredentials(email, password) {
         const user = await this.findByEmailWithPassword(email);
         if (!user) {
-            await this.hashPassword('dummy-password');
+            await this.comparePassword(password, '$2b$10$tfim3AUyYJJ.b1Cjz4jUn.NJ4JiCMCJYS7FotrpAKOAk2r6rjrQDe');
             return null;
         }
         const isPasswordValid = await this.comparePassword(password, user.passwordHash);
         if (!isPasswordValid) {
             return null;
         }
-        return {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            bio: user.bio,
-            avatarUrl: user.avatarUrl,
-            role: user.role,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        };
+        return (0, users_types_1.toSafeUser)(user);
     }
 };
 exports.UsersService = UsersService;

@@ -28,7 +28,7 @@ let RolesGuard = RolesGuard_1 = class RolesGuard {
         const request = context.switchToHttp().getRequest();
         const user = request.user;
         if (!user) {
-            this.logger.error('RolesGuard: No user found in request.  JwtAuthGuard missing?');
+            this.logger.error('RolesGuard: No user found in request. JwtAuthGuard missing?');
             throw new common_1.ForbiddenException('Authentication required');
         }
         const hasRole = requiredRoles.includes(user.role);

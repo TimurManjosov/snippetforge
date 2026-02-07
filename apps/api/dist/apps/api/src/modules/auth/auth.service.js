@@ -43,7 +43,7 @@ let AuthService = AuthService_1 = class AuthService {
         };
     }
     async login(dto) {
-        this.logger.debug(`Login attempt for:  ${dto.email}`);
+        this.logger.debug(`Login attempt for: ${dto.email}`);
         const user = await this.usersService.validateCredentials(dto.email, dto.password);
         if (!user) {
             this.logger.warn(`Failed login attempt for: ${dto.email}`);

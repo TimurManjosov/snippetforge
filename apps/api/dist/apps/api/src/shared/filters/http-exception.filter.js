@@ -38,6 +38,7 @@ let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
         let details;
         if (typeof response === 'string') {
             message = response;
+            code = this.inferErrorCode(message, status, code);
             return { message, code, details };
         }
         if (typeof response === 'object' && response !== null) {
