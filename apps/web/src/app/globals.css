@@ -264,6 +264,299 @@ body {
   }
 }
 
+/* ── Snippet form ──────────────────────────────────────────── */
+
+.snippet-form-card {
+  max-width: 760px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--background);
+  padding: 2rem 1.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  animation: auth-fade-in 200ms ease-out;
+}
+
+@media (min-width: 768px) {
+  .snippet-form-card {
+    padding: 2.5rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-form-card {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.snippet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.snippet-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.snippet-form-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.snippet-form-required {
+  color: #ef4444;
+  font-size: 0.75rem;
+}
+
+.snippet-form-input,
+.snippet-form-textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  font-size: 0.9375rem;
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.snippet-form-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.snippet-form-input::placeholder,
+.snippet-form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.snippet-form-input:focus,
+.snippet-form-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.snippet-form-input[aria-invalid="true"],
+.snippet-form-textarea[aria-invalid="true"] {
+  border-color: #ef4444;
+}
+
+.snippet-form-input[aria-invalid="true"]:focus,
+.snippet-form-textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-form-input,
+  .snippet-form-textarea {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .snippet-form-input::placeholder,
+  .snippet-form-textarea::placeholder {
+    color: #6b7280;
+  }
+}
+
+.snippet-form-helper {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-form-helper {
+    color: #9ca3af;
+  }
+}
+
+.snippet-field-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #ef4444;
+}
+
+.snippet-form-error {
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  font-size: 0.8125rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-form-error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.25);
+  }
+}
+
+.snippet-form-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-form-toggle {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.snippet-toggle-input {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+}
+
+.snippet-toggle-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.snippet-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.snippet-submit {
+  padding: 0.65rem 1.75rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 150ms ease, transform 120ms ease;
+}
+
+.snippet-submit:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.snippet-submit:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.snippet-submit:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.snippet-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.code-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.code-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+@media (prefers-color-scheme: dark) {
+  .code-editor-toolbar {
+    color: #9ca3af;
+  }
+}
+
+.code-editor-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.code-editor-toggle {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.code-editor-toggle:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.code-editor-toggle:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .code-editor-toggle {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .code-editor-toggle:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.code-editor-textarea {
+  width: 100%;
+  min-height: 240px;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.code-editor-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.code-editor-textarea[aria-invalid="true"] {
+  border-color: #ef4444;
+}
+
+.code-editor-textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .code-editor-textarea {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+}
+
 /* ── Snippet grid ─────────────────────────────────────────── */
 
 .snippet-grid {
