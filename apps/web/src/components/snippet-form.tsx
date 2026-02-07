@@ -153,20 +153,24 @@ export default function SnippetForm({ token, onSuccess, onUnauthorized }: Snippe
       try {
         const payload = validation.data as CreateSnippetDto;
         const response = await createSnippet(token, payload);
-        onSuccess(response ?? null);
+        onSuccess(response);
       } catch (err) {
         if (err instanceof ApiClientError) {
           if (err.status === 401) {
             onUnauthorized();
             return;
           }
+          let handledFieldErrors = false;
           if (err.status === 400) {
             const serverErrors = mapServerFieldErrors(err);
             if (serverErrors) {
               setFieldErrors(serverErrors);
+              handledFieldErrors = true;
             }
           }
-          setFormError(err.message || "Unable to create snippet.");
+          if (!handledFieldErrors) {
+            setFormError(err.message || "Unable to create snippet.");
+          }
         } else {
           setFormError("Unable to create snippet. Please try again.");
         }
