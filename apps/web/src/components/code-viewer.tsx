@@ -9,11 +9,13 @@ interface CodeViewerProps {
   language?: string;
 }
 
-type CopyState = "idle" | "success" | "error";
+type CopyState = "idle" | "success" | "error" | "unsupported";
 
 export default function CodeViewer({ code, language }: CodeViewerProps) {
   const [copyState, setCopyState] = useState<CopyState>("idle");
-  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resetTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(
+    null,
+  );
 
   const scheduleReset = useCallback(() => {
     if (resetTimerRef.current) {
@@ -26,7 +28,7 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
 
   const handleCopy = useCallback(async () => {
     if (!navigator.clipboard) {
-      setCopyState("error");
+      setCopyState("unsupported");
       scheduleReset();
       return;
     }
@@ -52,7 +54,9 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
   const statusText =
     copyState === "success"
       ? "Copied!"
-      : copyState === "error"
+      : copyState === "unsupported"
+        ? "Copy unavailable"
+        : copyState === "error"
         ? "Copy failed"
         : "Copy";
   const languageLabel = language ? formatLanguageLabel(language) : "Code";
@@ -74,8 +78,10 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
           <span className="code-viewer-feedback" role="status" aria-live="polite">
             {copyState === "success"
               ? "Copied to clipboard"
-              : copyState === "error"
-                ? "Unable to copy"
+              : copyState === "unsupported"
+                ? "Clipboard access unavailable"
+                : copyState === "error"
+                  ? "Unable to copy snippet"
                 : ""}
           </span>
         </div>

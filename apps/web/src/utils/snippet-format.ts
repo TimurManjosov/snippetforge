@@ -17,7 +17,7 @@ export const formatSnippetDate = (iso: string): string => {
       year: "numeric",
     });
   } catch {
-    return iso;
+    return "Invalid date";
   }
 };
 
