@@ -60,6 +60,8 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
         ? "Copy failed"
         : "Copy";
   const languageLabel = language ? formatLanguageLabel(language) : "Code";
+  const feedbackPriority =
+    copyState === "error" || copyState === "unsupported" ? "assertive" : "polite";
 
   return (
     <section className="code-viewer" aria-label="Snippet code">
@@ -75,7 +77,11 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
           >
             {statusText}
           </button>
-          <span className="code-viewer-feedback" role="status" aria-live="polite">
+          <span
+            className="code-viewer-feedback"
+            role="status"
+            aria-live={feedbackPriority}
+          >
             {copyState === "success"
               ? "Copied to clipboard"
               : copyState === "unsupported"

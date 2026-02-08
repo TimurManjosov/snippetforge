@@ -10,8 +10,13 @@ const LANGUAGE_LABELS: Record<string, string> = {
 };
 
 export const formatSnippetDate = (iso: string): string => {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) {
+    return "Invalid date";
+  }
+
   try {
-    return new Date(iso).toLocaleDateString("en-US", {
+    return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
