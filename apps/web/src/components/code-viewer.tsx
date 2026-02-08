@@ -1,43 +1,41 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { formatLanguageLabel } from "@/utils/snippet-format";
+import { formatLanguageLabel } from '@/utils/snippet-format';
 
 interface CodeViewerProps {
   code: string;
   language?: string;
 }
 
-type CopyState = "idle" | "success" | "error" | "unsupported";
+type CopyState = 'idle' | 'success' | 'error' | 'unsupported';
 
 export default function CodeViewer({ code, language }: CodeViewerProps) {
-  const [copyState, setCopyState] = useState<CopyState>("idle");
-  const resetTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(
-    null,
-  );
+  const [copyState, setCopyState] = useState<CopyState>('idle');
+  const resetTimerRef = useRef<number | null>(null);
 
   const scheduleReset = useCallback(() => {
     if (resetTimerRef.current) {
       window.clearTimeout(resetTimerRef.current);
     }
     resetTimerRef.current = window.setTimeout(() => {
-      setCopyState("idle");
+      setCopyState('idle');
     }, 2000);
   }, []);
 
   const handleCopy = useCallback(async () => {
     if (!navigator.clipboard) {
-      setCopyState("unsupported");
+      setCopyState('unsupported');
       scheduleReset();
       return;
     }
 
     try {
       await navigator.clipboard.writeText(code);
-      setCopyState("success");
+      setCopyState('success');
     } catch {
-      setCopyState("error");
+      setCopyState('error');
     } finally {
       scheduleReset();
     }
@@ -52,16 +50,16 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
   }, []);
 
   const statusText =
-    copyState === "success"
-      ? "Copied!"
-      : copyState === "unsupported"
-        ? "Copy unavailable"
-        : copyState === "error"
-        ? "Copy failed"
-        : "Copy";
-  const languageLabel = language ? formatLanguageLabel(language) : "Code";
+    copyState === 'success'
+      ? 'Copied!'
+      : copyState === 'unsupported'
+        ? 'Copy unavailable'
+        : copyState === 'error'
+          ? 'Copy failed'
+          : 'Copy';
+  const languageLabel = language ? formatLanguageLabel(language) : 'Code';
   const feedbackPriority =
-    copyState === "error" || copyState === "unsupported" ? "assertive" : "polite";
+    copyState === 'error' || copyState === 'unsupported' ? 'assertive' : 'polite';
 
   return (
     <section className="code-viewer" aria-label="Snippet code">
@@ -70,25 +68,17 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
           <span className="code-viewer-language">{languageLabel}</span>
         </div>
         <div className="code-viewer-actions">
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="code-viewer-copy"
-          >
+          <button type="button" onClick={handleCopy} className="code-viewer-copy">
             {statusText}
           </button>
-          <span
-            className="code-viewer-feedback"
-            role="status"
-            aria-live={feedbackPriority}
-          >
-            {copyState === "success"
-              ? "Copied to clipboard"
-              : copyState === "unsupported"
-                ? "Clipboard access unavailable"
-                : copyState === "error"
-                  ? "Unable to copy snippet"
-                : ""}
+          <span className="code-viewer-feedback" role="status" aria-live={feedbackPriority}>
+            {copyState === 'success'
+              ? 'Copied to clipboard'
+              : copyState === 'unsupported'
+                ? 'Clipboard access unavailable'
+                : copyState === 'error'
+                  ? 'Unable to copy snippet'
+                  : ''}
           </span>
         </div>
       </div>
