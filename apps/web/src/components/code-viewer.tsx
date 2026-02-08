@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { formatLanguageLabel } from "@/utils/snippet-format";
+
 interface CodeViewerProps {
   code: string;
   language?: string;
@@ -11,7 +13,7 @@ type CopyState = "idle" | "success" | "error";
 
 export default function CodeViewer({ code, language }: CodeViewerProps) {
   const [copyState, setCopyState] = useState<CopyState>("idle");
-  const resetTimerRef = useRef<number | null>(null);
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scheduleReset = useCallback(() => {
     if (resetTimerRef.current) {
@@ -53,12 +55,13 @@ export default function CodeViewer({ code, language }: CodeViewerProps) {
       : copyState === "error"
         ? "Copy failed"
         : "Copy";
+  const languageLabel = language ? formatLanguageLabel(language) : "Code";
 
   return (
     <section className="code-viewer" aria-label="Snippet code">
       <div className="code-viewer-toolbar">
         <div className="code-viewer-info">
-          <span className="code-viewer-language">{language ?? "Code"}</span>
+          <span className="code-viewer-language">{languageLabel}</span>
         </div>
         <div className="code-viewer-actions">
           <button

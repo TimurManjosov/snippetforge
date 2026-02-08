@@ -69,7 +69,7 @@ export default function SnippetDetail({ snippet }: SnippetDetailProps) {
           </div>
         </dl>
       </header>
-      <CodeViewer code={snippet.code} language={languageLabel} />
+      <CodeViewer code={snippet.code} language={snippet.language} />
     </article>
   );
 }
