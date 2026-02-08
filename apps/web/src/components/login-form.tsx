@@ -1,40 +1,39 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { type FormEvent, useCallback, useState } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { type FormEvent, useCallback, useState } from 'react';
 
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from '@/hooks/useAuth';
 import {
   type FieldErrors,
   type LoginFormValues,
   normalizeLoginPayload,
   validateLogin,
-} from "@/utils/validation";
+} from '@/utils/validation';
 
 export default function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
 
   const [values, setValues] = useState<LoginFormValues>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<LoginFormValues>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = useCallback(
-    (field: keyof LoginFormValues) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValues((prev: LoginFormValues) => ({ ...prev, [field]: e.target.value }));
-        setFieldErrors((prev: FieldErrors<LoginFormValues>) => {
-          if (!prev[field]) return prev;
-          const next = { ...prev };
-          delete next[field];
-          return next;
-        });
-      },
+    (field: keyof LoginFormValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValues((prev: LoginFormValues) => ({ ...prev, [field]: e.target.value }));
+      setFieldErrors((prev: FieldErrors<LoginFormValues>) => {
+        if (!prev[field]) return prev;
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    },
     [],
   );
 
@@ -52,10 +51,9 @@ export default function LoginForm() {
       setIsSubmitting(true);
       try {
         await login(normalizeLoginPayload(values));
-        router.push("/snippets");
+        router.push('/snippets');
       } catch (err: unknown) {
-        const message =
-          err instanceof Error ? err.message : "Login failed. Please try again.";
+        const message = err instanceof Error ? err.message : 'Login failed. Please try again.';
         setFormError(message);
       } finally {
         setIsSubmitting(false);
@@ -87,9 +85,9 @@ export default function LoginForm() {
             type="email"
             autoComplete="email"
             value={values.email}
-            onChange={handleChange("email")}
+            onChange={handleChange('email')}
             aria-invalid={!!fieldErrors.email}
-            aria-describedby={fieldErrors.email ? "login-email-error" : undefined}
+            aria-describedby={fieldErrors.email ? 'login-email-error' : undefined}
             className="auth-input"
             placeholder="you@example.com"
           />
@@ -109,11 +107,9 @@ export default function LoginForm() {
             type="password"
             autoComplete="current-password"
             value={values.password}
-            onChange={handleChange("password")}
+            onChange={handleChange('password')}
             aria-invalid={!!fieldErrors.password}
-            aria-describedby={
-              fieldErrors.password ? "login-password-error" : undefined
-            }
+            aria-describedby={fieldErrors.password ? 'login-password-error' : undefined}
             className="auth-input"
             placeholder="••••••••"
           />
@@ -124,17 +120,13 @@ export default function LoginForm() {
           )}
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="auth-submit"
-        >
-          {isSubmitting ? "Signing in…" : "Sign in"}
+        <button type="submit" disabled={isSubmitting} className="auth-submit">
+          {isSubmitting ? 'Signing in…' : 'Sign in'}
         </button>
       </form>
 
       <p className="auth-switch">
-        Don&apos;t have an account?{" "}
+        Don&apos;t have an account?{' '}
         <Link href="/register" className="auth-link">
           Create one
         </Link>
