@@ -6,6 +6,14 @@ export interface CreateSnippetDto {
   isPublic?: boolean;
 }
 
+export interface UpdateSnippetDto {
+  title?: string;
+  description?: string;
+  code?: string;
+  language?: string;
+  isPublic?: boolean;
+}
+
 export interface SnippetResponse {
   id: string;
   title: string;
