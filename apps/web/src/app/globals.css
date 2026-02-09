@@ -1092,3 +1092,244 @@ body {
     color: #9ca3af;
   }
 }
+
+/* ── Edit page – Cancel button ────────────────────────────── */
+
+.snippet-cancel-btn {
+  padding: 0.65rem 1.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, transform 120ms ease;
+}
+
+.snippet-cancel-btn:hover:not(:disabled) {
+  border-color: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.snippet-cancel-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.snippet-cancel-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.snippet-cancel-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-cancel-btn {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .snippet-cancel-btn:hover:not(:disabled) {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ── Danger zone ──────────────────────────────────────────── */
+
+.snippet-edit-danger-zone {
+  margin-top: 2.5rem;
+  padding: 1.5rem 1.75rem;
+  max-width: 760px;
+  border-radius: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.03);
+  animation: auth-fade-in 220ms ease-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-edit-danger-zone {
+    border-color: rgba(239, 68, 68, 0.25);
+    background: rgba(239, 68, 68, 0.05);
+  }
+}
+
+.snippet-danger-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ef4444;
+  margin: 0 0 0.35rem;
+}
+
+.snippet-danger-desc {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0 0 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-danger-desc {
+    color: #9ca3af;
+  }
+}
+
+/* ── Delete button ────────────────────────────────────────── */
+
+.snippet-delete-btn {
+  padding: 0.55rem 1.25rem;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 10px;
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, transform 120ms ease;
+}
+
+.snippet-delete-btn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.snippet-delete-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.snippet-delete-btn:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}
+
+.snippet-delete-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Confirm dialog ───────────────────────────────────────── */
+
+.snippet-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  animation: confirm-overlay-in 150ms ease-out;
+}
+
+@keyframes confirm-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.snippet-confirm-dialog {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--background);
+  padding: 2rem 1.75rem 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  animation: confirm-dialog-in 180ms ease-out;
+  outline: none;
+}
+
+@keyframes confirm-dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-confirm-overlay {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .snippet-confirm-dialog {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.snippet-confirm-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0 0 0.5rem;
+}
+
+.snippet-confirm-desc {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #6b7280;
+  margin: 0 0 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-confirm-desc {
+    color: #9ca3af;
+  }
+}
+
+.snippet-confirm-error {
+  padding: 0.625rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  font-size: 0.8125rem;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-confirm-error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.25);
+  }
+}
+
+.snippet-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.snippet-confirm-delete-btn {
+  padding: 0.55rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 150ms ease, transform 120ms ease;
+}
+
+.snippet-confirm-delete-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.snippet-confirm-delete-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.snippet-confirm-delete-btn:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}
+
+.snippet-confirm-delete-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
