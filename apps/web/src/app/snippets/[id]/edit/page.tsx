@@ -75,6 +75,11 @@ export default function EditSnippetPage() {
         }
         if (err.status === 404 || err.status === 403) {
           setNotFound(true);
+          setError(
+            err.status === 403
+              ? "You don\u2019t have permission to edit this snippet."
+              : null,
+          );
           return;
         }
         setError(err.message || "Failed to load snippet.");
@@ -125,7 +130,7 @@ export default function EditSnippetPage() {
         <div className="snippet-state-box snippet-empty-box">
           <p className="snippet-state-title">Snippet not found</p>
           <p className="snippet-state-desc">
-            This snippet may be private, removed, or you don&#39;t have permission to edit it.
+            {error || "This snippet may be private, removed, or you don\u0027t have permission to edit it."}
           </p>
           <Link href="/snippets" className="snippet-retry-btn">
             Back to snippets

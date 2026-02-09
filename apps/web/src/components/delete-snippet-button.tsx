@@ -83,7 +83,11 @@ export default function DeleteSnippetButton({
       </button>
 
       {showConfirm && (
-        <div className="snippet-confirm-overlay" onClick={() => !isDeleting && setShowConfirm(false)}>
+        <div
+          className="snippet-confirm-overlay"
+          role="presentation"
+          onClick={() => !isDeleting && setShowConfirm(false)}
+        >
           <div
             ref={dialogRef}
             role="alertdialog"
