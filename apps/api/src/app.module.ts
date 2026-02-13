@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, JwtAuthGuard } from './modules/auth';
 import { SnippetsModule } from './modules/snippets';
+import { TagsModule } from './modules/tags';
 import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
 
@@ -42,6 +43,7 @@ import { DatabaseModule } from './shared/database';
     UsersModule,
     AuthModule,
     SnippetsModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [
