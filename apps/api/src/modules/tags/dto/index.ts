@@ -1,0 +1,4 @@
+// src/modules/tags/dto/index.ts
+
+export * from './create-tag.dto';
+export * from './attach-tags.dto';
