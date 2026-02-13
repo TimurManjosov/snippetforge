@@ -17,6 +17,6 @@ import { SnippetsService } from './snippets.service';
 @Module({
   controllers: [SnippetsController],
   providers: [SnippetsRepository, SnippetsService, OwnershipGuard],
-  exports: [SnippetsService],
+  exports: [SnippetsRepository, SnippetsService, OwnershipGuard],
 })
 export class SnippetsModule {}
