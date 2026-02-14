@@ -15,7 +15,7 @@ import { type SafeUser } from '../../../src/modules/users';
 
 const mockService = {
   create: jest.fn(),
-  findPublicPreviews: jest.fn(),
+  listPublicWithQuery: jest.fn(),
   findUserSnippets: jest.fn(),
   findByLanguage: jest.fn(),
   findByIdAndIncrementViews: jest.fn(),
@@ -87,13 +87,32 @@ describe('SnippetsController', () => {
       ...snippet,
       code: undefined,
     }));
-    const response = { data: previews, meta: { page: 1, limit: 20 } } as any;
-    mockService.findPublicPreviews.mockResolvedValue(response);
+    const response = {
+      items: previews,
+      meta: { page: 1, limit: 20, total: 2, totalPages: 1 },
+    } as any;
+    mockService.listPublicWithQuery.mockResolvedValue(response);
 
-    const result = await controller.findPublic({});
+    const result = await controller.findPublic({
+      q: undefined,
+      tags: undefined,
+      language: undefined,
+      sort: 'createdAt',
+      order: 'desc',
+      page: 1,
+      limit: 20,
+    });
 
     expect(result).toEqual(response);
-    expect(mockService.findPublicPreviews).toHaveBeenCalledWith(1, 20);
+    expect(mockService.listPublicWithQuery).toHaveBeenCalledWith({
+      q: undefined,
+      tags: undefined,
+      language: undefined,
+      sort: 'createdAt',
+      order: 'desc',
+      page: 1,
+      limit: 20,
+    });
   });
 
   it('lists current user snippets', async () => {

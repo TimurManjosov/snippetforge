@@ -335,6 +335,37 @@ describe('SnippetsService', () => {
     });
   });
 
+  describe('listPublicWithQuery', () => {
+    it('should delegate normalized query to repository searchPublic', async () => {
+      const query = {
+        q: 'react',
+        tags: ['typescript', 'nodejs'],
+        language: 'typescript',
+        sort: 'views' as const,
+        order: 'desc' as const,
+        page: 1,
+        limit: 20,
+      };
+      const paginatedResult = {
+        items: [],
+        meta: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        },
+      };
+      repository.searchPublic.mockResolvedValue(paginatedResult);
+
+      const result = await service.listPublicWithQuery(query);
+
+      expect(result).toEqual(paginatedResult);
+      expect(repository.searchPublic).toHaveBeenCalledWith(query);
+    });
+  });
+
   // ============================================================
   // UPDATE
   // ============================================================

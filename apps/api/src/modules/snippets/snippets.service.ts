@@ -8,6 +8,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { SnippetsRepository } from './snippets.repository';
+import { type SnippetQueryDto } from './dto/snippet-query.dto';
 import {
   type PaginatedSnippetPreviews,
   type PaginatedSnippets,
@@ -208,6 +209,13 @@ export class SnippetsService {
     const safeLimit = Math.min(Math.max(1, limit), 100);
 
     return this.repository.findPublicPreviews(safePage, safeLimit);
+  }
+
+  async listPublicWithQuery(
+    query: SnippetQueryDto,
+  ): Promise<PaginatedSnippetPreviews> {
+    this.logger.debug('Listing public snippets with query', query);
+    return this.repository.searchPublic(query);
   }
 
   /**

@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { eq } from 'drizzle-orm';
 import request from 'supertest';
 import { AppModule } from '../../src/app.module';
-import { users } from '../../src/lib/db/schema';
+import { snippets, users } from '../../src/lib/db/schema';
 import {
   AllExceptionsFilter,
   HttpExceptionFilter,
@@ -23,6 +23,12 @@ describe('Snippets Ownership (E2E)', () => {
   let adminUserId: string;
   let snippetId: string;
   let databaseService: DatabaseService;
+  const suffix = Date.now().toString();
+  let taggedSnippetId: string;
+  let singleTagSnippetId: string;
+  let pythonSnippetId: string;
+  let firstTagSlug: string;
+  let secondTagSlug: string;
 
   const createSnippetPayload = {
     title: 'Owner Snippet',
@@ -76,6 +82,78 @@ describe('Snippets Ownership (E2E)', () => {
       .set('Authorization', `Bearer ${ownerToken}`)
       .send(createSnippetPayload);
     snippetId = snippetResponse.body.id;
+
+    const firstTagResponse = await request(app.getHttpServer())
+      .post('/api/tags')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: `search-tag-${suffix}-one` });
+    firstTagSlug =
+      firstTagResponse.body.slug ?? `search-tag-${suffix}-one`.toLowerCase();
+
+    const secondTagResponse = await request(app.getHttpServer())
+      .post('/api/tags')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: `search-tag-${suffix}-two` });
+    secondTagSlug =
+      secondTagResponse.body.slug ?? `search-tag-${suffix}-two`.toLowerCase();
+
+    const taggedSnippetResponse = await request(app.getHttpServer())
+      .post('/api/snippets')
+      .set('Authorization', `Bearer ${ownerToken}`)
+      .send({
+        title: `Search ${suffix} React Node`,
+        description: 'React and Node backend snippet',
+        code: 'console.log("react node")',
+        language: 'typescript',
+        isPublic: true,
+      });
+    taggedSnippetId = taggedSnippetResponse.body.id;
+
+    const singleTagSnippetResponse = await request(app.getHttpServer())
+      .post('/api/snippets')
+      .set('Authorization', `Bearer ${ownerToken}`)
+      .send({
+        title: `Search ${suffix} React`,
+        description: 'React only snippet',
+        code: 'console.log("react")',
+        language: 'typescript',
+        isPublic: true,
+      });
+    singleTagSnippetId = singleTagSnippetResponse.body.id;
+
+    const pythonSnippetResponse = await request(app.getHttpServer())
+      .post('/api/snippets')
+      .set('Authorization', `Bearer ${ownerToken}`)
+      .send({
+        title: `Search ${suffix} Python`,
+        description: 'Python snippet',
+        code: 'print("python")',
+        language: 'python',
+        isPublic: true,
+      });
+    pythonSnippetId = pythonSnippetResponse.body.id;
+
+    await request(app.getHttpServer())
+      .post(`/api/snippets/${taggedSnippetId}/tags`)
+      .set('Authorization', `Bearer ${ownerToken}`)
+      .send({ tags: [firstTagSlug, secondTagSlug] });
+    await request(app.getHttpServer())
+      .post(`/api/snippets/${singleTagSnippetId}/tags`)
+      .set('Authorization', `Bearer ${ownerToken}`)
+      .send({ tags: [firstTagSlug] });
+
+    await databaseService.drizzle
+      .update(snippets)
+      .set({ viewCount: 30 })
+      .where(eq(snippets.id, taggedSnippetId));
+    await databaseService.drizzle
+      .update(snippets)
+      .set({ viewCount: 10 })
+      .where(eq(snippets.id, singleTagSnippetId));
+    await databaseService.drizzle
+      .update(snippets)
+      .set({ viewCount: 20 })
+      .where(eq(snippets.id, pythonSnippetId));
   });
 
   afterAll(async () => {
@@ -166,6 +244,83 @@ describe('Snippets Ownership (E2E)', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(response.status).toBe(HttpStatus.NO_CONTENT);
+    });
+  });
+
+  describe('GET /api/snippets search and filters', () => {
+    it('should return paginated preview items with meta and no code field', async () => {
+      const response = await request(app.getHttpServer()).get('/api/snippets');
+
+      expect(response.status).toBe(HttpStatus.OK);
+      expect(response.body).toHaveProperty('items');
+      expect(response.body).toHaveProperty('meta');
+      expect(Array.isArray(response.body.items)).toBe(true);
+      expect(response.body.meta).toEqual(
+        expect.objectContaining({
+          page: expect.any(Number),
+          limit: expect.any(Number),
+          total: expect.any(Number),
+          totalPages: expect.any(Number),
+          hasNextPage: expect.any(Boolean),
+          hasPreviousPage: expect.any(Boolean),
+        }),
+      );
+      if (response.body.items.length > 0) {
+        expect(response.body.items[0]).not.toHaveProperty('code');
+      }
+    });
+
+    it('should filter by q, language, tags and normalize sort/page/limit', async () => {
+      const response = await request(app.getHttpServer()).get(
+        `/api/snippets?q=search ${suffix}&language=typescript&tags=${firstTagSlug},${secondTagSlug}&sort=views&order=asc&page=0&limit=999`,
+      );
+
+      expect(response.status).toBe(HttpStatus.OK);
+      expect(response.body.meta.page).toBe(1);
+      expect(response.body.meta.limit).toBe(100);
+      expect(
+        response.body.items.some(
+          (item: { id: string }) => item.id === taggedSnippetId,
+        ),
+      ).toBe(true);
+      expect(
+        response.body.items.some(
+          (item: { id: string }) => item.id === singleTagSnippetId,
+        ),
+      ).toBe(false);
+      expect(
+        response.body.items.every(
+          (item: { language: string }) => item.language === 'typescript',
+        ),
+      ).toBe(true);
+      expect(
+        response.body.items.every(
+          (
+            item: { viewCount: number },
+            index: number,
+            items: Array<{ viewCount: number }>,
+          ) => index === 0 || items[index - 1].viewCount <= item.viewCount,
+        ),
+      ).toBe(true);
+      expect(response.body.items[0]).not.toHaveProperty('code');
+    });
+
+    it('should filter by language only', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/api/snippets')
+        .query({ language: 'python', q: `search ${suffix}` });
+
+      expect(response.status).toBe(HttpStatus.OK);
+      expect(
+        response.body.items.some(
+          (item: { id: string }) => item.id === pythonSnippetId,
+        ),
+      ).toBe(true);
+      expect(
+        response.body.items.every(
+          (item: { language: string }) => item.language === 'python',
+        ),
+      ).toBe(true);
     });
   });
 });

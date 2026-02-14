@@ -144,8 +144,20 @@ export interface PaginatedSnippets {
  * Für Listen-Ansichten
  */
 export interface PaginatedSnippetPreviews {
-  data: SnippetPreview[];
+  items: SnippetPreview[];
   meta: PaginationMeta;
+}
+
+export type PublicSnippetSortBy = 'createdAt' | 'views';
+
+export interface SearchPublicInput {
+  q?: string;
+  tags?: string[];
+  language?: string;
+  sort: PublicSnippetSortBy;
+  order: SortOrder;
+  page: number;
+  limit: number;
 }
 
 // ============================================================

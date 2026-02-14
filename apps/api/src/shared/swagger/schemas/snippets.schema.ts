@@ -224,7 +224,7 @@ export class PaginatedSnippetPreviewsResponseSchema {
     type: SnippetPreviewResponseSchema,
     isArray: true,
   })
-  data: SnippetPreviewResponseSchema[];
+  items: SnippetPreviewResponseSchema[];
 
   @ApiProperty({
     description: 'Pagination metadata',

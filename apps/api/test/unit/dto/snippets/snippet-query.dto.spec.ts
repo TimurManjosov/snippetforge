@@ -1,37 +1,52 @@
-// test/unit/dto/snippets/snippet-query.dto.spec.ts
-
-import { z } from 'zod';
-
-const PaginationQuerySchema = z.object({
-  page: z.coerce.number().int().min(1).optional(),
-  limit: z.coerce.number().int().min(1).max(100).optional(),
-});
-
-const LimitQuerySchema = z.object({
-  limit: z.coerce.number().int().min(1).max(100).optional(),
-});
+import { SnippetQuerySchema } from '../../../../src/modules/snippets/dto/snippet-query.dto';
 
 describe('Snippet query schemas', () => {
-  it('parses pagination params', () => {
-    const result = PaginationQuerySchema.parse({ page: '2', limit: '25' });
+  it('normalizes defaults and clamps pagination', () => {
+    const result = SnippetQuerySchema.parse({ page: '0', limit: '999' });
 
-    expect(result).toEqual({ page: 2, limit: 25 });
+    expect(result).toMatchObject({
+      sort: 'createdAt',
+      order: 'desc',
+      page: 1,
+      limit: 100,
+    });
   });
 
-  it('allows missing pagination params', () => {
-    const result = PaginationQuerySchema.parse({});
+  it('normalizes q/language/tags', () => {
+    const result = SnippetQuerySchema.parse({
+      q: '  React  ',
+      language: '  TypeScript ',
+      tags: ' TypeScript,nodejs,typescript, ,NODEJS ',
+    });
 
-    expect(result).toEqual({});
+    expect(result.q).toBe('react');
+    expect(result.language).toBe('typescript');
+    expect(result.tags).toEqual(['typescript', 'nodejs']);
   });
 
-  it('rejects invalid pagination params', () => {
-    expect(() => PaginationQuerySchema.parse({ page: 0 })).toThrow();
-    expect(() => PaginationQuerySchema.parse({ limit: 101 })).toThrow();
+  it('falls back for invalid sort and order values', () => {
+    const result = SnippetQuerySchema.parse({
+      sort: 'invalid',
+      order: 'invalid',
+    });
+
+    expect(result.sort).toBe('createdAt');
+    expect(result.order).toBe('desc');
   });
 
-  it('parses limit params', () => {
-    const result = LimitQuerySchema.parse({ limit: '10' });
+  it('treats empty q/tags as undefined', () => {
+    const result = SnippetQuerySchema.parse({
+      q: '   ',
+      tags: ' , , ',
+    });
 
-    expect(result).toEqual({ limit: 10 });
+    expect(result.q).toBeUndefined();
+    expect(result.tags).toBeUndefined();
+  });
+
+  it('rejects language longer than 50 chars', () => {
+    expect(() =>
+      SnippetQuerySchema.parse({ language: 'x'.repeat(51) }),
+    ).toThrow();
   });
 });

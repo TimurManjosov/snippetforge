@@ -88,7 +88,7 @@ export const PaginatedSnippetsResponseSchema = z.object({
  * Paginated Snippet Previews Response Schema
  */
 export const PaginatedSnippetPreviewsResponseSchema = z.object({
-  data: z.array(SnippetPreviewResponseSchema),
+  items: z.array(SnippetPreviewResponseSchema),
   meta: PaginationMetaSchema,
 });
 
