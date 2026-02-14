@@ -1,12 +1,29 @@
 // src/modules/snippets/snippets.repository.ts
 
 import { Injectable, Logger } from '@nestjs/common';
-import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
-import { snippets, type NewSnippet, type Snippet } from '../../lib/db/schema';
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  or,
+  sql,
+} from 'drizzle-orm';
+import {
+  snippetTags,
+  snippets,
+  tags,
+  type NewSnippet,
+  type Snippet,
+} from '../../lib/db/schema';
 import { DatabaseService } from '../../shared/database';
 import {
   calculatePaginationMeta,
   DEFAULT_SORT,
+  type SearchPublicInput,
   type PaginatedSnippetPreviews,
   type PaginatedSnippets,
   type SnippetFilters,
@@ -175,7 +192,7 @@ export class SnippetsRepository {
     const offset = (page - 1) * safeLimit;
 
     // Query 1: Data (ohne code Feld!)
-    const data = await this.db.drizzle
+    const items = await this.db.drizzle
       .select({
         id: snippets.id,
         title: snippets.title,
@@ -200,8 +217,74 @@ export class SnippetsRepository {
       .where(eq(snippets.isPublic, true));
 
     return {
-      data,
+      items,
       meta: calculatePaginationMeta(total, page, safeLimit),
+    };
+  }
+
+  async searchPublic(
+    input: SearchPublicInput,
+  ): Promise<PaginatedSnippetPreviews> {
+    this.logger.debug('Searching public snippets', input);
+
+    const offset = (input.page - 1) * input.limit;
+    const conditions = [eq(snippets.isPublic, true)];
+
+    if (input.q) {
+      const searchPattern = `%${input.q}%`;
+      conditions.push(
+        sql`(${ilike(snippets.title, searchPattern)} OR ${ilike(snippets.description, searchPattern)})`,
+      );
+    }
+
+    if (input.language) {
+      conditions.push(eq(snippets.language, input.language));
+    }
+
+    if (input.tags && input.tags.length > 0) {
+      conditions.push(
+        sql`${snippets.id} IN (
+          SELECT ${snippetTags.snippetId}
+          FROM ${snippetTags}
+          INNER JOIN ${tags} ON ${tags.id} = ${snippetTags.tagId}
+          WHERE ${inArray(tags.slug, input.tags)}
+          GROUP BY ${snippetTags.snippetId}
+          HAVING COUNT(DISTINCT ${tags.slug}) = ${input.tags.length}
+        )`,
+      );
+    }
+
+    const whereClause = and(...conditions);
+    const sortColumn =
+      input.sort === 'views' ? snippets.viewCount : snippets.createdAt;
+    const sortDirection = input.order === 'asc' ? asc : desc;
+
+    const items = await this.db.drizzle
+      .select({
+        id: snippets.id,
+        title: snippets.title,
+        description: snippets.description,
+        language: snippets.language,
+        userId: snippets.userId,
+        isPublic: snippets.isPublic,
+        viewCount: snippets.viewCount,
+        createdAt: snippets.createdAt,
+        updatedAt: snippets.updatedAt,
+      })
+      .from(snippets)
+      .where(whereClause)
+      .orderBy(sortDirection(sortColumn))
+      .limit(input.limit)
+      .offset(offset);
+
+    const [{ total }] = await this.db.drizzle
+      .select({ total: count() })
+      .from(snippets)
+      .where(whereClause);
+
+    return {
+      items,
+      meta: calculatePaginationMeta(total, input.page, input.limit),
     };
   }
 

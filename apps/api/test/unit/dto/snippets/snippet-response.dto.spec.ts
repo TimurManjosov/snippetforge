@@ -261,7 +261,7 @@ describe('Snippet Response DTOs', () => {
     it('should validate paginated previews response', () => {
       // Arrange
       const input = {
-        data: [
+        items: [
           {
             id: '123e4567-e89b-12d3-a456-426614174000',
             title: 'Preview 1',
@@ -288,8 +288,8 @@ describe('Snippet Response DTOs', () => {
       const result = PaginatedSnippetPreviewsResponseSchema.parse(input);
 
       // Assert
-      expect(result.data).toHaveLength(1);
-      expect(result.data[0]).not.toHaveProperty('code');
+      expect(result.items).toHaveLength(1);
+      expect(result.items[0]).not.toHaveProperty('code');
     });
   });
 

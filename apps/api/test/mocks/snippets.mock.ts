@@ -18,6 +18,7 @@ export const createMockSnippetsRepository = () => ({
   findByUserId: jest.fn(),
   findPublic: jest.fn(),
   findPublicPreviews: jest.fn(),
+  searchPublic: jest.fn(),
   findByLanguage: jest.fn(),
   findWithFilters: jest.fn(),
   update: jest.fn(),

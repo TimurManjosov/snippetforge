@@ -244,11 +244,170 @@ describe('SnippetsRepository', () => {
       const result = await repository.findPublicPreviews(1, 10);
 
       // Assert
-      expect(result.data).toEqual(previews);
+      expect(result.items).toEqual(previews);
       expect(result.meta.total).toBe(2);
       expect(limitMock).toHaveBeenCalledWith(10);
       expect(offsetMock).toHaveBeenCalledWith(0);
       expect(orderByMock).toHaveBeenCalled();
+    });
+  });
+
+  describe('searchPublic', () => {
+    const createSelectChain = <T>(resolved: T) => {
+      const offsetMock = jest.fn().mockResolvedValue(resolved);
+      const limitMock = jest.fn().mockReturnValue({ offset: offsetMock });
+      const orderByMock = jest.fn().mockReturnValue({ limit: limitMock });
+      const whereMock = jest.fn().mockReturnValue({ orderBy: orderByMock });
+      const fromMock = jest.fn().mockReturnValue({ where: whereMock });
+      return { fromMock, whereMock, orderByMock, limitMock, offsetMock };
+    };
+
+    it('should return only public previews without code', async () => {
+      const previews = [
+        {
+          id: 'snippet-1',
+          title: 'React Hook',
+          description: 'Custom hook',
+          language: 'typescript',
+          userId: 'user-1',
+          isPublic: true,
+          viewCount: 10,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+      const dataChain = createSelectChain(previews);
+      const countWhereMock = jest.fn().mockResolvedValue([{ total: 1 }]);
+      const countFromMock = jest
+        .fn()
+        .mockReturnValue({ where: countWhereMock });
+
+      mockDb.drizzle.select
+        .mockReturnValueOnce({ from: dataChain.fromMock } as any)
+        .mockReturnValueOnce({ from: countFromMock } as any);
+
+      const result = await repository.searchPublic({
+        sort: 'createdAt',
+        order: 'desc',
+        page: 1,
+        limit: 20,
+      });
+
+      expect(result.items).toEqual(previews);
+      expect(result.items[0]).not.toHaveProperty('code');
+      expect(result.meta.total).toBe(1);
+    });
+
+    it('should support q filter over title and description', async () => {
+      const dataChain = createSelectChain([]);
+      const countWhereMock = jest.fn().mockResolvedValue([{ total: 0 }]);
+      const countFromMock = jest
+        .fn()
+        .mockReturnValue({ where: countWhereMock });
+      mockDb.drizzle.select
+        .mockReturnValueOnce({ from: dataChain.fromMock } as any)
+        .mockReturnValueOnce({ from: countFromMock } as any);
+
+      await repository.searchPublic({
+        q: 'react',
+        sort: 'createdAt',
+        order: 'desc',
+        page: 1,
+        limit: 20,
+      });
+
+      expect(dataChain.whereMock).toHaveBeenCalledWith(expect.anything());
+    });
+
+    it('should support language filter', async () => {
+      const dataChain = createSelectChain([]);
+      const countWhereMock = jest.fn().mockResolvedValue([{ total: 0 }]);
+      const countFromMock = jest
+        .fn()
+        .mockReturnValue({ where: countWhereMock });
+      mockDb.drizzle.select
+        .mockReturnValueOnce({ from: dataChain.fromMock } as any)
+        .mockReturnValueOnce({ from: countFromMock } as any);
+
+      await repository.searchPublic({
+        language: 'typescript',
+        sort: 'createdAt',
+        order: 'desc',
+        page: 1,
+        limit: 20,
+      });
+
+      expect(dataChain.whereMock).toHaveBeenCalledWith(expect.anything());
+    });
+
+    it('should support single and multiple tag filters (intersection)', async () => {
+      const dataChain = createSelectChain([]);
+      const countWhereMock = jest.fn().mockResolvedValue([{ total: 0 }]);
+      const countFromMock = jest
+        .fn()
+        .mockReturnValue({ where: countWhereMock });
+      mockDb.drizzle.select
+        .mockReturnValueOnce({ from: dataChain.fromMock } as any)
+        .mockReturnValueOnce({ from: countFromMock } as any);
+
+      await repository.searchPublic({
+        tags: ['typescript', 'nodejs'],
+        sort: 'createdAt',
+        order: 'desc',
+        page: 1,
+        limit: 20,
+      });
+
+      expect(dataChain.whereMock).toHaveBeenCalledWith(expect.anything());
+    });
+
+    it('should apply sort and order safely for createdAt/views', async () => {
+      const dataChain = createSelectChain([]);
+      const countWhereMock = jest.fn().mockResolvedValue([{ total: 0 }]);
+      const countFromMock = jest
+        .fn()
+        .mockReturnValue({ where: countWhereMock });
+      mockDb.drizzle.select
+        .mockReturnValueOnce({ from: dataChain.fromMock } as any)
+        .mockReturnValueOnce({ from: countFromMock } as any);
+
+      await repository.searchPublic({
+        sort: 'views',
+        order: 'asc',
+        page: 2,
+        limit: 5,
+      });
+
+      expect(dataChain.orderByMock).toHaveBeenCalledWith(expect.anything());
+      expect(dataChain.limitMock).toHaveBeenCalledWith(5);
+      expect(dataChain.offsetMock).toHaveBeenCalledWith(5);
+    });
+
+    it('should calculate pagination meta correctly', async () => {
+      const dataChain = createSelectChain([]);
+      const countWhereMock = jest.fn().mockResolvedValue([{ total: 21 }]);
+      const countFromMock = jest
+        .fn()
+        .mockReturnValue({ where: countWhereMock });
+      mockDb.drizzle.select
+        .mockReturnValueOnce({ from: dataChain.fromMock } as any)
+        .mockReturnValueOnce({ from: countFromMock } as any);
+
+      const result = await repository.searchPublic({
+        sort: 'createdAt',
+        order: 'desc',
+        page: 2,
+        limit: 10,
+      });
+
+      expect(result.meta).toEqual({
+        page: 2,
+        limit: 10,
+        total: 21,
+        totalPages: 3,
+        hasNextPage: true,
+        hasPreviousPage: true,
+      });
     });
   });
 

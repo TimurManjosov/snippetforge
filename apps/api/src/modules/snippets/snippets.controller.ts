@@ -48,19 +48,13 @@ import {
 import { CurrentUser, JwtAuthGuard, Public } from '../auth';
 import { type SafeUser } from '../users';
 import * as createSnippetDto from './dto/create-snippet.dto';
+import * as snippetQueryDto from './dto/snippet-query.dto';
 import * as updateSnippetDto from './dto/update-snippet.dto';
 import { OwnershipGuard } from './guards';
 import { SnippetsService } from './snippets.service';
 import { type Snippet, toSnippetPreview } from './snippets.types';
 
 type OwnershipRequest = Request & { snippet?: Snippet };
-
-const PaginationQuerySchema = z.object({
-  page: z.coerce.number().int().min(1).optional(),
-  limit: z.coerce.number().int().min(1).max(100).optional(),
-});
-
-type PaginationQueryDto = z.infer<typeof PaginationQuerySchema>;
 
 const LimitQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).optional(),
@@ -129,18 +123,55 @@ export class SnippetsController {
     description: 'Returns paginated public snippet previews.',
   })
   @ApiQuery({
+    name: 'q',
+    required: false,
+    type: String,
+    example: 'react',
+    description:
+      'Free text search on snippet title and description (case-insensitive)',
+  })
+  @ApiQuery({
+    name: 'tags',
+    required: false,
+    type: String,
+    example: 'typescript,nodejs',
+    description:
+      'Comma-separated tag slugs. Matches snippets containing all tags',
+  })
+  @ApiQuery({
+    name: 'language',
+    required: false,
+    type: String,
+    example: 'typescript',
+    description: 'Exact language filter (normalized lowercase)',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    enum: ['createdAt', 'views'],
+    example: 'views',
+    description: 'Sort field (invalid values fall back to createdAt)',
+  })
+  @ApiQuery({
+    name: 'order',
+    required: false,
+    enum: ['asc', 'desc'],
+    example: 'desc',
+    description: 'Sort direction (invalid values fall back to desc)',
+  })
+  @ApiQuery({
     name: 'page',
     required: false,
     type: Number,
     example: 1,
-    description: 'Page number (1-indexed)',
+    description: 'Page number (1-indexed, values below 1 normalize to 1)',
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
     example: 20,
-    description: 'Items per page (max 100)',
+    description: 'Items per page (normalized to range 1..100)',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -152,11 +183,10 @@ export class SnippetsController {
     type: ValidationErrorResponseSchema,
   })
   async findPublic(
-    @Query(new ZodValidationPipe(PaginationQuerySchema))
-    query: PaginationQueryDto,
+    @Query(new ZodValidationPipe(snippetQueryDto.SnippetQuerySchema))
+    query: snippetQueryDto.SnippetQueryDto,
   ) {
-    const { page = 1, limit = 20 } = query;
-    return this.snippetsService.findPublicPreviews(page, limit);
+    return this.snippetsService.listPublicWithQuery(query);
   }
 
   @UseGuards(JwtAuthGuard)
