@@ -15,6 +15,7 @@ export default function SnippetsPageClient() {
   const searchParams = useSearchParams();
   const page = parsePage(searchParams.get('page'));
   const limit = parseLimit(searchParams.get('limit'));
+  const tags = searchParams.get('tags')?.trim() ?? '';
 
   const [data, setData] = useState<SnippetPreview[]>([]);
   const [meta, setMeta] = useState<PaginatedResponse<SnippetPreview>['meta'] | null>(null);
@@ -32,11 +33,11 @@ export default function SnippetsPageClient() {
 
     try {
       const result = await apiClient.get<PaginatedResponse<SnippetPreview>>(
-        `/snippets?page=${page}&limit=${limit}`,
+        `/snippets?page=${page}&limit=${limit}${tags ? `&tags=${encodeURIComponent(tags)}` : ''}`,
         { signal: controller.signal },
       );
       if (result) {
-        setData(result.data);
+        setData(result.items);
         setMeta(result.meta);
       }
     } catch (err) {
@@ -47,7 +48,7 @@ export default function SnippetsPageClient() {
     } finally {
       setLoading(false);
     }
-  }, [page, limit]);
+  }, [page, limit, tags]);
 
   useEffect(() => {
     fetchSnippets();

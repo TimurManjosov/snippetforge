@@ -3,6 +3,7 @@ export interface SnippetPreview {
   title: string;
   description: string | null;
   language: string;
+  tags?: string[];
   userId: string;
   isPublic: boolean;
   viewCount: number;
@@ -20,6 +21,6 @@ export interface PaginationMeta {
 }
 
 export interface PaginatedResponse<T> {
-  data: T[];
+  items: T[];
   meta: PaginationMeta;
 }
