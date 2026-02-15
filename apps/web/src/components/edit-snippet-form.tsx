@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { ApiClientError } from "@/lib/api-client";
-import { updateSnippet } from "@/lib/snippets-api";
+import { attachTagsToSnippet, removeTagFromSnippet, updateSnippet } from "@/lib/snippets-api";
 import type { SnippetDetail, UpdateSnippetDto } from "@/types/snippets";
 import type { FieldErrors } from "@/utils/validation";
+import { parseTagSlugs } from "@/utils/tags";
 import CodeEditor from "@/components/code-editor";
 
 const UpdateSnippetSchema = z.object({
@@ -35,6 +36,7 @@ const UpdateSnippetSchema = z.object({
 type EditFormValues = {
   title: string;
   description: string;
+  tagsInput: string;
   code: string;
   language: string;
   isPublic: boolean;
@@ -51,6 +53,7 @@ function toFormValues(snippet: SnippetDetail): EditFormValues {
   return {
     title: snippet.title,
     description: snippet.description ?? "",
+    tagsInput: snippet.tags?.join(", ") ?? "",
     code: snippet.code,
     language: snippet.language,
     isPublic: snippet.isPublic,
@@ -86,6 +89,18 @@ function computeChangedFields(
   }
 
   return hasChange ? diff : null;
+}
+
+function computeTagDelta(initialTagsInput: string, currentTagsInput: string) {
+  const initialTags = parseTagSlugs(initialTagsInput);
+  const currentTags = parseTagSlugs(currentTagsInput);
+  const initialSet = new Set(initialTags);
+  const currentSet = new Set(currentTags);
+
+  return {
+    added: currentTags.filter((tag) => !initialSet.has(tag)),
+    removed: initialTags.filter((tag) => !currentSet.has(tag)),
+  };
 }
 
 const mapZodErrors = (error: z.ZodError): FieldErrors<EditFormValues> => {
@@ -133,7 +148,11 @@ export default function EditSnippetForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasChanges = useMemo(
-    () => computeChangedFields(initialValues.current, values) !== null,
+    () => {
+      const changedFields = computeChangedFields(initialValues.current, values);
+      const tagDelta = computeTagDelta(initialValues.current.tagsInput, values.tagsInput);
+      return changedFields !== null || tagDelta.added.length > 0 || tagDelta.removed.length > 0;
+    },
     [values],
   );
 
@@ -185,17 +204,34 @@ export default function EditSnippetForm({
         setFieldErrors(mapZodErrors(validation.error));
         return;
       }
+      const normalizedValues = { ...values, ...validation.data };
 
       // Compute diff – only send changed fields
-      const diff = computeChangedFields(initialValues.current, validation.data);
-      if (!diff) {
+      const diff = computeChangedFields(initialValues.current, normalizedValues);
+      const tagDelta = computeTagDelta(
+        initialValues.current.tagsInput,
+        normalizedValues.tagsInput,
+      );
+      if (!diff && tagDelta.added.length === 0 && tagDelta.removed.length === 0) {
         setFormError("No changes to save.");
         return;
       }
 
       setIsSubmitting(true);
       try {
-        await updateSnippet(token, initialSnippet.id, diff);
+        if (diff) {
+          await updateSnippet(token, initialSnippet.id, diff);
+        }
+        if (tagDelta.added.length > 0) {
+          await attachTagsToSnippet(token, initialSnippet.id, tagDelta.added);
+        }
+        if (tagDelta.removed.length > 0) {
+          await Promise.all(
+            tagDelta.removed.map((tag) =>
+              removeTagFromSnippet(token, initialSnippet.id, tag),
+            ),
+          );
+        }
         router.push(`/snippets/${initialSnippet.id}`);
       } catch (err) {
         if (err instanceof ApiClientError) {
@@ -314,6 +350,24 @@ export default function EditSnippetForm({
               {fieldErrors.language}
             </p>
           )}
+        </div>
+
+        <div className="snippet-form-field">
+          <label htmlFor="edit-tags" className="snippet-form-label">
+            Tags
+          </label>
+          <input
+            id="edit-tags"
+            type="text"
+            value={values.tagsInput}
+            onChange={handleChange("tagsInput")}
+            className="snippet-form-input"
+            placeholder="e.g. typescript, api, backend"
+            disabled={isSubmitting}
+          />
+          <p className="snippet-form-helper">
+            Comma-separated tag slugs.
+          </p>
         </div>
 
         {/* Code */}

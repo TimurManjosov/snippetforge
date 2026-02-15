@@ -72,6 +72,15 @@ export default function SnippetCard({ snippet, ownerView }: SnippetCardProps) {
       <p className="snippet-card-desc">
         {snippet.description || "No description provided"}
       </p>
+      {snippet.tags && snippet.tags.length > 0 && (
+        <div className="snippet-tags">
+          {snippet.tags.map((tag) => (
+            <span key={tag} className="snippet-tag-chip">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="snippet-card-footer">
         <time dateTime={snippet.createdAt} className="snippet-card-date">

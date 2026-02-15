@@ -5,8 +5,9 @@ import { z } from "zod";
 
 import type { FieldErrors } from "@/utils/validation";
 import { ApiClientError } from "@/lib/api-client";
-import { createSnippet } from "@/lib/snippets-api";
+import { attachTagsToSnippet, createSnippet } from "@/lib/snippets-api";
 import type { CreateSnippetDto, SnippetResponse } from "@/types/snippets";
+import { parseTagSlugs } from "@/utils/tags";
 import CodeEditor from "@/components/code-editor";
 
 const CreateSnippetSchema = z.object({
@@ -39,6 +40,7 @@ const CreateSnippetSchema = z.object({
 type SnippetFormValues = {
   title: string;
   description: string;
+  tagsInput: string;
   code: string;
   language: string;
   isPublic: boolean;
@@ -53,6 +55,7 @@ interface SnippetFormProps {
 const initialValues: SnippetFormValues = {
   title: "",
   description: "",
+  tagsInput: "",
   code: "",
   language: "",
   isPublic: true,
@@ -153,6 +156,10 @@ export default function SnippetForm({ token, onSuccess, onUnauthorized }: Snippe
       try {
         const payload = validation.data as CreateSnippetDto;
         const response = await createSnippet(token, payload);
+        const tags = parseTagSlugs(values.tagsInput);
+        if (response.id && tags.length > 0) {
+          await attachTagsToSnippet(token, response.id, tags);
+        }
         onSuccess(response);
       } catch (err) {
         if (err instanceof ApiClientError) {
@@ -269,6 +276,24 @@ export default function SnippetForm({ token, onSuccess, onUnauthorized }: Snippe
               {fieldErrors.language}
             </p>
           )}
+        </div>
+
+        <div className="snippet-form-field">
+          <label htmlFor="snippet-tags" className="snippet-form-label">
+            Tags
+          </label>
+          <input
+            id="snippet-tags"
+            type="text"
+            value={values.tagsInput}
+            onChange={handleChange("tagsInput")}
+            className="snippet-form-input"
+            placeholder="e.g. typescript, api, backend"
+            disabled={isSubmitting}
+          />
+          <p className="snippet-form-helper">
+            Optional. Comma-separated tag slugs.
+          </p>
         </div>
 
         <div className="snippet-form-field">

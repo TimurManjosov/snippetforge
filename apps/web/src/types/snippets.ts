@@ -20,6 +20,7 @@ export interface SnippetResponse {
   description: string | null;
   code: string;
   language: string;
+  tags?: string[];
   userId: string;
   isPublic: boolean;
   viewCount: number;
@@ -35,4 +36,12 @@ export interface SnippetAuthor {
 
 export interface SnippetDetail extends SnippetResponse {
   user?: SnippetAuthor;
+}
+
+export interface TagWithSnippetCount {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  snippetCount: number;
 }

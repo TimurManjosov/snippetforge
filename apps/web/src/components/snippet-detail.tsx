@@ -45,6 +45,15 @@ export default function SnippetDetail({ snippet }: SnippetDetailProps) {
           <p className="snippet-detail-desc">
             {snippet.description || "No description provided."}
           </p>
+          {snippet.tags && snippet.tags.length > 0 && (
+            <div className="snippet-tags">
+              {snippet.tags.map((tag) => (
+                <span key={tag} className="snippet-tag-chip">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <dl className="snippet-detail-meta">
           {snippet.user?.username && (

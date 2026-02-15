@@ -10,11 +10,13 @@ import type { PaginatedResponse, SnippetPreview } from '@/types/snippet';
 import { parseLimit, parsePage } from '@/utils/url';
 
 const apiClient = createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', () => null);
+type SnippetListResponse = PaginatedResponse<SnippetPreview> & { items?: SnippetPreview[] };
 
 export default function SnippetsPageClient() {
   const searchParams = useSearchParams();
   const page = parsePage(searchParams.get('page'));
   const limit = parseLimit(searchParams.get('limit'));
+  const tags = searchParams.get('tags')?.trim() ?? '';
 
   const [data, setData] = useState<SnippetPreview[]>([]);
   const [meta, setMeta] = useState<PaginatedResponse<SnippetPreview>['meta'] | null>(null);
@@ -31,12 +33,12 @@ export default function SnippetsPageClient() {
     setError(null);
 
     try {
-      const result = await apiClient.get<PaginatedResponse<SnippetPreview>>(
-        `/snippets?page=${page}&limit=${limit}`,
+      const result = await apiClient.get<SnippetListResponse>(
+        `/snippets?page=${page}&limit=${limit}${tags ? `&tags=${encodeURIComponent(tags)}` : ''}`,
         { signal: controller.signal },
       );
       if (result) {
-        setData(result.data);
+        setData(result.items ?? result.data ?? []);
         setMeta(result.meta);
       }
     } catch (err) {
@@ -47,7 +49,7 @@ export default function SnippetsPageClient() {
     } finally {
       setLoading(false);
     }
-  }, [page, limit]);
+  }, [page, limit, tags]);
 
   useEffect(() => {
     fetchSnippets();
