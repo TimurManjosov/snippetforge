@@ -204,7 +204,10 @@ export default function EditSnippetForm({
         setFieldErrors(mapZodErrors(validation.error));
         return;
       }
-      const normalizedValues = { ...values, ...validation.data };
+      const normalizedValues: EditFormValues = {
+        ...validation.data,
+        tagsInput: values.tagsInput,
+      };
 
       // Compute diff – only send changed fields
       const diff = computeChangedFields(initialValues.current, normalizedValues);

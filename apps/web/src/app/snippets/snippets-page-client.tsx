@@ -10,7 +10,6 @@ import type { PaginatedResponse, SnippetPreview } from '@/types/snippet';
 import { parseLimit, parsePage } from '@/utils/url';
 
 const apiClient = createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', () => null);
-type SnippetListResponse = PaginatedResponse<SnippetPreview> & { items?: SnippetPreview[] };
 
 export default function SnippetsPageClient() {
   const searchParams = useSearchParams();
@@ -33,12 +32,12 @@ export default function SnippetsPageClient() {
     setError(null);
 
     try {
-      const result = await apiClient.get<SnippetListResponse>(
+      const result = await apiClient.get<PaginatedResponse<SnippetPreview>>(
         `/snippets?page=${page}&limit=${limit}${tags ? `&tags=${encodeURIComponent(tags)}` : ''}`,
         { signal: controller.signal },
       );
       if (result) {
-        setData(result.items ?? result.data ?? []);
+        setData(result.items);
         setMeta(result.meta);
       }
     } catch (err) {

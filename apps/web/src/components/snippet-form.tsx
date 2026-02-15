@@ -158,7 +158,14 @@ export default function SnippetForm({ token, onSuccess, onUnauthorized }: Snippe
         const response = await createSnippet(token, payload);
         const tags = parseTagSlugs(values.tagsInput);
         if (response.id && tags.length > 0) {
-          await attachTagsToSnippet(token, response.id, tags);
+          try {
+            await attachTagsToSnippet(token, response.id, tags);
+          } catch (tagError) {
+            if (tagError instanceof ApiClientError && tagError.status === 401) {
+              onUnauthorized();
+              return;
+            }
+          }
         }
         onSuccess(response);
       } catch (err) {
