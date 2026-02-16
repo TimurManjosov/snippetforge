@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
 import type { PaginationMeta } from "@/types/snippet";
+import { stringifySnippetsState, updateSnippetsStateFromSearchParams } from "@/utils/url-state";
 
 interface PaginationControlsProps {
   meta: PaginationMeta;
@@ -16,14 +17,9 @@ export default function PaginationControls({ meta }: PaginationControlsProps) {
 
   const navigate = useCallback(
     (newPage: number) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (newPage > 1) {
-        params.set("page", String(newPage));
-      } else {
-        params.delete("page");
-      }
-      const qs = params.toString();
-      router.push(qs ? `${pathname}?${qs}` : pathname);
+      const nextState = updateSnippetsStateFromSearchParams(searchParams, { page: newPage });
+      const qs = stringifySnippetsState(nextState);
+      router.push(`${pathname}?${qs}`);
     },
     [router, pathname, searchParams],
   );
