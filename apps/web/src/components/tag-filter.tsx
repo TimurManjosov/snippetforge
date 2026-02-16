@@ -6,14 +6,16 @@ import { ApiClientError, createApiClient } from "@/lib/api-client";
 import type { TagWithSnippetCount } from "@/types/snippets";
 import { slugifyTag } from "@/utils/url-state";
 
-const apiClient = createApiClient(process.env.NEXT_PUBLIC_API_URL ?? "", () => null);
-
 interface TagFilterProps {
   selected: string[];
   onChange: (tags: string[]) => void;
 }
 
 export default function TagFilter({ selected, onChange }: TagFilterProps) {
+  const apiClient = useMemo(
+    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? "", () => null),
+    [],
+  );
   const [tagInput, setTagInput] = useState("");
   const [suggestions, setSuggestions] = useState<TagWithSnippetCount[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ export default function TagFilter({ selected, onChange }: TagFilterProps) {
 
     fetchTags();
     return () => abortRef.current?.abort();
-  }, []);
+  }, [apiClient]);
 
   const selectedSet = useMemo(() => new Set(selected), [selected]);
 

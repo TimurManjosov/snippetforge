@@ -102,6 +102,10 @@ export default function SnippetsPageClient() {
       queryState.limit !== DEFAULT_SNIPPETS_STATE.limit,
   );
 
+  const resetFilters = useCallback(() => {
+    router.push(`${pathname}?${stringifySnippetsState(DEFAULT_SNIPPETS_STATE)}`);
+  }, [pathname, router]);
+
   return (
     <div className="snippet-page">
       <div className="snippet-page-header">
@@ -173,7 +177,7 @@ export default function SnippetsPageClient() {
             <button
               type="button"
               className="snippet-clear-all-btn"
-              onClick={() => router.push(`${pathname}?${stringifySnippetsState(DEFAULT_SNIPPETS_STATE)}`)}
+              onClick={resetFilters}
             >
               Clear all
             </button>
@@ -187,7 +191,7 @@ export default function SnippetsPageClient() {
           {hasActiveFilters && (
             <button
               type="button"
-              onClick={() => router.push(`${pathname}?${stringifySnippetsState(DEFAULT_SNIPPETS_STATE)}`)}
+              onClick={resetFilters}
               className="snippet-retry-btn"
             >
               Reset filters

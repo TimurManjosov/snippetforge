@@ -1,17 +1,17 @@
 "use client";
 
 const LANGUAGE_OPTIONS = [
-  "typescript",
-  "javascript",
-  "python",
-  "java",
-  "go",
-  "rust",
-  "csharp",
-  "php",
-  "ruby",
-  "swift",
-  "kotlin",
+  { value: "typescript", label: "TypeScript" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "python", label: "Python" },
+  { value: "java", label: "Java" },
+  { value: "go", label: "Go" },
+  { value: "rust", label: "Rust" },
+  { value: "csharp", label: "C#" },
+  { value: "php", label: "PHP" },
+  { value: "ruby", label: "Ruby" },
+  { value: "swift", label: "Swift" },
+  { value: "kotlin", label: "Kotlin" },
 ];
 
 interface LanguageSelectProps {
@@ -35,8 +35,8 @@ export default function LanguageSelect({ value, onChange }: LanguageSelectProps)
         >
           <option value="">All languages</option>
           {LANGUAGE_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              {option}
+            <option key={option.value} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
