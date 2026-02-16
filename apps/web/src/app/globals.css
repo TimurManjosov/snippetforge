@@ -264,6 +264,207 @@ body {
   }
 }
 
+.snippet-filters-panel {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.015);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-filters-panel {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.snippet-filters-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  .snippet-filters-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+
+.snippet-filter-inline {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .snippet-filter-inline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.snippet-filter-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.snippet-filter-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-filter-label {
+    color: #9ca3af;
+  }
+}
+
+.snippet-filter-input,
+.snippet-filter-select {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.snippet-filter-input:focus,
+.snippet-filter-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-filter-input,
+  .snippet-filter-select {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.snippet-search-input-wrap,
+.snippet-select-wrap,
+.snippet-tag-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.snippet-inline-clear-btn,
+.snippet-clear-all-btn {
+  padding: 0.45rem 0.7rem;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 120ms ease;
+  white-space: nowrap;
+}
+
+.snippet-inline-clear-btn:hover,
+.snippet-clear-all-btn:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.snippet-inline-clear-btn:active,
+.snippet-clear-all-btn:active {
+  transform: scale(0.98);
+}
+
+.snippet-inline-clear-btn:focus-visible,
+.snippet-clear-all-btn:focus-visible,
+.snippet-active-filter-chip:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.snippet-filter-chip-group,
+.snippet-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.snippet-filter-chip-btn {
+  border: none;
+  cursor: pointer;
+  transition: opacity 150ms ease, transform 120ms ease;
+}
+
+.snippet-filter-chip-btn:hover {
+  opacity: 0.88;
+}
+
+.snippet-filter-chip-btn:active {
+  transform: scale(0.98);
+}
+
+.snippet-tag-chip-active {
+  background: rgba(37, 99, 235, 0.15);
+  color: #1d4ed8;
+}
+
+.snippet-active-filter-chip {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.025);
+  color: var(--foreground);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.snippet-filter-hint,
+.snippet-filter-error {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.snippet-filter-hint {
+  color: #6b7280;
+}
+
+.snippet-filter-error {
+  color: #ef4444;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snippet-inline-clear-btn,
+  .snippet-clear-all-btn,
+  .snippet-active-filter-chip {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .snippet-inline-clear-btn:hover,
+  .snippet-clear-all-btn:hover {
+    border-color: rgba(255, 255, 255, 0.34);
+  }
+
+  .snippet-tag-chip-active {
+    background: rgba(59, 130, 246, 0.28);
+    color: #bfdbfe;
+  }
+
+  .snippet-active-filter-chip {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .snippet-filter-hint {
+    color: #9ca3af;
+  }
+}
+
 /* ── Snippet detail ─────────────────────────────────────────── */
 
 .snippet-detail {

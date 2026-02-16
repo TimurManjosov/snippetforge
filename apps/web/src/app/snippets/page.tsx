@@ -4,7 +4,7 @@ import SnippetsPageClient from './snippets-page-client';
 
 export default function SnippetsPage() {
   return (
-    <Suspense fallback={<div className="snippet-page" />}>
+    <Suspense fallback={<div className="snippet-page" aria-busy="true" />}>
       <SnippetsPageClient />
     </Suspense>
   );
