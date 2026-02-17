@@ -4,7 +4,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { type PostgresError } from 'postgres';
 import { type CreateTagDto } from './dto';
 import { TagsRepository } from './tags.repository';
 import {
@@ -33,8 +32,12 @@ export class TagsService {
         slug,
       });
     } catch (error) {
-      const pgError = error as PostgresError | undefined;
-      if (pgError?.code === '23505') {
+      // Drizzle-orm wraps postgres errors; the unique-violation code
+      // may be on the error itself or on error.cause
+      const code =
+        (error as { code?: string })?.code ??
+        (error as { cause?: { code?: string } })?.cause?.code;
+      if (code === '23505') {
         throw new ConflictException('Tag slug already exists');
       }
 

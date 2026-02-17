@@ -51,21 +51,31 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * @param context - Execution Context (enthält Request, Handler, etc.)
    * @returns true wenn erlaubt, false/Exception wenn nicht
    */
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     // 1. Prüfe ob Route als @Public() markiert ist
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(), // Methode (@Public() auf Methode)
       context.getClass(), // Controller (@Public() auf Controller)
     ]);
 
-    // 2. Wenn public, sofort erlauben (keine Token-Prüfung)
+    // 2. Wenn public: Token optional auswerten (User extrahieren falls vorhanden)
     if (isPublic) {
-      this.logger.debug('Public route accessed, skipping authentication');
-      return true;
+      try {
+        const result = await (super.canActivate(context) as Promise<boolean>);
+        return result;
+      } catch {
+        // Kein Token oder ungültiger Token → Request trotzdem erlauben
+        this.logger.debug('Public route accessed without valid token');
+        return true;
+      }
     }
 
     // 3. Wenn nicht public, Passport JWT Strategy ausführen
-    return super.canActivate(context);
+    const result = super.canActivate(context);
+    if (result instanceof Promise) {
+      return result;
+    }
+    return result as boolean;
   }
 
   /**

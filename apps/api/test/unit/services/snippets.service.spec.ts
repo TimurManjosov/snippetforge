@@ -227,18 +227,27 @@ describe('SnippetsService', () => {
   });
 
   describe('findByIdAndIncrementViews', () => {
-    it('should return snippet and increment views', async () => {
+    it('should return snippet with tags and increment views', async () => {
       // Arrange
       const publicSnippet = createMockSnippet({ isPublic: true });
       repository.findById.mockResolvedValue(publicSnippet);
       repository.incrementViewCount.mockResolvedValue(true);
+      repository.findTagSlugsForSnippet.mockResolvedValue([
+        'javascript',
+        'typescript',
+      ]);
 
       // Act
       const result = await service.findByIdAndIncrementViews('snippet-id');
 
       // Assert
-      expect(result).toEqual(publicSnippet);
-      // incrementViewCount is fire-and-forget, so we can't reliably test it was called
+      expect(result).toEqual({
+        ...publicSnippet,
+        tags: ['javascript', 'typescript'],
+      });
+      expect(repository.findTagSlugsForSnippet).toHaveBeenCalledWith(
+        'snippet-id',
+      );
     });
 
     it('should not fail if incrementViewCount fails', async () => {
@@ -246,12 +255,13 @@ describe('SnippetsService', () => {
       const publicSnippet = createMockSnippet({ isPublic: true });
       repository.findById.mockResolvedValue(publicSnippet);
       repository.incrementViewCount.mockRejectedValue(new Error('DB Error'));
+      repository.findTagSlugsForSnippet.mockResolvedValue([]);
 
       // Act - Should NOT throw
       const result = await service.findByIdAndIncrementViews('snippet-id');
 
       // Assert
-      expect(result).toEqual(publicSnippet);
+      expect(result).toEqual({ ...publicSnippet, tags: [] });
     });
   });
 

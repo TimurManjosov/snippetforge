@@ -7,8 +7,8 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { SnippetsRepository } from './snippets.repository';
 import { type SnippetQueryDto } from './dto/snippet-query.dto';
+import { SnippetsRepository } from './snippets.repository';
 import {
   type PaginatedSnippetPreviews,
   type PaginatedSnippets,
@@ -135,19 +135,21 @@ export class SnippetsService {
   async findByIdAndIncrementViews(
     id: string,
     currentUserId?: string,
-  ): Promise<Snippet> {
+  ): Promise<Snippet & { tags: string[] }> {
     const snippet = await this.findById(id, currentUserId);
 
-    // View Count erhöhen (Fire-and-Forget, kein await)
-    // Fehler beim Increment sollen Snippet-Anzeige nicht blockieren
-    this.repository.incrementViewCount(id).catch((error) => {
-      this.logger.warn(
-        `Failed to increment view count for snippet ${id}:`,
-        error,
-      );
-    });
+    // Tags und View-Count parallel laden
+    const [tagSlugs] = await Promise.all([
+      this.repository.findTagSlugsForSnippet(id),
+      this.repository.incrementViewCount(id).catch((error) => {
+        this.logger.warn(
+          `Failed to increment view count for snippet ${id}:`,
+          error,
+        );
+      }),
+    ]);
 
-    return snippet;
+    return { ...snippet, tags: tagSlugs };
   }
 
   // ============================================================

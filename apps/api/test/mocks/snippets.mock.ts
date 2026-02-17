@@ -29,6 +29,7 @@ export const createMockSnippetsRepository = () => ({
   countPublic: jest.fn(),
   getUserStats: jest.fn(),
   getLanguageStats: jest.fn(),
+  findTagSlugsForSnippet: jest.fn(),
 });
 
 export type MockSnippetsRepository = ReturnType<

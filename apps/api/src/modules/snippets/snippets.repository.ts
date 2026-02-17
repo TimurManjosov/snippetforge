@@ -13,8 +13,8 @@ import {
   sql,
 } from 'drizzle-orm';
 import {
-  snippetTags,
   snippets,
+  snippetTags,
   tags,
   type NewSnippet,
   type Snippet,
@@ -23,9 +23,9 @@ import { DatabaseService } from '../../shared/database';
 import {
   calculatePaginationMeta,
   DEFAULT_SORT,
-  type SearchPublicInput,
   type PaginatedSnippetPreviews,
   type PaginatedSnippets,
+  type SearchPublicInput,
   type SnippetFilters,
   type SnippetSortOptions,
   type SnippetStats,
@@ -615,5 +615,22 @@ export class SnippetsRepository {
     }
 
     return conditions;
+  }
+
+  /**
+   * Findet Tag-Slugs für einen Snippet
+   *
+   * @param snippetId - Snippet UUID
+   * @returns Array von Tag-Slugs (alphabetisch sortiert)
+   */
+  async findTagSlugsForSnippet(snippetId: string): Promise<string[]> {
+    const rows = await this.db.drizzle
+      .select({ slug: tags.slug })
+      .from(snippetTags)
+      .innerJoin(tags, eq(tags.id, snippetTags.tagId))
+      .where(eq(snippetTags.snippetId, snippetId))
+      .orderBy(asc(tags.slug));
+
+    return rows.map((r) => r.slug);
   }
 }

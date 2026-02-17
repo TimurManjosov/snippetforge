@@ -286,13 +286,14 @@ export class SnippetsController {
     return snippets.map(toSnippetPreview);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Public()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({
     summary: 'Get snippet by id',
-    description: 'Returns a snippet by its identifier.',
+    description:
+      'Returns a snippet by its identifier. Public snippets are accessible without authentication.',
   })
   @ApiParam({
     name: 'id',
@@ -303,10 +304,6 @@ export class SnippetsController {
     status: HttpStatus.OK,
     description: 'Snippet details',
     type: SnippetResponseSchema,
-  })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication token',
-    type: UnauthorizedErrorResponseSchema,
   })
   @ApiNotFoundResponse({
     description: 'Snippet not found',
@@ -322,9 +319,9 @@ export class SnippetsController {
   })
   async findById(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
-    @CurrentUser() user: SafeUser,
+    @CurrentUser() user?: SafeUser,
   ) {
-    return this.snippetsService.findByIdAndIncrementViews(id, user.id);
+    return this.snippetsService.findByIdAndIncrementViews(id, user?.id);
   }
 
   @UseGuards(JwtAuthGuard, OwnershipGuard)

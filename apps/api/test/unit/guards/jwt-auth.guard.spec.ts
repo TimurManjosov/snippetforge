@@ -31,14 +31,22 @@ describe('JwtAuthGuard', () => {
 
   describe('canActivate', () => {
     describe('when route is marked as @Public()', () => {
-      it('should return true without checking token', () => {
+      it('should return true when no token is present', async () => {
         // Arrange
         reflector.getAllAndOverride.mockReturnValue(true);
         const context =
           createMockExecutionContext() as unknown as ExecutionContext;
 
+        // Mock super.canActivate to reject (no token)
+        jest
+          .spyOn(
+            Object.getPrototypeOf(Object.getPrototypeOf(guard)),
+            'canActivate',
+          )
+          .mockRejectedValue(new Error('No auth token'));
+
         // Act
-        const result = guard.canActivate(context);
+        const result = await guard.canActivate(context);
 
         // Assert
         expect(result).toBe(true);
@@ -46,6 +54,27 @@ describe('JwtAuthGuard', () => {
           IS_PUBLIC_KEY,
           expect.any(Array),
         );
+      });
+
+      it('should return true and extract user when valid token is present', async () => {
+        // Arrange
+        reflector.getAllAndOverride.mockReturnValue(true);
+        const context =
+          createMockExecutionContext() as unknown as ExecutionContext;
+
+        // Mock super.canActivate to succeed (valid token)
+        jest
+          .spyOn(
+            Object.getPrototypeOf(Object.getPrototypeOf(guard)),
+            'canActivate',
+          )
+          .mockResolvedValue(true);
+
+        // Act
+        const result = await guard.canActivate(context);
+
+        // Assert
+        expect(result).toBe(true);
       });
     });
 

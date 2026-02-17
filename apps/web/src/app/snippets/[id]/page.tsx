@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { ApiClientError, createApiClient } from "@/lib/api-client";
-import type { SnippetDetail as SnippetDetailType } from "@/types/snippets";
-import SnippetDetail from "@/components/snippet-detail";
-import { readToken } from "@/utils/storage";
+import SnippetDetail from '@/components/snippet-detail';
+import { ApiClientError, createApiClient } from '@/lib/api-client';
+import type { SnippetDetail as SnippetDetailType } from '@/types/snippets';
+import { readToken } from '@/utils/storage';
 
 export default function SnippetDetailPage() {
   const params = useParams();
   const snippetId = useMemo(() => {
     const raw = params?.id;
-    return Array.isArray(raw) ? raw[0] ?? "" : raw ?? "";
+    return Array.isArray(raw) ? (raw[0] ?? '') : (raw ?? '');
   }, [params]);
 
   const [snippet, setSnippet] = useState<SnippetDetailType | null>(null);
@@ -24,7 +24,7 @@ export default function SnippetDetailPage() {
   const lastFetchedIdRef = useRef<string | null>(null);
 
   const apiClient = useMemo(
-    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? "", readToken),
+    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', readToken),
     [],
   );
 
@@ -44,24 +44,21 @@ export default function SnippetDetailPage() {
     setNotFound(false);
 
     try {
-      const result = await apiClient.get<SnippetDetailType>(
-        `/api/snippets/${snippetId}`,
-        { signal: controller.signal },
-      );
+      const result = await apiClient.get<SnippetDetailType>(`/snippets/${snippetId}`, {
+        signal: controller.signal,
+      });
       if (result) {
         setSnippet(result);
       }
     } catch (err) {
-      if (err instanceof DOMException && err.name === "AbortError") return;
+      if (err instanceof DOMException && err.name === 'AbortError') return;
       if (err instanceof ApiClientError && [401, 403, 404].includes(err.status)) {
         setSnippet(null);
         setNotFound(true);
         return;
       }
       const message =
-        err instanceof ApiClientError
-          ? err.message
-          : "Failed to load snippet. Please try again.";
+        err instanceof ApiClientError ? err.message : 'Failed to load snippet. Please try again.';
       setSnippet(null);
       setError(message);
     } finally {
