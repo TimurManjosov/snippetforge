@@ -1,17 +1,17 @@
 // test/unit/controllers/snippets.controller.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
-import { SnippetsController } from '../../../src/modules/snippets/snippets.controller';
+import { type SnippetStats } from '../../../src/modules/snippets';
 import { OwnershipGuard } from '../../../src/modules/snippets/guards';
+import { SnippetsController } from '../../../src/modules/snippets/snippets.controller';
 import { SnippetsRepository } from '../../../src/modules/snippets/snippets.repository';
 import { SnippetsService } from '../../../src/modules/snippets/snippets.service';
+import { type SafeUser } from '../../../src/modules/users';
 import {
   createMockSnippet,
   createMockSnippets,
   createMockSnippetsRepository,
 } from '../../mocks';
-import { type SnippetStats } from '../../../src/modules/snippets';
-import { type SafeUser } from '../../../src/modules/users';
 
 const mockService = {
   create: jest.fn(),
@@ -153,7 +153,9 @@ describe('SnippetsController', () => {
     mockService.update.mockResolvedValue(snippet);
 
     const dto = { title: 'Updated' };
-    const request = { snippet };
+    const request = { snippet } as unknown as Parameters<
+      typeof controller.update
+    >[3];
 
     const result = await controller.update(snippet.id, mockUser, dto, request);
 
@@ -185,7 +187,9 @@ describe('SnippetsController', () => {
     mockService.delete.mockResolvedValue(undefined);
 
     const snippet = createMockSnippet({ userId: mockUser.id });
-    const request = { snippet };
+    const request = { snippet } as unknown as Parameters<
+      typeof controller.delete
+    >[2];
 
     const result = await controller.delete('snippet-id', mockUser, request);
 

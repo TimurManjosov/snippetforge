@@ -1,11 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { and, asc, eq, inArray, sql } from 'drizzle-orm';
-import {
-  snippetTags,
-  tags,
-  type NewTag,
-  type Tag,
-} from '../../lib/db/schema';
+import { snippetTags, tags, type NewTag, type Tag } from '../../lib/db/schema';
 import { DatabaseService } from '../../shared/database';
 import { type TagWithSnippetCount } from './tags.types';
 
@@ -56,7 +51,10 @@ export class TagsRepository {
       .orderBy(asc(tags.slug));
   }
 
-  async attachTagsToSnippet(snippetId: string, tagIds: string[]): Promise<number> {
+  async attachTagsToSnippet(
+    snippetId: string,
+    tagIds: string[],
+  ): Promise<number> {
     if (tagIds.length === 0) {
       return 0;
     }
@@ -70,7 +68,10 @@ export class TagsRepository {
     return inserted.length;
   }
 
-  async removeTagFromSnippet(snippetId: string, tagId: string): Promise<boolean> {
+  async removeTagFromSnippet(
+    snippetId: string,
+    tagId: string,
+  ): Promise<boolean> {
     const removed = await this.db.drizzle
       .delete(snippetTags)
       .where(

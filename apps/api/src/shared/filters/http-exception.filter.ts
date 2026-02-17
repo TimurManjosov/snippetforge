@@ -155,7 +155,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
    */
   private inferErrorCode(
     message: string,
-    status: number,
+    status: HttpStatus,
     defaultCode: ErrorCode,
   ): ErrorCode {
     const lowerMessage = message.toLowerCase();

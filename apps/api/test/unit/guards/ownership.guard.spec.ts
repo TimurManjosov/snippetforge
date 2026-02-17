@@ -39,9 +39,7 @@ describe('OwnershipGuard', () => {
     await expect(guard.canActivate(context)).resolves.toBe(true);
     expect(repository.findById).toHaveBeenCalledTimes(1);
     expect(repository.findById).toHaveBeenCalledWith(snippet.id);
-    expect(
-      context.switchToHttp().getRequest().snippet,
-    ).toEqual(snippet);
+    expect(context.switchToHttp().getRequest().snippet).toEqual(snippet);
   });
 
   it('should allow admin', async () => {
@@ -71,9 +69,7 @@ describe('OwnershipGuard', () => {
       },
     }) as unknown as ExecutionContext;
 
-    await expect(guard.canActivate(context)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(guard.canActivate(context)).rejects.toThrow(NotFoundException);
     expect(repository.findById).toHaveBeenCalledTimes(1);
   });
 
@@ -89,9 +85,7 @@ describe('OwnershipGuard', () => {
       },
     }) as unknown as ExecutionContext;
 
-    await expect(guard.canActivate(context)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(guard.canActivate(context)).rejects.toThrow(NotFoundException);
     expect(repository.findById).toHaveBeenCalledTimes(1);
   });
 
@@ -105,9 +99,7 @@ describe('OwnershipGuard', () => {
       },
     }) as unknown as ExecutionContext;
 
-    await expect(guard.canActivate(context)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(guard.canActivate(context)).rejects.toThrow(NotFoundException);
     expect(repository.findById).not.toHaveBeenCalled();
   });
 });

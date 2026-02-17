@@ -48,7 +48,7 @@ export const CreateSnippetSchema = z.object({
       'Language must be lowercase alphanumeric with hyphens',
     ),
 
-  isPublic: z.boolean().default(true).optional(),
+  isPublic: z.boolean().optional().default(true),
 });
 
 /**

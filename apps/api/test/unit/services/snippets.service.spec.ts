@@ -311,7 +311,6 @@ describe('SnippetsService', () => {
     it('should enforce minimum page of 1', async () => {
       // Arrange
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       repository.findPublic.mockResolvedValue({ data: [], meta: {} as any });
 
       // Act
@@ -324,7 +323,6 @@ describe('SnippetsService', () => {
     it('should enforce maximum limit of 100', async () => {
       // Arrange
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       repository.findPublic.mockResolvedValue({ data: [], meta: {} as any });
 
       // Act

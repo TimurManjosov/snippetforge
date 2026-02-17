@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 // test/unit/repositories/users.repository.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';

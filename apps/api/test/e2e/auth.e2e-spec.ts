@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 // test/e2e/auth.e2e-spec.ts
 
 import { HttpStatus, INestApplication } from '@nestjs/common';

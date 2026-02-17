@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 // test/unit/repositories/snippets.repository.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
@@ -542,7 +540,7 @@ describe('SnippetsRepository', () => {
       await repository.update('snippet-123', { title: 'Updated' });
 
       // Assert
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(mockDb.drizzle.update().set).toHaveBeenCalledWith(
         expect.objectContaining({
           updatedAt: expect.any(Date),

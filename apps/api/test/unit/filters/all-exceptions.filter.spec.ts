@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // test/unit/filters/all-exceptions. filter.spec.ts
 
 import { HttpException, HttpStatus } from '@nestjs/common';

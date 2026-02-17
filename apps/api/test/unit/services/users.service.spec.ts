@@ -122,7 +122,7 @@ describe('UsersService', () => {
         expect.objectContaining({
           email: dto.email,
           username: dto.username,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
           passwordHash: expect.any(String),
         }),
       );

@@ -12,7 +12,7 @@
     "dev:api": "npm run start:dev --workspace=apps/api",
     "dev:web": "npm run dev --workspace=apps/web",
     "build": "npm run build --workspaces --if-present",
-    "build: api": "npm run build --workspace=apps/api",
+    "build:api": "npm run build --workspace=apps/api",
     "build:web": "npm run build --workspace=apps/web",
     "test": "npm run test --workspaces --if-present",
     "clean": "rimraf apps/*/node_modules apps/*/.next apps/*/dist packages/*/node_modules node_modules"

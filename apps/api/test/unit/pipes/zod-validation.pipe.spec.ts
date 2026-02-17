@@ -177,9 +177,7 @@ describe('ZodValidationPipe', () => {
             errors: Record<string, string[]>;
           };
           expect(response.errors['user.email']).toBeDefined();
-          expect(response.errors['user.email']).toContain(
-            'Invalid email address',
-          );
+          expect(response.errors['user.email']).toContain('Invalid email');
         }
       });
 

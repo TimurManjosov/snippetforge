@@ -1,7 +1,7 @@
 // src/shared/pipes/zod-validation.pipe.ts
 
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
-import { ZodError, type ZodSchema } from 'zod';
+import { ZodError, type ZodType } from 'zod';
 import { ErrorCodes } from '../constants';
 
 /**
@@ -26,7 +26,7 @@ import { ErrorCodes } from '../constants';
  */
 @Injectable()
 export class ZodValidationPipe<T> implements PipeTransform<unknown, T> {
-  constructor(private schema: ZodSchema<T>) {}
+  constructor(private schema: ZodType<T, any, any>) {}
 
   /**
    * Transform - Validiert und transformiert Input

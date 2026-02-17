@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // test/unit/filters/http-exception.filter.spec.ts
 
 import {
@@ -83,9 +81,9 @@ describe('HttpExceptionFilter', () => {
         filter.catch(exception, host as any);
 
         // Assert
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
         const jsonCall = mockResponse.json.mock.calls[0][0];
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
         expect(jsonCall.meta.requestId).toBe('trace-123');
       });
     });

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 // test/e2e/health.e2e-spec.ts
 
 import { HttpStatus, INestApplication } from '@nestjs/common';
