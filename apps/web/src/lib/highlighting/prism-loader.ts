@@ -1,6 +1,9 @@
 import { normalizeLanguage } from "@/utils/language-map";
 
-type PrismInstance = typeof import("prismjs");
+interface PrismInstance {
+  languages: Record<string, unknown>;
+  highlight: (code: string, grammar: unknown, language: string) => string;
+}
 type PrismModule = keyof typeof LANGUAGE_MODULE_IMPORTERS;
 
 const LANGUAGE_MODULES: Record<string, PrismModule[]> = {
@@ -69,7 +72,21 @@ const modulePromises = new Map<PrismModule, Promise<void>>();
 
 const loadPrismCore = async (): Promise<PrismInstance> => {
   if (!prismPromise) {
-    prismPromise = import("prismjs").then((module) => (module.default ?? module) as PrismInstance);
+    prismPromise = import("prismjs").then((module) => {
+      const candidate = ("default" in module ? module.default : module) as unknown;
+
+      if (
+        candidate &&
+        typeof candidate === "object" &&
+        "languages" in candidate &&
+        "highlight" in candidate &&
+        typeof candidate.highlight === "function"
+      ) {
+        return candidate as PrismInstance;
+      }
+
+      throw new Error("Unable to load Prism core: received invalid module structure");
+    });
   }
 
   return prismPromise;
