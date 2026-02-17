@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 
 import type { SnippetDetail } from "@/types/snippets";
 import { formatLanguageLabel, formatSnippetDate } from "@/utils/snippet-format";
+import { normalizeLanguage } from "@/utils/language-map";
 import CodeViewer from "@/components/code-viewer";
 
 interface SnippetDetailProps {
@@ -78,7 +79,7 @@ export default function SnippetDetail({ snippet }: SnippetDetailProps) {
           </div>
         </dl>
       </header>
-      <CodeViewer code={snippet.code} language={snippet.language} />
+      <CodeViewer code={snippet.code} language={normalizeLanguage(snippet.language)} />
     </article>
   );
 }

@@ -660,7 +660,14 @@ body {
 }
 
 .code-viewer-pre code {
+  display: block;
+  min-width: 100%;
   font-family: inherit;
+}
+
+.code-viewer-pre-wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* ── Snippet form ──────────────────────────────────────────── */

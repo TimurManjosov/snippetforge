@@ -1,12 +1,18 @@
 const LANGUAGE_LABELS: Record<string, string> = {
   javascript: "JavaScript",
   typescript: "TypeScript",
+  tsx: "TSX",
+  jsx: "JSX",
   "c++": "C++",
   "c#": "C#",
+  csharp: "C#",
   html: "HTML",
+  markup: "HTML",
   css: "CSS",
   sql: "SQL",
   json: "JSON",
+  bash: "Bash",
+  plaintext: "Plain text",
 };
 
 export const formatSnippetDate = (iso: string): string => {
