@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { type SafeUser } from '../users';
-import { SnippetsService } from '../snippets/snippets.service';
+import { SnippetsRepository } from '../snippets/snippets.repository';
 import {
   CommentsRepository,
   type PaginatedComments,
@@ -13,7 +13,7 @@ export class CommentsService {
 
   constructor(
     private readonly repository: CommentsRepository,
-    private readonly snippetsService: SnippetsService,
+    private readonly snippetsRepository: SnippetsRepository,
   ) {}
 
   /**
@@ -25,18 +25,13 @@ export class CommentsService {
     snippetId: string,
     user?: SafeUser,
   ): Promise<void> {
-    const snippet = await this.snippetsService.findById(
-      snippetId,
-      user?.id,
-    ).catch((error) => {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      // ForbiddenException from SnippetsService -> convert to 404 (anti-enumeration)
-      throw new NotFoundException('Snippet not found');
-    });
+    const snippet = await this.snippetsRepository.findById(snippetId);
 
-    // Additional anti-enumeration: private snippet + not owner/admin -> 404
+    if (!snippet) {
+      throw new NotFoundException('Snippet not found');
+    }
+
+    // Anti-enumeration: private snippet + not owner/admin -> 404
     if (!snippet.isPublic) {
       if (!user || (snippet.userId !== user.id && user.role !== 'ADMIN')) {
         throw new NotFoundException('Snippet not found');
