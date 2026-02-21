@@ -26,6 +26,7 @@ import {
   SetReactionSchema,
   type SetReactionDto,
   ReactionTypeSchema,
+  type ReactionType,
 } from './dto';
 import { ReactionsService } from './reactions.service';
 
@@ -74,10 +75,10 @@ export class ReactionsController {
   @ApiNotFoundResponse({ description: 'Snippet not found' })
   async remove(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
-    @Param('type', new ZodValidationPipe(ReactionTypeSchema)) type: string,
+    @Param('type', new ZodValidationPipe(ReactionTypeSchema)) type: ReactionType,
     @CurrentUser() user: SafeUser,
   ) {
-    await this.reactionsService.remove(id, user, type as any);
+    await this.reactionsService.remove(id, user, type);
   }
 
   @Public()
