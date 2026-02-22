@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-export const CommentBodySchema = z.string().trim().min(1, 'Comment cannot be empty').max(5000, 'Comment must be at most 5000 characters');
+export const CommentBodySchema = z
+  .string()
+  .trim()
+  .min(1, 'Comment cannot be empty')
+  .max(5000, 'Comment must be at most 5000 characters');
 
 export const FlagReasonSchema = z.enum(['spam', 'abuse', 'off-topic', 'other']);
 
