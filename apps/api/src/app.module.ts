@@ -6,7 +6,9 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, JwtAuthGuard } from './modules/auth';
+import { CollectionsModule } from './modules/collections';
 import { CommentsModule } from './modules/comments';
+import { FavoritesModule } from './modules/favorites';
 import { ReactionsModule } from './modules/reactions';
 import { SnippetsModule } from './modules/snippets';
 import { TagsModule } from './modules/tags';
@@ -48,6 +50,8 @@ import { DatabaseModule } from './shared/database';
     TagsModule,
     CommentsModule,
     ReactionsModule,
+    FavoritesModule,
+    CollectionsModule,
   ],
   controllers: [AppController],
   providers: [
