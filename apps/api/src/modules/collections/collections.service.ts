@@ -55,7 +55,10 @@ export class CollectionsService {
   ): void {
     if (collection.isPublic) return;
 
-    if (!viewer || (collection.userId !== viewer.id && viewer.role !== 'ADMIN')) {
+    if (
+      !viewer ||
+      (collection.userId !== viewer.id && viewer.role !== 'ADMIN')
+    ) {
       throw new NotFoundException('Collection not found');
     }
   }
@@ -63,10 +66,7 @@ export class CollectionsService {
   /**
    * Asserts the user is the owner or admin of the collection, else 404.
    */
-  private assertOwnerOrAdmin(
-    collection: Collection,
-    user: SafeUser,
-  ): void {
+  private assertOwnerOrAdmin(collection: Collection, user: SafeUser): void {
     if (collection.userId !== user.id && user.role !== 'ADMIN') {
       throw new NotFoundException('Collection not found');
     }

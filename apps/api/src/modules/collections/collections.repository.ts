@@ -28,10 +28,7 @@ export class CollectionsRepository {
   /**
    * Create a new collection
    */
-  async create(
-    userId: string,
-    data: CreateCollectionDto,
-  ): Promise<Collection> {
+  async create(userId: string, data: CreateCollectionDto): Promise<Collection> {
     const [collection] = await this.db.drizzle
       .insert(collections)
       .values({
@@ -126,7 +123,10 @@ export class CollectionsRepository {
     `);
 
     if (result.length > 0) {
-      return { inserted: true, position: (result[0] as { position: number }).position };
+      return {
+        inserted: true,
+        position: (result[0] as { position: number }).position,
+      };
     }
 
     // Already existed – fetch existing position

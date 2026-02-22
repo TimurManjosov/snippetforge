@@ -7,7 +7,10 @@ import {
   createMockFavoritesRepository,
   type MockFavoritesRepository,
 } from '../../mocks/favorites.mock';
-import { createMockSnippet, createMockSnippetPreview } from '../../mocks/snippets.mock';
+import {
+  createMockSnippet,
+  createMockSnippetPreview,
+} from '../../mocks/snippets.mock';
 import { type SafeUser } from '../../../src/modules/users';
 import { calculatePaginationMeta } from '../../../src/modules/snippets/snippets.types';
 
@@ -148,7 +151,10 @@ describe('FavoritesService', () => {
 
       await service.removeFavorite(ownerUser, 'snippet-123');
 
-      expect(repository.remove).toHaveBeenCalledWith(ownerUser.id, 'snippet-123');
+      expect(repository.remove).toHaveBeenCalledWith(
+        ownerUser.id,
+        'snippet-123',
+      );
     });
 
     it('is idempotent - removing nonexistent favorite does not throw', async () => {

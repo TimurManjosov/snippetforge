@@ -52,11 +52,14 @@ export class CollectionsController {
     status: HttpStatus.CREATED,
     description: 'Collection created',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiConflictResponse({ description: 'Collection name already exists' })
   async create(
     @CurrentUser() user: SafeUser,
-    @Body(new ZodValidationPipe(CreateCollectionSchema)) dto: CreateCollectionDto,
+    @Body(new ZodValidationPipe(CreateCollectionSchema))
+    dto: CreateCollectionDto,
   ) {
     return this.collectionsService.create(user, dto);
   }
@@ -68,7 +71,9 @@ export class CollectionsController {
     status: HttpStatus.OK,
     description: 'List of collections owned by the current user',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   async listMine(@CurrentUser() user: SafeUser) {
     return this.collectionsService.listMine(user);
   }
@@ -76,11 +81,22 @@ export class CollectionsController {
   @Public()
   @Get(':id')
   @ApiOperation({
-    summary: 'Get a collection by ID (public or owner/admin for private). Auth is optional.',
+    summary:
+      'Get a collection by ID (public or owner/admin for private). Auth is optional.',
   })
   @ApiParam({ name: 'id', format: 'uuid', description: 'Collection UUID' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default 1)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default 20, max 50)' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (default 20, max 50)',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Collection with paginated snippet previews',
@@ -111,13 +127,16 @@ export class CollectionsController {
     status: HttpStatus.OK,
     description: 'Collection updated',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Collection not found' })
   @ApiConflictResponse({ description: 'Collection name already exists' })
   async update(
     @Param('id', new ZodValidationPipe(UuidParamSchema)) id: string,
     @CurrentUser() user: SafeUser,
-    @Body(new ZodValidationPipe(UpdateCollectionSchema)) dto: UpdateCollectionDto,
+    @Body(new ZodValidationPipe(UpdateCollectionSchema))
+    dto: UpdateCollectionDto,
   ) {
     return this.collectionsService.update(user, id, dto);
   }
@@ -131,7 +150,9 @@ export class CollectionsController {
     status: HttpStatus.NO_CONTENT,
     description: 'Collection deleted',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Collection not found' })
   async delete(
     @Param('id', new ZodValidationPipe(UuidParamSchema)) id: string,
@@ -143,19 +164,24 @@ export class CollectionsController {
   @Post(':id/items')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
-  @ApiOperation({ summary: 'Add a snippet to a collection (owner/admin, idempotent)' })
+  @ApiOperation({
+    summary: 'Add a snippet to a collection (owner/admin, idempotent)',
+  })
   @ApiParam({ name: 'id', format: 'uuid', description: 'Collection UUID' })
   @ApiBody({ description: 'Collection item payload with snippetId' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Item added to collection',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Collection or snippet not found' })
   async addItem(
     @Param('id', new ZodValidationPipe(UuidParamSchema)) id: string,
     @CurrentUser() user: SafeUser,
-    @Body(new ZodValidationPipe(AddCollectionItemSchema)) dto: AddCollectionItemDto,
+    @Body(new ZodValidationPipe(AddCollectionItemSchema))
+    dto: AddCollectionItemDto,
   ) {
     return this.collectionsService.addItem(user, id, dto.snippetId);
   }
@@ -163,18 +189,23 @@ export class CollectionsController {
   @Delete(':id/items/:snippetId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth('JWT-Auth')
-  @ApiOperation({ summary: 'Remove a snippet from a collection (owner/admin, idempotent)' })
+  @ApiOperation({
+    summary: 'Remove a snippet from a collection (owner/admin, idempotent)',
+  })
   @ApiParam({ name: 'id', format: 'uuid', description: 'Collection UUID' })
   @ApiParam({ name: 'snippetId', format: 'uuid', description: 'Snippet UUID' })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: 'Item removed from collection',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Collection not found' })
   async removeItem(
     @Param('id', new ZodValidationPipe(UuidParamSchema)) id: string,
-    @Param('snippetId', new ZodValidationPipe(UuidParamSchema)) snippetId: string,
+    @Param('snippetId', new ZodValidationPipe(UuidParamSchema))
+    snippetId: string,
     @CurrentUser() user: SafeUser,
   ) {
     await this.collectionsService.removeItem(user, id, snippetId);

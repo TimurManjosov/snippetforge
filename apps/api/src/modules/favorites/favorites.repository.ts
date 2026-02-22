@@ -36,10 +36,7 @@ export class FavoritesRepository {
     await this.db.drizzle
       .delete(favorites)
       .where(
-        and(
-          eq(favorites.userId, userId),
-          eq(favorites.snippetId, snippetId),
-        ),
+        and(eq(favorites.userId, userId), eq(favorites.snippetId, snippetId)),
       );
   }
 

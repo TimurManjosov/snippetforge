@@ -115,8 +115,9 @@ describe('Collections (E2E)', () => {
     expect(deleteResponse.status).toBe(HttpStatus.NO_CONTENT);
 
     // After delete, GET should 404
-    const getResponse = await request(app.getHttpServer())
-      .get(`/api/collections/${collectionId}`);
+    const getResponse = await request(app.getHttpServer()).get(
+      `/api/collections/${collectionId}`,
+    );
 
     expect(getResponse.status).toBe(HttpStatus.NOT_FOUND);
   });

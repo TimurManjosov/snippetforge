@@ -1,7 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { type SafeUser } from '../users';
 import { SnippetsRepository } from '../snippets/snippets.repository';
-import { FavoritesRepository, type PaginatedFavorites } from './favorites.repository';
+import {
+  FavoritesRepository,
+  type PaginatedFavorites,
+} from './favorites.repository';
 
 @Injectable()
 export class FavoritesService {

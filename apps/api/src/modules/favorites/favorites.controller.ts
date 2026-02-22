@@ -43,7 +43,9 @@ export class FavoritesController {
     status: HttpStatus.OK,
     description: 'Favorite added successfully',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Snippet not found' })
   async add(
     @CurrentUser() user: SafeUser,
@@ -60,7 +62,9 @@ export class FavoritesController {
     status: HttpStatus.NO_CONTENT,
     description: 'Favorite removed',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   async remove(
     @Param('snippetId', new ZodValidationPipe(SnippetIdParamSchema))
     snippetId: string,
@@ -72,13 +76,25 @@ export class FavoritesController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'List favorites with snippet previews (paginated)' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default 1)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default 20, max 50)' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (default 20, max 50)',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Paginated list of favorite snippet previews',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   async list(
     @CurrentUser() user: SafeUser,
     @Query('page') page?: string,

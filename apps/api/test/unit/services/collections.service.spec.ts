@@ -8,7 +8,7 @@ import {
   createMockCollection,
   type MockCollectionsRepository,
 } from '../../mocks/collections.mock';
-import { createMockSnippet, createMockSnippetPreview } from '../../mocks/snippets.mock';
+import { createMockSnippet } from '../../mocks/snippets.mock';
 import { type SafeUser } from '../../../src/modules/users';
 import { calculatePaginationMeta } from '../../../src/modules/snippets/snippets.types';
 
@@ -133,7 +133,10 @@ describe('CollectionsService', () => {
     });
 
     it('returns a private collection for the owner', async () => {
-      const collection = createMockCollection({ isPublic: false, userId: ownerUser.id });
+      const collection = createMockCollection({
+        isPublic: false,
+        userId: ownerUser.id,
+      });
       repository.getById.mockResolvedValue(collection);
       repository.listItemsWithSnippetPreview.mockResolvedValue({
         items: [],
@@ -146,7 +149,10 @@ describe('CollectionsService', () => {
     });
 
     it('returns a private collection for admin', async () => {
-      const collection = createMockCollection({ isPublic: false, userId: ownerUser.id });
+      const collection = createMockCollection({
+        isPublic: false,
+        userId: ownerUser.id,
+      });
       repository.getById.mockResolvedValue(collection);
       repository.listItemsWithSnippetPreview.mockResolvedValue({
         items: [],
@@ -162,9 +168,9 @@ describe('CollectionsService', () => {
       const collection = createMockCollection({ isPublic: false });
       repository.getById.mockResolvedValue(collection);
 
-      await expect(
-        service.getByIdForViewer(collection.id),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getByIdForViewer(collection.id)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws 404 for private collection with non-owner', async () => {
@@ -182,9 +188,9 @@ describe('CollectionsService', () => {
     it('throws 404 for nonexistent collection', async () => {
       repository.getById.mockResolvedValue(null);
 
-      await expect(
-        service.getByIdForViewer('nonexistent'),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getByIdForViewer('nonexistent')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -255,17 +261,17 @@ describe('CollectionsService', () => {
       const collection = createMockCollection({ userId: ownerUser.id });
       repository.getById.mockResolvedValue(collection);
 
-      await expect(
-        service.delete(foreignUser, collection.id),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.delete(foreignUser, collection.id)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws 404 for nonexistent collection', async () => {
       repository.getById.mockResolvedValue(null);
 
-      await expect(
-        service.delete(ownerUser, 'nonexistent'),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.delete(ownerUser, 'nonexistent')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('allows admin to delete any collection', async () => {
@@ -291,7 +297,11 @@ describe('CollectionsService', () => {
       snippetsRepository.findById.mockResolvedValue(snippet);
       repository.addItem.mockResolvedValue({ inserted: true, position: 1 });
 
-      const result = await service.addItem(ownerUser, collection.id, snippet.id);
+      const result = await service.addItem(
+        ownerUser,
+        collection.id,
+        snippet.id,
+      );
 
       expect(result).toEqual({ ok: true, position: 1 });
     });
@@ -336,7 +346,11 @@ describe('CollectionsService', () => {
       snippetsRepository.findById.mockResolvedValue(snippet);
       repository.addItem.mockResolvedValue({ inserted: false, position: 1 });
 
-      const result = await service.addItem(ownerUser, collection.id, snippet.id);
+      const result = await service.addItem(
+        ownerUser,
+        collection.id,
+        snippet.id,
+      );
 
       expect(result).toEqual({ ok: true, position: 1 });
     });
@@ -348,7 +362,11 @@ describe('CollectionsService', () => {
       snippetsRepository.findById.mockResolvedValue(snippet);
       repository.addItem.mockResolvedValue({ inserted: true, position: 4 });
 
-      const result = await service.addItem(ownerUser, collection.id, snippet.id);
+      const result = await service.addItem(
+        ownerUser,
+        collection.id,
+        snippet.id,
+      );
 
       expect(result.position).toBe(4);
     });
@@ -366,7 +384,10 @@ describe('CollectionsService', () => {
 
       await service.removeItem(ownerUser, collection.id, 'snippet-123');
 
-      expect(repository.removeItem).toHaveBeenCalledWith(collection.id, 'snippet-123');
+      expect(repository.removeItem).toHaveBeenCalledWith(
+        collection.id,
+        'snippet-123',
+      );
     });
 
     it('throws 404 for non-owner', async () => {
