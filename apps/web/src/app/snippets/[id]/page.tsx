@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import SnippetDetail from '@/components/snippet-detail';
+import CommentsPanel from '@/components/comments/comments-panel';
 import { ApiClientError, createApiClient } from '@/lib/api-client';
 import type { SnippetDetail as SnippetDetailType } from '@/types/snippets';
 import { readToken } from '@/utils/storage';
@@ -161,6 +162,7 @@ export default function SnippetDetailPage() {
   return (
     <div className="snippet-page">
       <SnippetDetail snippet={snippet} />
+      <CommentsPanel snippetId={snippetId} />
     </div>
   );
 }
