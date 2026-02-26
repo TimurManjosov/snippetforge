@@ -19,8 +19,10 @@ export interface SafeUser {
   id: string;
   email: string;
   username: string;
+  displayName: string | null;
   bio: string | null;
   avatarUrl: string | null;
+  websiteUrl: string | null;
   role: 'USER' | 'ADMIN' | 'MODERATOR';
   createdAt: Date;
   updatedAt: Date;
@@ -76,8 +78,10 @@ export function toSafeUser(user: User): SafeUser {
     id: user.id,
     email: user.email,
     username: user.username,
+    displayName: user.displayName ?? null,
     bio: user.bio,
     avatarUrl: user.avatarUrl,
+    websiteUrl: user.websiteUrl ?? null,
     role: user.role,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
