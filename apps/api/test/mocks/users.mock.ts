@@ -22,6 +22,9 @@ export const createMockUsersRepository = () => ({
   updatePassword: jest.fn(),
   delete: jest.fn(),
   count: jest.fn(),
+  findPublicById: jest.fn(),
+  findPrivateById: jest.fn(),
+  stats: jest.fn(),
 });
 
 export type MockUsersRepository = ReturnType<typeof createMockUsersRepository>;
@@ -41,6 +44,9 @@ export const createMockUsersService = () => ({
   validateCredentials: jest.fn(),
   hashPassword: jest.fn(),
   comparePassword: jest.fn(),
+  getPublicProfile: jest.fn(),
+  getMe: jest.fn(),
+  getStats: jest.fn(),
 });
 
 export type MockUsersService = ReturnType<typeof createMockUsersService>;
@@ -60,8 +66,10 @@ export function createMockSafeUser(
     id: 'test-user-id-123',
     email: 'test@example.com',
     username: 'testuser',
+    displayName: null,
     bio: null,
     avatarUrl: null,
+    websiteUrl: null,
     role: 'USER',
     createdAt: now,
     updatedAt: now,

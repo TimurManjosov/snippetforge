@@ -17,11 +17,13 @@ describe('JwtStrategy', () => {
     id: 'test-user-id',
     email: 'test@example.com',
     username: 'testuser',
+    displayName: null,
     role: 'USER',
     createdAt: new Date(),
     updatedAt: new Date(),
     bio: null,
     avatarUrl: null,
+    websiteUrl: null,
   };
 
   beforeEach(async () => {

@@ -1,8 +1,15 @@
 // src/modules/users/users.repository.ts
 
 import { Injectable, Logger } from '@nestjs/common';
-import { eq, or } from 'drizzle-orm';
-import { users, type NewUser, type User } from '../../lib/db/schema';
+import { eq, and, or, sql } from 'drizzle-orm';
+import {
+  users,
+  snippets,
+  comments,
+  snippetReactions,
+  type NewUser,
+  type User,
+} from '../../lib/db/schema';
 import { DatabaseService } from '../../shared/database';
 
 /**
@@ -226,5 +233,71 @@ export class UsersRepository {
 
     // Drizzle gibt Array zurück, wir brauchen Länge
     return result.length;
+  }
+
+  /**
+   * Findet öffentliches Profil anhand der ID
+   * Gibt NUR öffentliche Felder zurück (KEIN email, password!)
+   */
+  async findPublicById(userId: string) {
+    return this.db.drizzle.query.users.findFirst({
+      where: eq(users.id, userId),
+      columns: {
+        id: true,
+        username: true,
+        displayName: true,
+        bio: true,
+        avatarUrl: true,
+        websiteUrl: true,
+        createdAt: true,
+      },
+    });
+  }
+
+  /**
+   * Findet privates Profil anhand der ID (inkl. email)
+   * NUR über /users/me nach Auth-Guard exponieren!
+   */
+  async findPrivateById(userId: string) {
+    return this.db.drizzle.query.users.findFirst({
+      where: eq(users.id, userId),
+      columns: {
+        id: true,
+        username: true,
+        email: true,
+        displayName: true,
+        bio: true,
+        avatarUrl: true,
+        websiteUrl: true,
+        createdAt: true,
+      },
+    });
+  }
+
+  /**
+   * Berechnet User-Statistiken (nur öffentliche Snippets!)
+   */
+  async stats(userId: string) {
+    const [{ publicSnippetCount }] = await this.db.drizzle
+      .select({ publicSnippetCount: sql<number>`COUNT(*)` })
+      .from(snippets)
+      .where(and(eq(snippets.userId, userId), eq(snippets.isPublic, true)));
+
+    const [{ commentCount }] = await this.db.drizzle
+      .select({ commentCount: sql<number>`COUNT(*)` })
+      .from(comments)
+      .where(eq(comments.userId, userId));
+
+    const [{ reactionGivenCount }] = await this.db.drizzle
+      .select({ reactionGivenCount: sql<number>`COUNT(*)` })
+      .from(snippetReactions)
+      .where(eq(snippetReactions.userId, userId));
+
+    return {
+      userId,
+      publicSnippetCount: Number(publicSnippetCount),
+      commentCount: Number(commentCount),
+      reactionGivenCount: Number(reactionGivenCount),
+    };
   }
 }

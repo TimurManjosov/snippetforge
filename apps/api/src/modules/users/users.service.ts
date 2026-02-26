@@ -303,6 +303,38 @@ export class UsersService {
   // ============================================================
 
   /**
+   * Gibt öffentliches Profil zurück (ohne email/password)
+   */
+  async getPublicProfile(userId: string) {
+    const user = await this.usersRepository.findPublicById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  /**
+   * Gibt privates Profil zurück (inkl. email, OHNE password)
+   * NUR über /users/me nach Auth-Guard!
+   */
+  async getMe(userId: string) {
+    const user = await this.usersRepository.findPrivateById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  /**
+   * Gibt User-Statistiken zurück (öffentliche Snippets, Kommentare, Reaktionen)
+   */
+  async getStats(userId: string) {
+    const user = await this.usersRepository.findPublicById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    return this.usersRepository.stats(userId);
+  }
+
+  // ============================================================
+  // VALIDATION HELPERS (für AuthService) – continued
+  // ============================================================
+
+  /**
    * Validiert User-Credentials
    * Verwendet bei Login
    *

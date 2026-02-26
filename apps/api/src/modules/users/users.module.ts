@@ -1,6 +1,7 @@
 // src/modules/users/users.module.ts
 
 import { Module } from '@nestjs/common';
+import { UsersController } from './users.controller';
 import { UsersRepository } from './users.repository';
 import { UsersService } from './users.service';
 
@@ -8,6 +9,7 @@ import { UsersService } from './users.service';
  * UsersModule - Kapselt alle User-bezogenen Komponenten
  *
  * STRUKTUR:
+ * - Controller: HTTP Endpoints
  * - Repository:  Data Access (intern)
  * - Service: Business Logic (exportiert für andere Module)
  *
@@ -21,6 +23,7 @@ import { UsersService } from './users.service';
  * - Bessere Kapselung
  */
 @Module({
+  controllers: [UsersController],
   providers: [
     UsersRepository, // Data Access Layer (intern)
     UsersService, // Business Logic (exportiert)
