@@ -6,6 +6,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import SnippetDetail from '@/components/snippet-detail';
 import CommentsPanel from '@/components/comments/comments-panel';
+import ReactionBar from '@/components/reactions/reaction-bar';
+import FavoriteButton from '@/components/favorites/favorite-button';
+import AddToCollectionButton from '@/components/collections/add-to-collection-button';
 import { ApiClientError, createApiClient } from '@/lib/api-client';
 import type { SnippetDetail as SnippetDetailType } from '@/types/snippets';
 import { readToken } from '@/utils/storage';
@@ -162,6 +165,11 @@ export default function SnippetDetailPage() {
   return (
     <div className="snippet-page">
       <SnippetDetail snippet={snippet} />
+      <div className="snippet-actions-bar">
+        <ReactionBar snippetId={snippetId} />
+        <FavoriteButton snippetId={snippetId} />
+        <AddToCollectionButton snippetId={snippetId} />
+      </div>
       <CommentsPanel snippetId={snippetId} />
     </div>
   );
