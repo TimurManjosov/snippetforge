@@ -10,6 +10,8 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
+export const uiThemeEnum = pgEnum('ui_theme', ['system', 'light', 'dark']);
+
 // Role Enum
 export const roleEnum = pgEnum('role', ['USER', 'ADMIN', 'MODERATOR']);
 
@@ -26,6 +28,12 @@ export const users = pgTable(
     avatarUrl: text('avatar_url'),
     websiteUrl: varchar('website_url', { length: 200 }),
     role: roleEnum('role').default('USER').notNull(),
+    defaultSnippetVisibility: boolean('default_snippet_visibility')
+      .default(false)
+      .notNull(),
+    defaultLanguage: varchar('default_language', { length: 50 }),
+    uiTheme: uiThemeEnum('ui_theme').default('system').notNull(),
+    itemsPerPage: integer('items_per_page').default(20).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true })
       .defaultNow()
       .notNull(),

@@ -10,6 +10,7 @@ import { CollectionsModule } from './modules/collections';
 import { CommentsModule } from './modules/comments';
 import { FavoritesModule } from './modules/favorites';
 import { ReactionsModule } from './modules/reactions';
+import { SettingsModule } from './modules/settings';
 import { SnippetsModule } from './modules/snippets';
 import { TagsModule } from './modules/tags';
 import { UsersModule } from './modules/users';
@@ -52,6 +53,7 @@ import { DatabaseModule } from './shared/database';
     ReactionsModule,
     FavoritesModule,
     CollectionsModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [
