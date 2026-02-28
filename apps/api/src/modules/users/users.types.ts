@@ -65,6 +65,20 @@ export interface UpdatePasswordData {
   newPassword: string;
 }
 
+type SafeUserSource = Pick<
+  User,
+  | 'id'
+  | 'email'
+  | 'username'
+  | 'displayName'
+  | 'bio'
+  | 'avatarUrl'
+  | 'websiteUrl'
+  | 'role'
+  | 'createdAt'
+  | 'updatedAt'
+>;
+
 /**
  * Konvertiert DB User zu SafeUser (ohne passwordHash)
  *
@@ -73,7 +87,7 @@ export interface UpdatePasswordData {
  * - Sicher: Neue DB-Felder werden nicht automatisch exponiert
  * - Typsicher: TypeScript prüft ob alle Felder da sind
  */
-export function toSafeUser(user: User): SafeUser {
+export function toSafeUser(user: SafeUserSource): SafeUser {
   return {
     id: user.id,
     email: user.email,
