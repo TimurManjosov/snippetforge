@@ -29,6 +29,9 @@ export default function Navbar() {
               <Link href="/collections" className="navbar-link">
                 Collections
               </Link>
+              <Link href="/settings" className="navbar-link">
+                Settings
+              </Link>
             </>
           )}
         </div>

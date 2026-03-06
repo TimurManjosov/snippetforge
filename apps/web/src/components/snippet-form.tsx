@@ -1,6 +1,6 @@
 "use client";
 
-import { type ChangeEvent, type FormEvent, useCallback, useMemo, useState } from "react";
+import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
 import type { FieldErrors } from "@/utils/validation";
@@ -8,6 +8,8 @@ import { ApiClientError } from "@/lib/api-client";
 import { attachTagsToSnippet, createSnippet } from "@/lib/snippets-api";
 import type { CreateSnippetDto, SnippetResponse } from "@/types/snippets";
 import { parseTagSlugs } from "@/utils/tags";
+import { useAuth } from "@/hooks/useAuth";
+import { useSettings } from "@/hooks/use-settings";
 import CodeEditor from "@/components/code-editor";
 
 const CreateSnippetSchema = z.object({
@@ -97,6 +99,23 @@ export default function SnippetForm({ token, onSuccess, onUnauthorized }: Snippe
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<SnippetFormValues>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Prefill from user settings: apply default visibility and language once on
+  // initial load. A ref guards against re-applying after the user edits fields.
+  const { user } = useAuth();
+  const { settings } = useSettings(!!user);
+  const prefillApplied = useRef(false);
+
+  useEffect(() => {
+    if (!settings || prefillApplied.current) return;
+    prefillApplied.current = true;
+
+    setValues((prev) => ({
+      ...prev,
+      isPublic: settings.defaultSnippetVisibility,
+      language: prev.language === '' ? (settings.defaultLanguage ?? '') : prev.language,
+    }));
+  }, [settings]);
 
   const codeDescribedBy = useMemo(() => {
     const ids = ["snippet-code-help"];
