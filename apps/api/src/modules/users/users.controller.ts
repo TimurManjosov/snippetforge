@@ -4,23 +4,48 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Public } from '../auth/decorators/public.decorator';
+import { ZodValidationPipe } from '../../shared/pipes';
 import { UsersService } from './users.service';
+import { UsersRepository } from './users.repository';
+import { ListUsersQuerySchema, type ListUsersQueryDto } from './dto/list-users.dto';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly service: UsersService) {}
+  constructor(
+    private readonly service: UsersService,
+    private readonly repository: UsersRepository,
+  ) {}
+
+  @Get()
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'List users (public directory)' })
+  @ApiQuery({ name: 'q', required: false, type: String, description: 'Search by username or display name' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default 1)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default 20, max 100)' })
+  @ApiQuery({ name: 'sort', required: false, enum: ['createdAt', 'publicSnippetCount'], description: 'Sort field' })
+  @ApiQuery({ name: 'order', required: false, enum: ['asc', 'desc'], description: 'Sort direction' })
+  @ApiResponse({ status: 200, description: 'Paginated user directory' })
+  async listUsers(
+    @Query(new ZodValidationPipe(ListUsersQuerySchema))
+    query: ListUsersQueryDto,
+  ) {
+    return this.repository.listUsers(query);
+  }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)

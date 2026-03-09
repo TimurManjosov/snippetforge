@@ -237,6 +237,10 @@ export class SnippetsRepository {
       );
     }
 
+    if (input.authorId) {
+      conditions.push(eq(snippets.userId, input.authorId));
+    }
+
     if (input.language) {
       conditions.push(eq(snippets.language, input.language));
     }

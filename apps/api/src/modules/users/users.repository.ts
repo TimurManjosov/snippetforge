@@ -1,7 +1,7 @@
 // src/modules/users/users.repository.ts
 
 import { Injectable, Logger } from '@nestjs/common';
-import { eq, and, or, sql } from 'drizzle-orm';
+import { eq, and, or, sql, ilike } from 'drizzle-orm';
 import {
   users,
   snippets,
@@ -11,6 +11,8 @@ import {
   type User,
 } from '../../lib/db/schema';
 import { DatabaseService } from '../../shared/database';
+import { type ListUsersQueryDto } from './dto/list-users.dto';
+import { calculatePaginationMeta, type PaginationMeta } from '../snippets/snippets.types';
 
 /**
  * UsersRepository - Data Access Layer für User-Entity
@@ -275,6 +277,63 @@ export class UsersRepository {
   }
 
   /**
+   * Whitelisted sort columns for listUsers – prevents SQL injection via dynamic column names.
+   */
+  private static readonly LIST_USERS_SORT_MAP: Record<string, string> = {
+    createdAt: 'u.created_at',
+    publicSnippetCount: '"publicSnippetCount"',
+  };
+
+  /**
+   * Lists users with pagination, optional search and public snippet count.
+   * Uses a single SQL statement (data) + one COUNT(*) for pagination meta.
+   */
+  async listUsers(dto: ListUsersQueryDto): Promise<{
+    items: UserDirectoryItem[];
+    meta: PaginationMeta;
+  }> {
+    this.logger.debug('Listing users', dto);
+
+    const offset = (dto.page - 1) * dto.limit;
+    const searchFilter = dto.q
+      ? sql`AND (${ilike(users.username, `%${dto.q}%`)} OR ${ilike(users.displayName, `%${dto.q}%`)})`
+      : sql``;
+
+    const sortColumn =
+      UsersRepository.LIST_USERS_SORT_MAP[dto.sort] ??
+      UsersRepository.LIST_USERS_SORT_MAP.createdAt;
+    const sortDirection = dto.order === 'asc' ? sql`ASC` : sql`DESC`;
+
+    const items = await this.db.drizzle.execute<UserDirectoryItem>(sql`
+      SELECT
+        u.id,
+        u.username,
+        u.display_name AS "displayName",
+        u.avatar_url   AS "avatarUrl",
+        u.created_at   AS "createdAt",
+        COALESCE(COUNT(s.id), 0)::int AS "publicSnippetCount"
+      FROM users u
+      LEFT JOIN snippets s ON s.user_id = u.id AND s.is_public = true
+      WHERE 1=1 ${searchFilter}
+      GROUP BY u.id
+      ORDER BY ${sql.raw(sortColumn)} ${sortDirection}
+      LIMIT ${dto.limit}
+      OFFSET ${offset}
+    `);
+
+    const [{ total }] = await this.db.drizzle.execute<{ total: number }>(sql`
+      SELECT COUNT(*)::int AS total
+      FROM users u
+      WHERE 1=1 ${searchFilter}
+    `);
+
+    return {
+      items: items as unknown as UserDirectoryItem[],
+      meta: calculatePaginationMeta(total, dto.page, dto.limit),
+    };
+  }
+
+  /**
    * Berechnet User-Statistiken (nur öffentliche Snippets!)
    */
   async stats(userId: string) {
@@ -300,4 +359,13 @@ export class UsersRepository {
       reactionGivenCount: Number(reactionGivenCount),
     };
   }
+}
+
+export interface UserDirectoryItem {
+  id: string;
+  username: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+  publicSnippetCount: number;
 }
