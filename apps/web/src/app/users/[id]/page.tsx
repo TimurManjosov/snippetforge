@@ -1,6 +1,7 @@
 import { getUserProfile, getUserStats } from '@/lib/users-api';
 import { UserAvatar } from '@/components/users/user-avatar';
 import { UserStatsBadges } from '@/components/users/user-stats-badges';
+import PublicSnippetsSection from './public-snippets-section';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -58,9 +59,10 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
         <UserStatsBadges stats={stats!} />
       </section>
 
+      <PublicSnippetsSection userId={id} />
+
       <section style={{ marginTop: 16 }}>
-        <Link href="/snippets">← Browse all snippets</Link>
-        {/* TODO (Commit 29): Ersetzen durch /snippets?author={profile.id} sobald author-Filter existiert */}
+        <Link href="/users">← Browse user directory</Link>
       </section>
     </main>
   );

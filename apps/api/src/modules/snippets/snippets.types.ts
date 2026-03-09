@@ -152,6 +152,7 @@ export type PublicSnippetSortBy = 'createdAt' | 'views';
 
 export interface SearchPublicInput {
   q?: string;
+  authorId?: string;
   tags?: string[];
   language?: string;
   sort: PublicSnippetSortBy;

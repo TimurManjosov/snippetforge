@@ -28,6 +28,7 @@ const normalizeTags = (value?: string) => {
 
 export const SnippetQuerySchema = z.object({
   q: z.string().optional().transform(normalizeText),
+  authorId: z.string().uuid().optional(),
   tags: z.string().optional().transform(normalizeTags),
   language: z
     .string()

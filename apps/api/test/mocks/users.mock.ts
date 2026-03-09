@@ -25,6 +25,7 @@ export const createMockUsersRepository = () => ({
   findPublicById: jest.fn(),
   findPrivateById: jest.fn(),
   stats: jest.fn(),
+  listUsers: jest.fn(),
 });
 
 export type MockUsersRepository = ReturnType<typeof createMockUsersRepository>;
