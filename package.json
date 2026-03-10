@@ -11,10 +11,12 @@
     "dev": "concurrently -n api,web -c blue,magenta \"npm run dev:api\" \"npm run dev:web\"",
     "dev:api": "npm run start:dev --workspace=apps/api",
     "dev:web": "npm run dev --workspace=apps/web",
-    "build": "npm run build --workspaces --if-present",
+    "lint": "npm -w apps/api run lint && npm -w apps/web run lint",
+    "typecheck": "npm -w apps/api run typecheck && npm -w apps/web run typecheck",
+    "test": "npm -w apps/api run test --if-present && npm -w apps/web run test --if-present",
+    "build": "npm -w apps/api run build && npm -w apps/web run build",
     "build:api": "npm run build --workspace=apps/api",
     "build:web": "npm run build --workspace=apps/web",
-    "test": "npm run test --workspaces --if-present",
     "clean": "rimraf apps/*/node_modules apps/*/.next apps/*/dist packages/*/node_modules node_modules"
   },
   "devDependencies": {
