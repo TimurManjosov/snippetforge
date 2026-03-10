@@ -1,0 +1,54 @@
+# SNIPPET ONLY – nicht als eigenständiger Workflow verwenden.
+# In ci.yml job 'test' integrieren wenn E2E-Tests gegen Postgres laufen.
+#
+# Dieses Snippet zeigt, wie der test-Job um einen Postgres-Service-Container
+# erweitert wird. Die relevanten Blöcke (services, env, extra steps) in den
+# bestehenden test-Job in ci.yml kopieren.
+
+name: "(Snippet) Test with Postgres"
+
+# Kein Trigger – diese Datei ist reines Referenzmaterial.
+on: []
+
+jobs:
+  test:
+    name: "Test with Postgres (api + web)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: snippetforge
+          POSTGRES_PASSWORD: snippetforge
+          POSTGRES_DB: snippetforge_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U snippetforge"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set DATABASE_URL
+        run: echo "DATABASE_URL=postgresql://snippetforge:snippetforge@localhost:5432/snippetforge_test" >> "$GITHUB_ENV"
+
+      - name: Run database migrations
+        run: npm run db:migrate --if-present
+
+      - name: Run tests
+        run: npm test --if-present
