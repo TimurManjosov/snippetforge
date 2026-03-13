@@ -6,6 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   REQUEST_ID_HEADER,
   REQUEST_ID_MAX_LEN,
+  REQUEST_ID_RESPONSE_HEADER,
   REQUEST_ID_SAFE_PATTERN,
 } from '../constants';
 
@@ -30,7 +31,7 @@ export class RequestIdMiddleware implements NestMiddleware {
     const requestId = sanitizeRequestId(incoming) ?? randomUUID();
 
     req.requestId = requestId;
-    res.setHeader('X-Request-Id', requestId);
+    res.setHeader(REQUEST_ID_RESPONSE_HEADER, requestId);
     next();
   }
 }

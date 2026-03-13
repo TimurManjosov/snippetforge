@@ -39,6 +39,8 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
         ? exception.getResponse()
         : { message: 'Internal server error' };
 
+    const isProduction = process.env.NODE_ENV === 'production';
+
     // Structured error log – never includes auth headers, cookies, or bodies.
     this.log.error(
       {
@@ -49,7 +51,7 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
         userId: req.user?.id ?? null,
         exceptionName: (exception as Record<string, unknown>)?.name ?? null,
         exceptionMessage: (exception as Record<string, unknown>)?.message ?? null,
-        stack: (exception as Record<string, unknown>)?.stack ?? null,
+        ...(isProduction ? {} : { stack: (exception as Record<string, unknown>)?.stack ?? null }),
       },
       'request.error',
     );
