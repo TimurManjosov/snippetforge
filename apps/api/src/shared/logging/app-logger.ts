@@ -16,15 +16,23 @@ import { Logger } from '@nestjs/common';
 export class AppLogger {
   private readonly logger = new Logger('App');
 
+  private serialize(obj: Record<string, unknown>, level: string, msg?: string): string {
+    try {
+      return JSON.stringify({ level, msg, ...obj });
+    } catch {
+      return JSON.stringify({ level, msg, serializationError: 'Object could not be serialized' });
+    }
+  }
+
   info(obj: Record<string, unknown>, msg?: string): void {
-    this.logger.log(JSON.stringify({ level: 'info', msg, ...obj }));
+    this.logger.log(this.serialize(obj, 'info', msg));
   }
 
   warn(obj: Record<string, unknown>, msg?: string): void {
-    this.logger.warn(JSON.stringify({ level: 'warn', msg, ...obj }));
+    this.logger.warn(this.serialize(obj, 'warn', msg));
   }
 
   error(obj: Record<string, unknown>, msg?: string): void {
-    this.logger.error(JSON.stringify({ level: 'error', msg, ...obj }));
+    this.logger.error(this.serialize(obj, 'error', msg));
   }
 }

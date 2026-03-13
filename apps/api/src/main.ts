@@ -11,9 +11,7 @@ import {
   swaggerCustomOptions,
 } from './config/swagger.config';
 import {
-  AllExceptionsFilter,
   GlobalHttpExceptionFilter,
-  HttpExceptionFilter,
 } from './shared/filters';
 import { HttpLoggingInterceptor } from './shared/interceptors/http-logging.interceptor';
 
@@ -40,11 +38,7 @@ async function bootstrap() {
   // ========================================
 
   app.useGlobalInterceptors(new HttpLoggingInterceptor());
-  app.useGlobalFilters(
-    new AllExceptionsFilter(),
-    new HttpExceptionFilter(),
-    new GlobalHttpExceptionFilter(),
-  );
+  app.useGlobalFilters(new GlobalHttpExceptionFilter());
 
   // ========================================
   // KONFIGURATION

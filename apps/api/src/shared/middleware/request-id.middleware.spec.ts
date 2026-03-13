@@ -3,6 +3,7 @@ import {
   RequestIdMiddleware,
   sanitizeRequestId,
 } from './request-id.middleware';
+import { REQUEST_ID_MAX_LEN } from '../constants';
 
 // Stable fake UUID returned by the mock
 const FAKE_UUID = '00000000-0000-4000-8000-000000000001';
@@ -43,7 +44,7 @@ describe('RequestIdMiddleware', () => {
   });
 
   it('replaces a header that exceeds 64 characters with a new UUID', () => {
-    req.headers!['x-request-id'] = 'a'.repeat(65);
+    req.headers!['x-request-id'] = 'a'.repeat(REQUEST_ID_MAX_LEN + 1);
 
     middleware.use(req as any, res as any, next);
 
