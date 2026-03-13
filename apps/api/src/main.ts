@@ -10,7 +10,10 @@ import {
   SWAGGER_PATH,
   swaggerCustomOptions,
 } from './config/swagger.config';
-import { AllExceptionsFilter, HttpExceptionFilter } from './shared/filters';
+import {
+  GlobalHttpExceptionFilter,
+} from './shared/filters';
+import { HttpLoggingInterceptor } from './shared/interceptors/http-logging.interceptor';
 
 /**
  * Bootstrap - Startet die NestJS Anwendung
@@ -34,7 +37,8 @@ async function bootstrap() {
   // GLOBAL EXCEPTION FILTERS
   // ========================================
 
-  app.useGlobalFilters(new AllExceptionsFilter(), new HttpExceptionFilter());
+  app.useGlobalInterceptors(new HttpLoggingInterceptor());
+  app.useGlobalFilters(new GlobalHttpExceptionFilter());
 
   // ========================================
   // KONFIGURATION
