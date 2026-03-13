@@ -1,6 +1,6 @@
 // src/app.module.ts
 
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
@@ -15,6 +15,7 @@ import { SnippetsModule } from './modules/snippets';
 import { TagsModule } from './modules/tags';
 import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
+import { RequestIdMiddleware } from './shared/middleware/request-id.middleware';
 
 /**
  * AppModule - Root Module
@@ -67,4 +68,8 @@ import { DatabaseModule } from './shared/database';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestIdMiddleware).forRoutes('*');
+  }
+}
