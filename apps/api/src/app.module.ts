@@ -9,6 +9,8 @@ import { AuthModule, JwtAuthGuard } from './modules/auth';
 import { CollectionsModule } from './modules/collections';
 import { CommentsModule } from './modules/comments';
 import { FavoritesModule } from './modules/favorites';
+import { HealthModule } from './modules/health/health.module';
+import { MetricsModule } from './modules/metrics/metrics.module';
 import { ReactionsModule } from './modules/reactions';
 import { SettingsModule } from './modules/settings';
 import { SnippetsModule } from './modules/snippets';
@@ -45,7 +47,11 @@ import { RequestIdMiddleware } from './shared/middleware/request-id.middleware';
     // 2. Database
     DatabaseModule,
 
-    // 3. Feature Modules
+    // 3. Operations
+    HealthModule,
+    MetricsModule,
+
+    // 4. Feature Modules
     UsersModule,
     AuthModule,
     SnippetsModule,
