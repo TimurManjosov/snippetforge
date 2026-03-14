@@ -14,7 +14,7 @@ import { Public } from '../auth';
 @Controller()
 export class HealthController {
   @Public()
-  @Get('health')
+  @Get('live')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Liveness check' })
   health() {
