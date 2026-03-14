@@ -1,7 +1,7 @@
 // src/modules/health/ready.controller.ts
 
 // E2E SMOKE (manual / integration test):
-// - GET /api/health → 200, body enthält { status: 'ok', uptimeSeconds: <number> }
+// - GET /api/live → 200, body enthält { status: 'ok', uptimeSeconds: <number> }
 // - GET /api/ready → 200 wenn DB erreichbar, 503 wenn nicht
 // - GET /api/metrics (METRICS_ENABLED=false) → 404
 // - GET /api/metrics (METRICS_ENABLED=true, kein Token) → 200, Prometheus text format
@@ -35,7 +35,7 @@ export class ReadyController {
   @ApiOperation({ summary: 'Readiness check (DB connectivity)' })
   async ready() {
     try {
-      await this.db.drizzle.execute('select 1');
+      await this.db.healthCheck();
       return {
         status: 'ok',
         checks: { db: 'ok' },

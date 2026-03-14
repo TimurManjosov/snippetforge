@@ -3,17 +3,20 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpException,
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { Request, Response } from 'express';
 import { MetricsService } from './metrics.service';
 
 /**
  * Extrahiert stabile Route-Templates für low-cardinality Metrics-Labels.
  * Nutzt req.route?.path (vom Express-Router) statt roher URLs mit IDs.
+ * Gibt 'unknown' zurück wenn keine Route verfügbar (z.B. bei 404s / Pre-Routing-Fehlern),
+ * um Cardinality-Explosion durch dynamische Segmente zu verhindern.
  *
  * Angewendete Regeln: P2 (Kardinality-Schutz - keine dynamischen Segmente als Labels).
  */
@@ -23,11 +26,16 @@ function getRouteTemplate(req: Request): string {
     const baseUrl = req.baseUrl ?? '';
     return `${baseUrl}${routePath}`;
   }
-  return (req.originalUrl ?? req.url ?? '').split('?')[0];
+  return 'unknown';
 }
 
 /**
  * MetricsInterceptor - Erfasst HTTP-Metriken für alle Requests
+ *
+ * Verwendet finalize() um Metriken exakt einmal pro Request zu erfassen,
+ * unabhängig davon wie viele Werte die Observable emittiert.
+ * Der HTTP-Status wird bei Fehlern aus HttpException.getStatus() abgeleitet
+ * statt aus res.statusCode (welches bei Fehlern oft noch 200 ist).
  *
  * Global registriert via APP_INTERCEPTOR in MetricsModule.
  * Angewendete Regeln: P2 (low-cardinality Labels), C3 (Framework-Idiome via NestInterceptor).
@@ -41,32 +49,31 @@ export class MetricsInterceptor implements NestInterceptor {
     const req = http.getRequest<Request>();
     const res = http.getResponse<Response>();
     const start = Date.now();
+    let statusCode = 200;
+    let isError = false;
 
     return next.handle().pipe(
       tap({
         next: () => {
-          const duration = Date.now() - start;
-          const method = req.method;
-          const route = getRouteTemplate(req);
-          const status = String(res.statusCode);
-
-          this.metrics.httpRequestsTotal.inc({ method, route, status });
-          this.metrics.httpRequestDurationMs.observe({ method, route, status }, duration);
-
-          if (res.statusCode >= 400) {
-            this.metrics.httpErrorsTotal.inc({ method, route, status });
-          }
+          statusCode = res.statusCode;
         },
-        error: () => {
-          const duration = Date.now() - start;
-          const method = req.method;
-          const route = getRouteTemplate(req);
-          const status = String(res.statusCode || 500);
+        error: (err: unknown) => {
+          isError = true;
+          statusCode = err instanceof HttpException ? err.getStatus() : 500;
+        },
+      }),
+      finalize(() => {
+        const duration = Date.now() - start;
+        const method = req.method;
+        const route = getRouteTemplate(req);
+        const status = String(statusCode);
 
-          this.metrics.httpRequestsTotal.inc({ method, route, status });
-          this.metrics.httpRequestDurationMs.observe({ method, route, status }, duration);
+        this.metrics.httpRequestsTotal.inc({ method, route, status });
+        this.metrics.httpRequestDurationMs.observe({ method, route, status }, duration);
+
+        if (isError || statusCode >= 400) {
           this.metrics.httpErrorsTotal.inc({ method, route, status });
-        },
+        }
       }),
     );
   }
