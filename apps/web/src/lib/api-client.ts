@@ -111,6 +111,10 @@ export class ApiClient {
         signal: options.signal,
       });
     } catch (e) {
+      // Don't report intentional aborts/cancellations to Sentry.
+      if (e instanceof DOMException && e.name === 'AbortError') {
+        throw e;
+      }
       Sentry.captureException(e);
       throw e;
     }
@@ -120,9 +124,11 @@ export class ApiClient {
         const requestId = response.headers.get('x-request-id');
         const err = new Error(`API error ${response.status}`);
         Sentry.withScope((scope) => {
-          scope.setTag('requestId', requestId ?? 'unknown');
           scope.setTag('status', String(response.status));
-          scope.setTag('url', response.url);
+          scope.setContext('request', {
+            requestId: requestId ?? 'unknown',
+            url: response.url,
+          });
           Sentry.captureException(err);
         });
       }
