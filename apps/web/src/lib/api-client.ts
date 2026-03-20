@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/nextjs';
+
 export interface ApiError {
   status: number;
   message: string;
@@ -99,14 +101,31 @@ export class ApiClient {
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(normalizeBaseUrl(this.baseUrl, path), {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-      signal: options.signal,
-    });
+    let response: Response;
+
+    try {
+      response = await fetch(normalizeBaseUrl(this.baseUrl, path), {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined,
+        signal: options.signal,
+      });
+    } catch (e) {
+      Sentry.captureException(e);
+      throw e;
+    }
 
     if (!response.ok) {
+      if (response.status >= 500) {
+        const requestId = response.headers.get('x-request-id');
+        const err = new Error(`API error ${response.status}`);
+        Sentry.withScope((scope) => {
+          scope.setTag('requestId', requestId ?? 'unknown');
+          scope.setTag('status', String(response.status));
+          scope.setTag('url', response.url);
+          Sentry.captureException(err);
+        });
+      }
       throw await normalizeError(response);
     }
 
