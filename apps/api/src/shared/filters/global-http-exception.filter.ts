@@ -61,12 +61,12 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
     const shouldCapture = status >= 500;
     if (process.env[SENTRY_DSN_API_ENV] && shouldCapture) {
       Sentry.withScope((scope) => {
-        scope.setTag('requestId', requestId ?? 'unknown');
         scope.setTag('method', req.method);
-        scope.setTag('path', req.originalUrl ?? req.url);
         scope.setContext('http', {
           statusCode: status,
-          route: req.originalUrl ?? req.url,
+          method: req.method,
+          url: req.originalUrl ?? req.url,
+          requestId: requestId ?? 'unknown',
         });
         if (req.user?.id) scope.setUser({ id: req.user.id });
         Sentry.captureException(exception);

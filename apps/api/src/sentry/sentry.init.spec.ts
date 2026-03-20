@@ -47,6 +47,44 @@ describe('initSentry', () => {
     expect(mockInit).toHaveBeenCalledTimes(1);
   });
 
+  describe('tracesSampleRate', () => {
+    const DSN = 'https://examplePublicKey@o0.ingest.sentry.io/0';
+
+    it('should default to 0 when env var is not set', () => {
+      process.env[SENTRY_DSN_API_ENV] = DSN;
+      initSentry();
+      expect(mockInit.mock.calls[0][0].tracesSampleRate).toBe(0);
+    });
+
+    it('should use valid numeric value from env var', () => {
+      process.env[SENTRY_DSN_API_ENV] = DSN;
+      process.env['SENTRY_TRACES_SAMPLE_RATE'] = '0.5';
+      initSentry();
+      expect(mockInit.mock.calls[0][0].tracesSampleRate).toBe(0.5);
+    });
+
+    it('should clamp values above 1 to 1', () => {
+      process.env[SENTRY_DSN_API_ENV] = DSN;
+      process.env['SENTRY_TRACES_SAMPLE_RATE'] = '2';
+      initSentry();
+      expect(mockInit.mock.calls[0][0].tracesSampleRate).toBe(1);
+    });
+
+    it('should clamp values below 0 to 0', () => {
+      process.env[SENTRY_DSN_API_ENV] = DSN;
+      process.env['SENTRY_TRACES_SAMPLE_RATE'] = '-1';
+      initSentry();
+      expect(mockInit.mock.calls[0][0].tracesSampleRate).toBe(0);
+    });
+
+    it('should default to 0 for non-numeric env var value', () => {
+      process.env[SENTRY_DSN_API_ENV] = DSN;
+      process.env['SENTRY_TRACES_SAMPLE_RATE'] = 'invalid';
+      initSentry();
+      expect(mockInit.mock.calls[0][0].tracesSampleRate).toBe(0);
+    });
+  });
+
   describe('beforeSend callback', () => {
     let beforeSend: (event: any) => any;
 
@@ -71,6 +109,21 @@ describe('initSentry', () => {
       expect(result.request.headers).not.toHaveProperty('authorization');
     });
 
+    it('should remove Authorization header (mixed case) from event', () => {
+      const event = {
+        request: {
+          headers: {
+            Authorization: 'Bearer secret-token',
+            'content-type': 'application/json',
+          },
+        },
+      };
+
+      const result = beforeSend(event);
+
+      expect(result.request.headers).not.toHaveProperty('Authorization');
+    });
+
     it('should remove cookie header from event', () => {
       const event = {
         request: {
@@ -84,6 +137,21 @@ describe('initSentry', () => {
       const result = beforeSend(event);
 
       expect(result.request.headers).not.toHaveProperty('cookie');
+    });
+
+    it('should remove Cookie header (mixed case) from event', () => {
+      const event = {
+        request: {
+          headers: {
+            Cookie: 'session=abc123',
+            'content-type': 'application/json',
+          },
+        },
+      };
+
+      const result = beforeSend(event);
+
+      expect(result.request.headers).not.toHaveProperty('Cookie');
     });
 
     it('should preserve other headers like content-type', () => {

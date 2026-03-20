@@ -15,6 +15,13 @@ export function initSentry(): void {
     return;
   }
 
+  const rawRate = process.env[SENTRY_TRACES_SAMPLE_RATE_ENV];
+  const parsedRate = rawRate !== undefined ? Number(rawRate) : undefined;
+  const tracesSampleRate =
+    typeof parsedRate === 'number' && !Number.isNaN(parsedRate)
+      ? Math.min(1, Math.max(0, parsedRate))
+      : 0;
+
   Sentry.init({
     dsn,
     environment:
@@ -22,13 +29,16 @@ export function initSentry(): void {
       process.env.NODE_ENV ??
       'development',
     release: process.env[SENTRY_RELEASE_ENV],
-    tracesSampleRate: Number(
-      process.env[SENTRY_TRACES_SAMPLE_RATE_ENV] ?? 0,
-    ),
+    tracesSampleRate,
     beforeSend(event) {
       if (event.request?.headers) {
-        delete event.request.headers['authorization'];
-        delete event.request.headers['cookie'];
+        const headers = event.request.headers;
+        for (const key of Object.keys(headers)) {
+          const lowerKey = key.toLowerCase();
+          if (lowerKey === 'authorization' || lowerKey === 'cookie') {
+            delete headers[key];
+          }
+        }
       }
       return event;
     },
