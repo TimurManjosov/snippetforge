@@ -1,0 +1,6 @@
+// src/sentry/sentry.constants.ts
+
+export const SENTRY_DSN_API_ENV = 'SENTRY_DSN_API';
+export const SENTRY_ENVIRONMENT_ENV = 'SENTRY_ENVIRONMENT';
+export const SENTRY_RELEASE_ENV = 'SENTRY_RELEASE';
+export const SENTRY_TRACES_SAMPLE_RATE_ENV = 'SENTRY_TRACES_SAMPLE_RATE';

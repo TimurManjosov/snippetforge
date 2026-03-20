@@ -7,7 +7,9 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import * as Sentry from '@sentry/node';
 import { Request, Response } from 'express';
+import { SENTRY_DSN_API_ENV } from '../../sentry/sentry.constants';
 import { AppLogger } from '../logging/app-logger';
 
 /**
@@ -55,6 +57,21 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
       },
       'request.error',
     );
+
+    const shouldCapture = status >= 500;
+    if (process.env[SENTRY_DSN_API_ENV] && shouldCapture) {
+      Sentry.withScope((scope) => {
+        scope.setTag('method', req.method);
+        scope.setContext('http', {
+          statusCode: status,
+          method: req.method,
+          url: req.originalUrl ?? req.url,
+          requestId: requestId ?? 'unknown',
+        });
+        if (req.user?.id) scope.setUser({ id: req.user.id });
+        Sentry.captureException(exception);
+      });
+    }
 
     const body =
       typeof errorBody === 'string'

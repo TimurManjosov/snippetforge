@@ -4,8 +4,23 @@
 // - Trigger 404 → Response body must contain { requestId: '...' }
 
 import { HttpException, HttpStatus } from '@nestjs/common';
+import * as Sentry from '@sentry/node';
 import { GlobalHttpExceptionFilter } from './global-http-exception.filter';
 import { AppLogger } from '../logging/app-logger';
+import { SENTRY_DSN_API_ENV } from '../../sentry/sentry.constants';
+
+jest.mock('@sentry/node', () => ({
+  withScope: jest.fn((cb) => {
+    const scope = {
+      setTag: jest.fn(),
+      setContext: jest.fn(),
+      setUser: jest.fn(),
+    };
+    cb(scope);
+    return scope;
+  }),
+  captureException: jest.fn(),
+}));
 
 // Spy on AppLogger.error before each test
 let errorSpy: jest.SpyInstance;
@@ -85,5 +100,73 @@ describe('GlobalHttpExceptionFilter', () => {
       expect.objectContaining({ requestId: 'req-log' }),
       'request.error',
     );
+  });
+
+  describe('Sentry integration', () => {
+    const originalEnv = process.env;
+
+    beforeEach(() => {
+      process.env = { ...originalEnv };
+      jest.clearAllMocks();
+      // Re-mock AppLogger after clearAllMocks
+      errorSpy = jest.spyOn(AppLogger.prototype, 'error').mockImplementation(() => {});
+    });
+
+    afterAll(() => {
+      process.env = originalEnv;
+    });
+
+    it('should call Sentry.captureException for status >= 500 when DSN is set', () => {
+      process.env[SENTRY_DSN_API_ENV] = 'https://test@sentry.io/0';
+      const { host } = createMockHost('req-500');
+      const exception = new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+
+      filter.catch(exception, host);
+
+      expect(Sentry.withScope).toHaveBeenCalledTimes(1);
+      expect(Sentry.captureException).toHaveBeenCalledWith(exception);
+    });
+
+    it('should not call Sentry.captureException for status < 500 when DSN is set', () => {
+      process.env[SENTRY_DSN_API_ENV] = 'https://test@sentry.io/0';
+      const { host } = createMockHost('req-404');
+      const exception = new HttpException('Not Found', HttpStatus.NOT_FOUND);
+
+      filter.catch(exception, host);
+
+      expect(Sentry.withScope).not.toHaveBeenCalled();
+      expect(Sentry.captureException).not.toHaveBeenCalled();
+    });
+
+    it('should not call Sentry.captureException for status >= 500 when DSN is not set', () => {
+      delete process.env[SENTRY_DSN_API_ENV];
+      const { host } = createMockHost('req-no-dsn');
+      const exception = new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+
+      filter.catch(exception, host);
+
+      expect(Sentry.withScope).not.toHaveBeenCalled();
+      expect(Sentry.captureException).not.toHaveBeenCalled();
+    });
+
+    it('should set requestId tag via scope.setTag', () => {
+      process.env[SENTRY_DSN_API_ENV] = 'https://test@sentry.io/0';
+      const { host } = createMockHost('req-tag-test');
+      const exception = new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+
+      let capturedScope: any;
+      (Sentry.withScope as jest.Mock).mockImplementationOnce((cb) => {
+        capturedScope = {
+          setTag: jest.fn(),
+          setContext: jest.fn(),
+          setUser: jest.fn(),
+        };
+        cb(capturedScope);
+      });
+
+      filter.catch(exception, host);
+
+      expect(capturedScope.setTag).toHaveBeenCalledWith('requestId', 'req-tag-test');
+    });
   });
 });

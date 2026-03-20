@@ -1,5 +1,9 @@
 // src/main.ts
 
+import { initSentry } from './sentry/sentry.init';
+
+initSentry();
+
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
