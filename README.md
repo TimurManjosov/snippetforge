@@ -32,42 +32,43 @@ SnippetForge is a modern code snippet sharing platform that allows developers to
 - Collaborate with other developers
 - Learn from real-world code examples
 
-**Current Status:** ✅ Sprint 0 Complete (Authentication & Infrastructure)
+**Current Status:** ✅ MVP in active development (core platform features implemented)
 
 ---
 
 ## ✨ Features
 
-### ✅ Implemented (Sprint 0)
-- **User Authentication**
+### ✅ Implemented
+- **Authentication & Authorization**
   - JWT-based authentication
   - Secure password hashing (bcrypt)
   - Role-based access control (USER, ADMIN, MODERATOR)
-- **API Infrastructure**
-  - RESTful API with NestJS
-  - Global error handling
-  - Request validation with Zod
+- **Core Snippet Platform**
+  - Snippet CRUD operations
+  - Public/private visibility control
+  - Snippet search, filtering, sorting, and pagination
+  - Tags and language categorization
+- **Community Features**
+  - Comments with replies and flagging
+  - Snippet reactions
+  - Favorites
+  - Collections (with item management)
+  - Public user directory and profiles
+  - User settings
+- **Platform Infrastructure**
+  - REST API with NestJS
+  - Global error handling and request validation (Zod)
   - Swagger/OpenAPI documentation
-- **Database**
-  - PostgreSQL with Drizzle ORM
-  - Type-safe database queries
-  - Automated migrations
-- **Testing**
-  - Unit tests (90%+ coverage)
-  - E2E tests for auth flow
-  - Jest configuration
-- **Development**
-  - Monorepo setup with npm workspaces
-  - Hot reload for backend and frontend
-  - Docker Compose for local development
+  - PostgreSQL with Drizzle ORM + migrations
+  - Health/readiness/metrics endpoints
+  - Monorepo tooling, Docker Compose, CI workflows
 
-### 🚧 Planned (Future Sprints)
-- Snippet CRUD operations
-- Syntax highlighting
-- Search and filtering
-- User profiles
-- Comments and reactions
-- Collections/Favorites
+### 🚧 Planned (Next Milestones)
+- Profile editing and account lifecycle flows (password change / delete account)
+- Moderation backoffice for comment flags
+- Full-text search (PostgreSQL `tsvector`)
+- Refresh-token/session lifecycle improvements
+- Notification system
 
 ---
 
@@ -87,14 +88,14 @@ SnippetForge is a modern code snippet sharing platform that allows developers to
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript 5.7
 - **Styling:** Tailwind CSS
-- **State Management:** TBD
-- **Testing:** TBD
+- **State Management:** React context + hooks
+- **Testing:** Jest + Testing Library
 
 ### DevOps
 - **Containerization:** Docker + Docker Compose
 - **Package Manager:** npm (workspaces)
 - **Linting:** ESLint + Prettier
-- **CI/CD:** TBD
+- **CI/CD:** GitHub Actions
 
 ---
 
@@ -310,7 +311,7 @@ See `apps/api/docs/adr/` for architectural decisions:
 ### Guides
 
 - [Backend Setup](apps/api/README.md)
-- [Frontend Setup](apps/web/README.md) (TBD)
+- [Frontend Setup](apps/web/README.md)
 
 ---
 

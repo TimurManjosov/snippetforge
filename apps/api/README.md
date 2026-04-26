@@ -34,6 +34,10 @@ The SnippetForge API is a RESTful backend service built with NestJS that provide
 
 - **User Authentication:** JWT-based auth with secure password hashing
 - **Role-Based Access Control:** USER, ADMIN, MODERATOR roles
+- **Snippet Platform:** CRUD, visibility, search/filter/sort/pagination
+- **Community Features:** comments, flags, reactions, favorites, collections
+- **User Domain:** profile endpoints, public directory, user settings
+- **Operations:** health, readiness, Prometheus metrics
 - **Type Safety:** End-to-end TypeScript with Zod validation
 - **Database:** PostgreSQL with Drizzle ORM for type-safe queries
 - **Testing:** Comprehensive unit and E2E tests with 90%+ coverage
@@ -42,7 +46,7 @@ The SnippetForge API is a RESTful backend service built with NestJS that provide
 ### Architecture
 
 The API follows a modular architecture:
-- **Modules:** Feature-based organization (auth, users)
+- **Modules:** auth, users, snippets, tags, comments, reactions, favorites, collections, settings, metrics, health
 - **Shared:** Common utilities (filters, pipes, constants)
 - **Lib:** Low-level services (database)
 - **Config:** Environment configuration
@@ -203,6 +207,47 @@ apps/api/
 | PUT | `/api/snippets/:id` | Update a snippet | Yes |
 | PATCH | `/api/snippets/:id/toggle-public` | Toggle snippet visibility | Yes |
 | DELETE | `/api/snippets/:id` | Delete a snippet | Yes |
+
+### Tags
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/tags` | List tags with snippet counts | No |
+| POST | `/api/tags` | Create tag (admin) | Yes |
+| POST | `/api/snippets/:id/tags` | Attach tags to snippet | Yes |
+| DELETE | `/api/snippets/:id/tags/:slug` | Remove tag from snippet | Yes |
+
+### Comments & Reactions
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/snippets/:id/comments` | List comments for snippet | No |
+| POST | `/api/snippets/:id/comments` | Create comment/reply | Yes |
+| GET | `/api/comments/:commentId` | Get comment | No |
+| PUT | `/api/comments/:commentId` | Update comment | Yes |
+| DELETE | `/api/comments/:commentId` | Delete comment | Yes |
+| POST | `/api/comments/:commentId/flags` | Flag comment | Yes |
+| POST | `/api/snippets/:id/reactions` | Set reaction | Yes |
+| DELETE | `/api/snippets/:id/reactions/:type` | Remove reaction | Yes |
+| GET | `/api/snippets/:id/reactions` | Get reactions | No |
+
+### Favorites, Collections, Users, Settings
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/favorites` | List favorites | Yes |
+| POST | `/api/favorites` | Add favorite | Yes |
+| DELETE | `/api/favorites/:snippetId` | Remove favorite | Yes |
+| GET | `/api/collections/me` | List own collections | Yes |
+| POST | `/api/collections` | Create collection | Yes |
+| GET | `/api/collections/:id` | Get collection | No (public), Yes (private) |
+| PUT | `/api/collections/:id` | Update collection | Yes |
+| DELETE | `/api/collections/:id` | Delete collection | Yes |
+| GET | `/api/users` | Public user directory | No |
+| GET | `/api/users/:id` | Public user profile | No |
+| GET | `/api/users/:id/stats` | Public user stats | No |
+| GET | `/api/settings/me` | Get user settings | Yes |
+| PUT | `/api/settings/me` | Update user settings | Yes |
 
 ---
 

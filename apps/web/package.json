@@ -6,6 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "npm run type-check",
+    "typecheck": "npm run type-check",
+    "type-check": "tsc --noEmit",
     "test": "jest --no-coverage"
   },
   "dependencies": {
