@@ -26,7 +26,9 @@ jest.mock('@sentry/node', () => ({
 let errorSpy: jest.SpyInstance;
 
 beforeEach(() => {
-  errorSpy = jest.spyOn(AppLogger.prototype, 'error').mockImplementation(() => {});
+  errorSpy = jest
+    .spyOn(AppLogger.prototype, 'error')
+    .mockImplementation(() => {});
 });
 
 afterEach(() => {
@@ -109,7 +111,9 @@ describe('GlobalHttpExceptionFilter', () => {
       process.env = { ...originalEnv };
       jest.clearAllMocks();
       // Re-mock AppLogger after clearAllMocks
-      errorSpy = jest.spyOn(AppLogger.prototype, 'error').mockImplementation(() => {});
+      errorSpy = jest
+        .spyOn(AppLogger.prototype, 'error')
+        .mockImplementation(() => {});
     });
 
     afterAll(() => {
@@ -119,7 +123,10 @@ describe('GlobalHttpExceptionFilter', () => {
     it('should call Sentry.captureException for status >= 500 when DSN is set', () => {
       process.env[SENTRY_DSN_API_ENV] = 'https://test@sentry.io/0';
       const { host } = createMockHost('req-500');
-      const exception = new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      const exception = new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
 
       filter.catch(exception, host);
 
@@ -141,7 +148,10 @@ describe('GlobalHttpExceptionFilter', () => {
     it('should not call Sentry.captureException for status >= 500 when DSN is not set', () => {
       delete process.env[SENTRY_DSN_API_ENV];
       const { host } = createMockHost('req-no-dsn');
-      const exception = new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      const exception = new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
 
       filter.catch(exception, host);
 
@@ -152,7 +162,10 @@ describe('GlobalHttpExceptionFilter', () => {
     it('should set requestId tag via scope.setTag', () => {
       process.env[SENTRY_DSN_API_ENV] = 'https://test@sentry.io/0';
       const { host } = createMockHost('req-tag-test');
-      const exception = new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      const exception = new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
 
       let capturedScope: any;
       (Sentry.withScope as jest.Mock).mockImplementationOnce((cb) => {
@@ -166,7 +179,10 @@ describe('GlobalHttpExceptionFilter', () => {
 
       filter.catch(exception, host);
 
-      expect(capturedScope.setTag).toHaveBeenCalledWith('requestId', 'req-tag-test');
+      expect(capturedScope.setTag).toHaveBeenCalledWith(
+        'requestId',
+        'req-tag-test',
+      );
     });
   });
 });

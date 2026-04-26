@@ -130,8 +130,9 @@ describe('Comments (E2E)', () => {
   // ============================================================
 
   it('GET /api/snippets/:id/comments - 200 public snippet', async () => {
-    const res = await request(app.getHttpServer())
-      .get(`/api/snippets/${publicSnippetId}/comments`);
+    const res = await request(app.getHttpServer()).get(
+      `/api/snippets/${publicSnippetId}/comments`,
+    );
 
     expect(res.status).toBe(HttpStatus.OK);
     expect(res.body.items).toBeDefined();
@@ -144,8 +145,9 @@ describe('Comments (E2E)', () => {
   });
 
   it('GET /api/snippets/:id/comments - 404 private snippet without auth', async () => {
-    const res = await request(app.getHttpServer())
-      .get(`/api/snippets/${privateSnippetId}/comments`);
+    const res = await request(app.getHttpServer()).get(
+      `/api/snippets/${privateSnippetId}/comments`,
+    );
 
     expect(res.status).toBe(HttpStatus.NOT_FOUND);
   });
@@ -155,8 +157,9 @@ describe('Comments (E2E)', () => {
   // ============================================================
 
   it('GET /api/comments/:commentId - 200 visible comment', async () => {
-    const res = await request(app.getHttpServer())
-      .get(`/api/comments/${commentId}`);
+    const res = await request(app.getHttpServer()).get(
+      `/api/comments/${commentId}`,
+    );
 
     expect(res.status).toBe(HttpStatus.OK);
     expect(res.body.id).toBe(commentId);

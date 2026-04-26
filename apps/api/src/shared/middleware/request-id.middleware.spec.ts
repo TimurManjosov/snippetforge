@@ -64,7 +64,10 @@ describe('RequestIdMiddleware', () => {
   it('always sets the X-Request-Id response header', () => {
     // Without incoming header
     middleware.use(req as any, res as any, next);
-    expect(res.setHeader).toHaveBeenCalledWith('X-Request-Id', expect.any(String));
+    expect(res.setHeader).toHaveBeenCalledWith(
+      'X-Request-Id',
+      expect.any(String),
+    );
 
     // With valid incoming header
     (res.setHeader as jest.Mock).mockClear();

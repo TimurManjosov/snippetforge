@@ -46,7 +46,11 @@ describe('MetricsInterceptor', () => {
     interceptor.intercept(ctx, next).subscribe({ error: () => {} });
 
     expect(mockMetrics.httpRequestsTotal.inc).toHaveBeenCalledWith(
-      expect.objectContaining({ method: 'GET', route: '/api/test', status: '200' }),
+      expect.objectContaining({
+        method: 'GET',
+        route: '/api/test',
+        status: '200',
+      }),
     );
     expect(mockMetrics.httpRequestDurationMs.observe).toHaveBeenCalled();
     expect(mockMetrics.httpErrorsTotal.inc).not.toHaveBeenCalled();
@@ -71,7 +75,8 @@ describe('MetricsInterceptor', () => {
   it('derives status code from HttpException', () => {
     const ctx = createMockContext(200);
     const next = {
-      handle: () => throwError(() => new HttpException('Not Found', HttpStatus.NOT_FOUND)),
+      handle: () =>
+        throwError(() => new HttpException('Not Found', HttpStatus.NOT_FOUND)),
     };
 
     interceptor.intercept(ctx, next).subscribe({ error: () => {} });
@@ -91,7 +96,11 @@ describe('MetricsInterceptor', () => {
     interceptor.intercept(ctx, next).subscribe({ error: () => {} });
 
     expect(mockMetrics.httpRequestDurationMs.observe).toHaveBeenCalledWith(
-      expect.objectContaining({ method: 'GET', route: '/api/test', status: '200' }),
+      expect.objectContaining({
+        method: 'GET',
+        route: '/api/test',
+        status: '200',
+      }),
       expect.any(Number),
     );
   });

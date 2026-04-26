@@ -42,7 +42,8 @@ describe('initSentry', () => {
   });
 
   it('should call Sentry.init exactly once when SENTRY_DSN_API is set', () => {
-    process.env[SENTRY_DSN_API_ENV] = 'https://examplePublicKey@o0.ingest.sentry.io/0';
+    process.env[SENTRY_DSN_API_ENV] =
+      'https://examplePublicKey@o0.ingest.sentry.io/0';
     initSentry();
     expect(mockInit).toHaveBeenCalledTimes(1);
   });
@@ -89,7 +90,8 @@ describe('initSentry', () => {
     let beforeSend: (event: any) => any;
 
     beforeEach(() => {
-      process.env[SENTRY_DSN_API_ENV] = 'https://examplePublicKey@o0.ingest.sentry.io/0';
+      process.env[SENTRY_DSN_API_ENV] =
+        'https://examplePublicKey@o0.ingest.sentry.io/0';
       initSentry();
       beforeSend = mockInit.mock.calls[0][0].beforeSend;
     });

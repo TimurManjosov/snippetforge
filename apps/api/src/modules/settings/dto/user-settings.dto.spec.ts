@@ -21,9 +21,7 @@ describe('UpdateUserSettingsSchema', () => {
   });
 
   it('should fail with itemsPerPage: 9 (below min)', () => {
-    expect(() =>
-      UpdateUserSettingsSchema.parse({ itemsPerPage: 9 }),
-    ).toThrow();
+    expect(() => UpdateUserSettingsSchema.parse({ itemsPerPage: 9 })).toThrow();
   });
 
   it('should fail with itemsPerPage: 101 (above max)', () => {

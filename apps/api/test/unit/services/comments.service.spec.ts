@@ -105,7 +105,10 @@ describe('CommentsService', () => {
       const snippet = createMockSnippet({ isPublic: true });
       snippetsRepository.findById.mockResolvedValue(snippet);
 
-      const parentComment = createMockComment({ id: 'parent-id', snippetId: snippet.id });
+      const parentComment = createMockComment({
+        id: 'parent-id',
+        snippetId: snippet.id,
+      });
       repository.findById.mockResolvedValue(parentComment);
 
       const reply = createMockComment({ parentId: 'parent-id' });
@@ -235,7 +238,11 @@ describe('CommentsService', () => {
       });
       repository.updateBody.mockResolvedValue(updated);
 
-      const result = await service.update(comment.id, ownerUser, 'Updated body');
+      const result = await service.update(
+        comment.id,
+        ownerUser,
+        'Updated body',
+      );
       expect(result).toEqual(updated);
       expect(repository.updateBody).toHaveBeenCalledWith(
         comment.id,
@@ -280,7 +287,10 @@ describe('CommentsService', () => {
     it('soft-deletes comment for owner', async () => {
       const comment = createMockComment({ userId: ownerUser.id });
       repository.findById.mockResolvedValue(comment);
-      repository.softDelete.mockResolvedValue({ ...comment, deletedAt: new Date() });
+      repository.softDelete.mockResolvedValue({
+        ...comment,
+        deletedAt: new Date(),
+      });
 
       await service.softDelete(comment.id, ownerUser);
       expect(repository.softDelete).toHaveBeenCalledWith(comment.id);
@@ -292,7 +302,10 @@ describe('CommentsService', () => {
         parentId: 'parent-id',
       });
       repository.findById.mockResolvedValue(reply);
-      repository.softDelete.mockResolvedValue({ ...reply, deletedAt: new Date() });
+      repository.softDelete.mockResolvedValue({
+        ...reply,
+        deletedAt: new Date(),
+      });
       repository.decrementReplyCount.mockResolvedValue(undefined);
 
       await service.softDelete(reply.id, ownerUser);
@@ -314,15 +327,18 @@ describe('CommentsService', () => {
       const comment = createMockComment({ userId: ownerUser.id });
       repository.findById.mockResolvedValue(comment);
 
-      await expect(
-        service.softDelete(comment.id, foreignUser),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.softDelete(comment.id, foreignUser)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('allows admin to soft-delete any comment', async () => {
       const comment = createMockComment({ userId: ownerUser.id });
       repository.findById.mockResolvedValue(comment);
-      repository.softDelete.mockResolvedValue({ ...comment, deletedAt: new Date() });
+      repository.softDelete.mockResolvedValue({
+        ...comment,
+        deletedAt: new Date(),
+      });
 
       await service.softDelete(comment.id, adminUser);
       expect(repository.softDelete).toHaveBeenCalledWith(comment.id);
@@ -417,7 +433,14 @@ describe('CommentsService', () => {
       snippetsRepository.findById.mockResolvedValue(snippet);
       repository.listVisibleBySnippet.mockResolvedValue({
         items: [],
-        meta: { page: 1, limit: 20, total: 0, totalPages: 0, hasNextPage: false, hasPreviousPage: false },
+        meta: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        },
       });
 
       const result = await service.list(snippet.id, ownerUser, {
@@ -437,7 +460,14 @@ describe('CommentsService', () => {
       snippetsRepository.findById.mockResolvedValue(snippet);
       repository.listVisibleBySnippet.mockResolvedValue({
         items: [],
-        meta: { page: 1, limit: 20, total: 0, totalPages: 0, hasNextPage: false, hasPreviousPage: false },
+        meta: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        },
       });
 
       const result = await service.list(snippet.id, adminUser, {

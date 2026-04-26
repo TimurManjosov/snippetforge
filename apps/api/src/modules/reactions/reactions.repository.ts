@@ -66,10 +66,7 @@ export class ReactionsRepository {
   /**
    * Get reaction types the given user has set on a snippet
    */
-  async userReactions(
-    snippetId: string,
-    userId: string,
-  ): Promise<string[]> {
+  async userReactions(snippetId: string, userId: string): Promise<string[]> {
     const rows = await this.db.drizzle
       .select({ type: snippetReactions.type })
       .from(snippetReactions)

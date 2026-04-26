@@ -16,9 +16,7 @@ export type MockCommentsRepository = ReturnType<
   typeof createMockCommentsRepository
 >;
 
-export function createMockComment(
-  overrides: Partial<Comment> = {},
-): Comment {
+export function createMockComment(overrides: Partial<Comment> = {}): Comment {
   const now = new Date();
   return {
     id: 'comment-test-id-123',

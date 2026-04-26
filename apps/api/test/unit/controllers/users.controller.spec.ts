@@ -2,7 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '../../../src/modules/users/users.controller';
 import { UsersService } from '../../../src/modules/users/users.service';
 import { UsersRepository } from '../../../src/modules/users/users.repository';
-import { createMockUsersService, createMockUsersRepository } from '../../mocks/users.mock';
+import {
+  createMockUsersService,
+  createMockUsersRepository,
+} from '../../mocks/users.mock';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -49,7 +52,12 @@ describe('UsersController', () => {
     it('delegates to repository.listUsers with parsed query', async () => {
       mockRepository.listUsers.mockResolvedValue(mockListResult);
 
-      const query = { page: 1, limit: 20, sort: 'createdAt' as const, order: 'desc' as const };
+      const query = {
+        page: 1,
+        limit: 20,
+        sort: 'createdAt' as const,
+        order: 'desc' as const,
+      };
       const result = await controller.listUsers(query);
 
       expect(mockRepository.listUsers).toHaveBeenCalledWith(query);
@@ -59,17 +67,40 @@ describe('UsersController', () => {
     it('returns items with publicSnippetCount', async () => {
       mockRepository.listUsers.mockResolvedValue(mockListResult);
 
-      const result = await controller.listUsers({ page: 1, limit: 20, sort: 'createdAt' as const, order: 'desc' as const });
+      const result = await controller.listUsers({
+        page: 1,
+        limit: 20,
+        sort: 'createdAt' as const,
+        order: 'desc' as const,
+      });
       expect(result.items[0]).toHaveProperty('publicSnippetCount', 5);
     });
 
     it('passes q parameter for search', async () => {
-      mockRepository.listUsers.mockResolvedValue({ items: [], meta: { page: 1, limit: 20, total: 0, totalPages: 0, hasNextPage: false, hasPreviousPage: false } });
+      mockRepository.listUsers.mockResolvedValue({
+        items: [],
+        meta: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        },
+      });
 
-      const query = { q: 'alice', page: 1, limit: 20, sort: 'createdAt' as const, order: 'desc' as const };
+      const query = {
+        q: 'alice',
+        page: 1,
+        limit: 20,
+        sort: 'createdAt' as const,
+        order: 'desc' as const,
+      };
       await controller.listUsers(query);
 
-      expect(mockRepository.listUsers).toHaveBeenCalledWith(expect.objectContaining({ q: 'alice' }));
+      expect(mockRepository.listUsers).toHaveBeenCalledWith(
+        expect.objectContaining({ q: 'alice' }),
+      );
     });
   });
 });

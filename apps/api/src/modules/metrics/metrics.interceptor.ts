@@ -69,7 +69,10 @@ export class MetricsInterceptor implements NestInterceptor {
         const status = String(statusCode);
 
         this.metrics.httpRequestsTotal.inc({ method, route, status });
-        this.metrics.httpRequestDurationMs.observe({ method, route, status }, duration);
+        this.metrics.httpRequestDurationMs.observe(
+          { method, route, status },
+          duration,
+        );
 
         if (isError || statusCode >= 400) {
           this.metrics.httpErrorsTotal.inc({ method, route, status });

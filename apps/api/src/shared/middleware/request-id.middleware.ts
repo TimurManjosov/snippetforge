@@ -26,7 +26,11 @@ export function sanitizeRequestId(input: unknown): string | null {
 
 @Injectable()
 export class RequestIdMiddleware implements NestMiddleware {
-  use(req: Request & { requestId?: string }, res: Response, next: NextFunction): void {
+  use(
+    req: Request & { requestId?: string },
+    res: Response,
+    next: NextFunction,
+  ): void {
     const incoming = req.headers[REQUEST_ID_HEADER];
     const requestId = sanitizeRequestId(incoming) ?? randomUUID();
 

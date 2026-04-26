@@ -14,9 +14,7 @@ import {
   SWAGGER_PATH,
   swaggerCustomOptions,
 } from './config/swagger.config';
-import {
-  GlobalHttpExceptionFilter,
-} from './shared/filters';
+import { GlobalHttpExceptionFilter } from './shared/filters';
 import { HttpLoggingInterceptor } from './shared/interceptors/http-logging.interceptor';
 
 /**

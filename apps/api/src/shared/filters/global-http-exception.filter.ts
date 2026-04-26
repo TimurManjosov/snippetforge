@@ -26,7 +26,9 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
-    const req = ctx.getRequest<Request & { requestId?: string; user?: { id: string } }>();
+    const req = ctx.getRequest<
+      Request & { requestId?: string; user?: { id: string } }
+    >();
     const res = ctx.getResponse<Response>();
 
     const requestId = req.requestId ?? null;
@@ -52,8 +54,11 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
         statusCode: status,
         userId: req.user?.id ?? null,
         exceptionName: (exception as Record<string, unknown>)?.name ?? null,
-        exceptionMessage: (exception as Record<string, unknown>)?.message ?? null,
-        ...(isProduction ? {} : { stack: (exception as Record<string, unknown>)?.stack ?? null }),
+        exceptionMessage:
+          (exception as Record<string, unknown>)?.message ?? null,
+        ...(isProduction
+          ? {}
+          : { stack: (exception as Record<string, unknown>)?.stack ?? null }),
       },
       'request.error',
     );
@@ -76,7 +81,7 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
     const body =
       typeof errorBody === 'string'
         ? { requestId, message: errorBody }
-        : { requestId, ...(errorBody as object) };
+        : { requestId, ...errorBody };
 
     res.status(status).json(body);
   }

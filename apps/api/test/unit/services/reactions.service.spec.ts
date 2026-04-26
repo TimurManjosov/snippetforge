@@ -240,9 +240,9 @@ describe('ReactionsService', () => {
     it('throws 404 for nonexistent snippet', async () => {
       snippetsRepository.findById.mockResolvedValue(null);
 
-      await expect(
-        service.getReactions('nonexistent'),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getReactions('nonexistent')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws 404 for private snippet without auth', async () => {
@@ -252,9 +252,9 @@ describe('ReactionsService', () => {
       });
       snippetsRepository.findById.mockResolvedValue(snippet);
 
-      await expect(
-        service.getReactions(snippet.id),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getReactions(snippet.id)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('allows owner to get reactions on private snippet', async () => {

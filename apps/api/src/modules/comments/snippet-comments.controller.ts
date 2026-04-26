@@ -48,7 +48,9 @@ export class SnippetCommentsController {
     status: HttpStatus.CREATED,
     description: 'Comment created successfully',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Snippet not found' })
   async create(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
@@ -63,12 +65,42 @@ export class SnippetCommentsController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'List comments for a snippet' })
   @ApiParam({ name: 'id', format: 'uuid', description: 'Snippet UUID' })
-  @ApiQuery({ name: 'parentId', required: false, type: String, description: 'Filter replies to a specific parent comment UUID' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (1-100, default: 20)' })
-  @ApiQuery({ name: 'sort', required: false, enum: ['createdAt'], description: 'Sort field (default: createdAt)' })
-  @ApiQuery({ name: 'order', required: false, enum: ['asc', 'desc'], description: 'Sort direction (default: asc)' })
-  @ApiQuery({ name: 'depth', required: false, type: Number, description: 'Threading depth (0-2, default: 1)' })
+  @ApiQuery({
+    name: 'parentId',
+    required: false,
+    type: String,
+    description: 'Filter replies to a specific parent comment UUID',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (default: 1)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page (1-100, default: 20)',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    enum: ['createdAt'],
+    description: 'Sort field (default: createdAt)',
+  })
+  @ApiQuery({
+    name: 'order',
+    required: false,
+    enum: ['asc', 'desc'],
+    description: 'Sort direction (default: asc)',
+  })
+  @ApiQuery({
+    name: 'depth',
+    required: false,
+    type: Number,
+    description: 'Threading depth (0-2, default: 1)',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Paginated list of comments',
@@ -76,7 +108,8 @@ export class SnippetCommentsController {
   @ApiNotFoundResponse({ description: 'Snippet not found' })
   async list(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
-    @Query(new ZodValidationPipe(ListCommentsQuerySchema)) query: ListCommentsQueryDto,
+    @Query(new ZodValidationPipe(ListCommentsQuerySchema))
+    query: ListCommentsQueryDto,
     @CurrentUser() user?: SafeUser,
   ) {
     return this.commentsService.list(id, user, {
