@@ -93,3 +93,22 @@ export function createUpdateUserDto(
     avatarUrl: overrides.avatarUrl ?? 'https://example.com/new-avatar.jpg',
   };
 }
+
+/**
+ * Erstellt valide Profil-Update-Daten für PUT /api/users/me
+ */
+export function createUpdateProfileDto(
+  overrides: {
+    displayName?: string | null;
+    bio?: string | null;
+    avatarUrl?: string | null;
+    websiteUrl?: string | null;
+  } = {},
+) {
+  return {
+    displayName: overrides.displayName !== undefined ? overrides.displayName : 'Test Display Name',
+    bio: overrides.bio !== undefined ? overrides.bio : 'A bio for testing purposes.',
+    avatarUrl: overrides.avatarUrl !== undefined ? overrides.avatarUrl : 'https://example.com/avatar.jpg',
+    websiteUrl: overrides.websiteUrl !== undefined ? overrides.websiteUrl : 'https://example.com',
+  };
+}

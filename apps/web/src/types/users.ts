@@ -14,3 +14,10 @@ export type UserStats = {
   commentCount: number;
   reactionGivenCount?: number;
 };
+
+export type UpdateProfileInput = {
+  displayName?: string | null;
+  bio?: string | null;
+  avatarUrl?: string | null;
+  websiteUrl?: string | null;
+};

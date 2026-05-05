@@ -52,8 +52,10 @@ export interface CreateUserData {
  */
 export interface UpdateUserData {
   username?: string;
-  bio?: string;
-  avatarUrl?: string;
+  displayName?: string | null;
+  bio?: string | null;
+  avatarUrl?: string | null;
+  websiteUrl?: string | null;
 }
 
 /**

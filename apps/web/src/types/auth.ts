@@ -4,8 +4,10 @@ export interface SafeUser {
   id: string;
   email: string;
   username: string;
+  displayName: string | null;
   bio: string | null;
   avatarUrl: string | null;
+  websiteUrl: string | null;
   role: UserRole;
   createdAt: string;
   updatedAt: string;

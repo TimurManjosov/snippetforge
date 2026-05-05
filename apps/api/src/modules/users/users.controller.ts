@@ -1,14 +1,17 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -21,6 +24,8 @@ import { ZodValidationPipe } from '../../shared/pipes';
 import { UsersService } from './users.service';
 import { UsersRepository } from './users.repository';
 import { ListUsersQuerySchema, type ListUsersQueryDto } from './dto/list-users.dto';
+import { UpdateProfileSchema, type UpdateProfileDto } from './dto/update-profile.dto';
+import { type SafeUser } from './users.types';
 
 @ApiTags('Users')
 @Controller('users')
@@ -59,6 +64,22 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async me(@CurrentUser() user: { id: string }) {
     return this.service.getMe(user.id);
+  }
+
+  @Put('me')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update my profile (displayName, bio, avatarUrl, websiteUrl)' })
+  @ApiBody({ description: 'Profile fields to update (all optional, send null to clear)' })
+  @ApiResponse({ status: 200, description: 'Updated private profile' })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async updateProfile(
+    @CurrentUser() currentUser: SafeUser,
+    @Body(new ZodValidationPipe(UpdateProfileSchema)) dto: UpdateProfileDto,
+  ): Promise<SafeUser> {
+    return this.service.update(currentUser.id, dto);
   }
 
   @Get(':id')

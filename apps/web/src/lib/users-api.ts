@@ -1,5 +1,6 @@
 import { ApiClientError, createApiClient } from '@/lib/api-client';
-import type { PublicUser, UserStats } from '@/types/users';
+import type { SafeUser } from '@/types/auth';
+import type { PublicUser, UpdateProfileInput, UserStats } from '@/types/users';
 
 export async function getUserProfile(userId: string): Promise<PublicUser> {
   const apiClient = createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', () => null);
@@ -15,6 +16,18 @@ export async function getUserStats(userId: string): Promise<UserStats> {
   const result = await apiClient.get<UserStats>(`/users/${userId}/stats`);
   if (!result) {
     throw new ApiClientError(502, 'User stats response missing from API');
+  }
+  return result;
+}
+
+export async function updateMyProfile(
+  input: UpdateProfileInput,
+  tokenProvider: () => string | null,
+): Promise<SafeUser> {
+  const apiClient = createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', tokenProvider);
+  const result = await apiClient.put<SafeUser>('/users/me', input);
+  if (!result) {
+    throw new ApiClientError(502, 'Profile update response missing from API');
   }
   return result;
 }

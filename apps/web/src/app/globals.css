@@ -672,6 +672,18 @@ body {
 
 /* ── Snippet form ──────────────────────────────────────────── */
 
+.snippet-form-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  margin-bottom: 1.25rem;
+}
+
+.snippet-form-card + .snippet-form-card {
+  margin-top: 1.5rem;
+}
+
 .snippet-form-card {
   max-width: 760px;
   border-radius: 14px;

@@ -6,10 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/use-settings';
 import { UpdateSettingsSchema } from '@/schemas/settings.schemas';
+import { updateMyProfile } from '@/lib/users-api';
 import type { UiTheme } from '@/types/settings';
 
 export default function SettingsPage() {
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, token, isLoading: authLoading, refreshUser } = useAuth();
   const router = useRouter();
 
   // Auth gate — redirect before any protected content renders
@@ -21,16 +22,23 @@ export default function SettingsPage() {
 
   const { settings, loading, error, update } = useSettings(!!user);
 
-  // Form state with safe defaults
+  // ── App settings form state ──────────────────────────────────
   const [visibility, setVisibility] = useState(false);
   const [language, setLanguage] = useState('');
   const [theme, setTheme] = useState<UiTheme>('system');
   const [itemsPerPage, setItemsPerPage] = useState(20);
-
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
 
-  // Sync form fields from fetched settings (once)
+  // ── Profile form state ───────────────────────────────────────
+  const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileMsg, setProfileMsg] = useState<string | null>(null);
+
+  // Sync app settings form from fetched settings (once)
   useEffect(() => {
     if (!settings) return;
     setVisibility(settings.defaultSnippetVisibility);
@@ -39,7 +47,16 @@ export default function SettingsPage() {
     setItemsPerPage(settings.itemsPerPage ?? 20);
   }, [settings]);
 
-  const handleSave = useCallback(
+  // Sync profile form from auth user (once, then user controls the form)
+  useEffect(() => {
+    if (!user) return;
+    setDisplayName(user.displayName ?? '');
+    setBio(user.bio ?? '');
+    setAvatarUrl(user.avatarUrl ?? '');
+    setWebsiteUrl(user.websiteUrl ?? '');
+  }, [user]);
+
+  const handleSaveSettings = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
       setSaveMsg(null);
@@ -60,7 +77,7 @@ export default function SettingsPage() {
       setSaving(true);
       try {
         await update(parsed.data);
-        setSaveMsg('Saved \u2713');
+        setSaveMsg('Saved ✓');
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Failed to save settings';
         setSaveMsg(message);
@@ -71,7 +88,34 @@ export default function SettingsPage() {
     [visibility, language, theme, itemsPerPage, update],
   );
 
-  // Auth loading — render nothing to prevent flash
+  const handleSaveProfile = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      setProfileMsg(null);
+      setProfileSaving(true);
+
+      try {
+        await updateMyProfile(
+          {
+            displayName: displayName.trim() || null,
+            bio: bio.trim() || null,
+            avatarUrl: avatarUrl.trim() || null,
+            websiteUrl: websiteUrl.trim() || null,
+          },
+          () => token,
+        );
+        await refreshUser();
+        setProfileMsg('Profile saved ✓');
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to save profile';
+        setProfileMsg(message);
+      } finally {
+        setProfileSaving(false);
+      }
+    },
+    [displayName, bio, avatarUrl, websiteUrl, token, refreshUser],
+  );
+
   if (authLoading) return null;
   if (!user) return null;
 
@@ -108,8 +152,96 @@ export default function SettingsPage() {
         <p className="snippet-page-subtitle">Manage your SnippetForge preferences.</p>
       </div>
 
-      <div className="snippet-form-card">
-        <form onSubmit={handleSave} noValidate className="snippet-form">
+      {/* ── Profile section ── */}
+      <section className="snippet-form-card" aria-label="Profile settings">
+        <h2 className="snippet-form-section-title">Profile</h2>
+        <form onSubmit={handleSaveProfile} noValidate className="snippet-form">
+          {profileMsg && (
+            <div
+              role="status"
+              className={profileMsg.includes('✓') ? 'snippet-form-helper' : 'snippet-form-error'}
+            >
+              {profileMsg}
+            </div>
+          )}
+
+          <div className="snippet-form-field">
+            <label htmlFor="profile-display-name" className="snippet-form-label">
+              Display name
+            </label>
+            <input
+              id="profile-display-name"
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              className="snippet-form-input"
+              placeholder="Your full name or handle"
+              maxLength={80}
+              disabled={profileSaving}
+            />
+          </div>
+
+          <div className="snippet-form-field">
+            <label htmlFor="profile-bio" className="snippet-form-label">
+              Bio
+            </label>
+            <textarea
+              id="profile-bio"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              className="snippet-form-input"
+              placeholder="A short bio about yourself"
+              rows={3}
+              maxLength={500}
+              disabled={profileSaving}
+            />
+            <p className="snippet-form-helper">{bio.length}/500</p>
+          </div>
+
+          <div className="snippet-form-field">
+            <label htmlFor="profile-avatar-url" className="snippet-form-label">
+              Avatar URL
+            </label>
+            <input
+              id="profile-avatar-url"
+              type="url"
+              value={avatarUrl}
+              onChange={(e) => setAvatarUrl(e.target.value)}
+              className="snippet-form-input"
+              placeholder="https://example.com/your-photo.jpg"
+              maxLength={500}
+              disabled={profileSaving}
+            />
+          </div>
+
+          <div className="snippet-form-field">
+            <label htmlFor="profile-website-url" className="snippet-form-label">
+              Website
+            </label>
+            <input
+              id="profile-website-url"
+              type="url"
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              className="snippet-form-input"
+              placeholder="https://yourwebsite.com"
+              maxLength={200}
+              disabled={profileSaving}
+            />
+          </div>
+
+          <div className="snippet-form-actions">
+            <button type="submit" className="snippet-submit" disabled={profileSaving}>
+              {profileSaving ? 'Saving…' : 'Save profile'}
+            </button>
+          </div>
+        </form>
+      </section>
+
+      {/* ── App settings section ── */}
+      <section className="snippet-form-card" aria-label="Application settings">
+        <h2 className="snippet-form-section-title">Preferences</h2>
+        <form onSubmit={handleSaveSettings} noValidate className="snippet-form">
           {saveMsg && (
             <div role="status" className="snippet-form-helper">
               {saveMsg}
@@ -189,7 +321,7 @@ export default function SettingsPage() {
             </button>
           </div>
         </form>
-      </div>
+      </section>
     </main>
   );
 }
