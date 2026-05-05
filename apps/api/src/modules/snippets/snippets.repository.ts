@@ -131,6 +131,47 @@ export class SnippetsRepository {
     });
   }
 
+  async findByUserIdPaginated(
+    userId: string,
+    page = 1,
+    limit = 20,
+  ): Promise<PaginatedSnippetPreviews> {
+    this.logger.debug(
+      `Finding snippets for user: ${userId} (page: ${page}, limit: ${limit})`,
+    );
+
+    const safeLimit = Math.min(Math.max(1, limit), 100);
+    const offset = (Math.max(1, page) - 1) * safeLimit;
+
+    const items = await this.db.drizzle
+      .select({
+        id: snippets.id,
+        title: snippets.title,
+        description: snippets.description,
+        language: snippets.language,
+        userId: snippets.userId,
+        isPublic: snippets.isPublic,
+        viewCount: snippets.viewCount,
+        createdAt: snippets.createdAt,
+        updatedAt: snippets.updatedAt,
+      })
+      .from(snippets)
+      .where(eq(snippets.userId, userId))
+      .orderBy(desc(snippets.createdAt))
+      .limit(safeLimit)
+      .offset(offset);
+
+    const [{ total }] = await this.db.drizzle
+      .select({ total: count() })
+      .from(snippets)
+      .where(eq(snippets.userId, userId));
+
+    return {
+      items,
+      meta: calculatePaginationMeta(total, Math.max(1, page), safeLimit),
+    };
+  }
+
   /**
    * Findet öffentliche Snippets (paginated)
    *

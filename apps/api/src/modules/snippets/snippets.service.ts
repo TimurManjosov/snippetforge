@@ -165,9 +165,13 @@ export class SnippetsService {
    * @param limit - Max Anzahl (default 20)
    * @returns Liste von Snippets (public + private)
    */
-  async findUserSnippets(userId: string, limit = 20): Promise<Snippet[]> {
+  async findUserSnippets(
+    userId: string,
+    page = 1,
+    limit = 20,
+  ): Promise<PaginatedSnippetPreviews> {
     this.logger.debug(`Finding snippets for user: ${userId}`);
-    return this.repository.findByUserId(userId, limit);
+    return this.repository.findByUserIdPaginated(userId, page, limit);
   }
 
   /**

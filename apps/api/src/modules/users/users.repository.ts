@@ -1,7 +1,7 @@
 // src/modules/users/users.repository.ts
 
 import { Injectable, Logger } from '@nestjs/common';
-import { eq, and, or, sql, ilike } from 'drizzle-orm';
+import { eq, and, or, sql, ilike, count } from 'drizzle-orm';
 import {
   users,
   snippets,
@@ -229,12 +229,11 @@ export class UsersRepository {
    * @returns Anzahl der User
    */
   async count(): Promise<number> {
-    const result = await this.db.drizzle
-      .select({ count: users.id })
+    const [{ total }] = await this.db.drizzle
+      .select({ total: count() })
       .from(users);
 
-    // Drizzle gibt Array zurück, wir brauchen Länge
-    return result.length;
+    return total;
   }
 
   /**

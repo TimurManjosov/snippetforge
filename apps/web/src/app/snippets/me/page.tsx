@@ -1,25 +1,30 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { ApiClientError, createApiClient } from "@/lib/api-client";
 import { readToken } from "@/utils/storage";
-import type { SnippetPreview } from "@/types/snippet";
+import type { PaginatedResponse, SnippetPreview } from "@/types/snippet";
 import SnippetList from "@/components/snippet-list";
+import PaginationControls from "@/components/pagination-controls";
 
-export default function MySnippetsPage() {
+function MySnippetsContent() {
   const { token, isLoading: authLoading, logout } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [data, setData] = useState<SnippetPreview[]>([]);
+  const page = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
+
+  const [items, setItems] = useState<SnippetPreview[]>([]);
+  const [meta, setMeta] = useState<PaginatedResponse<SnippetPreview>["meta"] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const didRedirect = useRef(false);
 
-  // Auth guard – redirect when hydrated and no token
   useEffect(() => {
     if (!authLoading && !token && !didRedirect.current) {
       didRedirect.current = true;
@@ -44,10 +49,12 @@ export default function MySnippetsPage() {
     setError(null);
 
     try {
-      const result = await apiClient.get<SnippetPreview[]>("/snippets/me", {
-        signal: controller.signal,
-      });
-      setData(result ?? []);
+      const result = await apiClient.get<PaginatedResponse<SnippetPreview>>(
+        `/snippets/me?page=${page}&limit=20`,
+        { signal: controller.signal },
+      );
+      setItems(result?.items ?? []);
+      setMeta(result?.meta ?? null);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
       if (err instanceof ApiClientError && err.status === 401) {
@@ -55,15 +62,15 @@ export default function MySnippetsPage() {
         router.replace("/login");
         return;
       }
-      const message =
+      setError(
         err instanceof ApiClientError
           ? err.message
-          : "Failed to load your snippets. Please try again.";
-      setError(message);
+          : "Failed to load your snippets. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
-  }, [logout, router]);
+  }, [logout, router, page]);
 
   useEffect(() => {
     if (!authLoading && token) {
@@ -72,7 +79,6 @@ export default function MySnippetsPage() {
     return () => abortRef.current?.abort();
   }, [authLoading, token, fetchMySnippets]);
 
-  // Show nothing while auth is still hydrating
   if (authLoading) {
     return (
       <div className="snippet-page">
@@ -84,7 +90,6 @@ export default function MySnippetsPage() {
     );
   }
 
-  // After hydration, if no token, render nothing (redirect is triggered)
   if (!token) return null;
 
   return (
@@ -97,13 +102,25 @@ export default function MySnippetsPage() {
       </div>
 
       <SnippetList
-        items={data}
+        items={items}
         loading={loading}
         error={error}
         ownerView
         onRetry={fetchMySnippets}
         emptyMessage="You haven't created any snippets yet."
       />
+
+      {meta && meta.totalPages > 1 && (
+        <PaginationControls meta={meta} />
+      )}
     </div>
+  );
+}
+
+export default function MySnippetsPage() {
+  return (
+    <Suspense fallback={<div className="snippet-page" aria-busy="true" />}>
+      <MySnippetsContent />
+    </Suspense>
   );
 }
