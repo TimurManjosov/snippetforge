@@ -62,6 +62,13 @@ const LimitQuerySchema = z.object({
 
 type LimitQueryDto = z.infer<typeof LimitQuerySchema>;
 
+const MySnippetsQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).optional().default(1),
+  limit: z.coerce.number().int().min(1).max(100).optional().default(20),
+});
+
+type MySnippetsQueryDto = z.infer<typeof MySnippetsQuerySchema>;
+
 const SnippetIdParamSchema = z.string().uuid();
 
 const SnippetLanguageParamSchema = z
@@ -215,21 +222,27 @@ export class SnippetsController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({
-    summary: 'List snippets for current user',
-    description: 'Returns snippets owned by the authenticated user.',
+    summary: 'List snippets for current user (paginated)',
+    description: 'Returns paginated snippet previews owned by the authenticated user.',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    example: 1,
+    description: 'Page number (1-indexed)',
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
     example: 20,
-    description: 'Maximum number of snippets to return (max 100)',
+    description: 'Items per page (max 100)',
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'List of snippets owned by the user',
-    type: SnippetResponseSchema,
-    isArray: true,
+    description: 'Paginated snippet previews owned by the user',
+    type: PaginatedSnippetPreviewsResponseSchema,
   })
   @ApiBadRequestResponse({
     description: 'Validation error - Invalid query parameters',
@@ -241,10 +254,9 @@ export class SnippetsController {
   })
   async findMine(
     @CurrentUser() user: SafeUser,
-    @Query(new ZodValidationPipe(LimitQuerySchema)) query: LimitQueryDto,
+    @Query(new ZodValidationPipe(MySnippetsQuerySchema)) query: MySnippetsQueryDto,
   ) {
-    const { limit = 20 } = query;
-    return this.snippetsService.findUserSnippets(user.id, limit);
+    return this.snippetsService.findUserSnippets(user.id, query.page, query.limit);
   }
 
   @Public()
