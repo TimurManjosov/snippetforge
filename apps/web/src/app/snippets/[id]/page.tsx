@@ -55,39 +55,28 @@ export default function SnippetDetailPage() {
     setNotFound(false);
     setSnippet(null);
 
-    console.log('[SnippetDetail] Fetching snippet:', snippetId);
-
     const fetchSnippet = async () => {
       try {
         const result = await apiClient.get<SnippetDetailType>(`/snippets/${snippetId}`, {
           signal,
         });
 
-        // Check if this request was cancelled
         if (signal.aborted) {
-          console.log('[SnippetDetail] Request was cancelled');
           return;
         }
 
-        console.log('[SnippetDetail] API Response:', result);
         if (result) {
           setSnippet(result);
           setLoading(false);
         } else {
-          // Handle undefined/null response
-          console.warn('[SnippetDetail] Empty response received');
           setSnippet(null);
           setError('Failed to load snippet. Please try again.');
           setLoading(false);
         }
       } catch (err) {
-        // Ignore errors from cancelled requests
         if (signal.aborted) {
-          console.log('[SnippetDetail] Request aborted, ignoring error');
           return;
         }
-
-        console.error('[SnippetDetail] Error:', err);
 
         if (err instanceof ApiClientError && [401, 403, 404].includes(err.status)) {
           setSnippet(null);
