@@ -36,6 +36,10 @@ describe('JwtStrategy', () => {
         if (key === 'JWT_SECRET') return 'test-secret';
         return undefined;
       }),
+      getOrThrow: jest.fn((key: string) => {
+        if (key === 'JWT_SECRET') return 'test-secret';
+        throw new Error(`Missing required config: ${key}`);
+      }),
     };
 
     const module: TestingModule = await Test.createTestingModule({

@@ -46,7 +46,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
 
       // Secret für Signatur-Validierung
-      secretOrKey: configService.get<string>('JWT_SECRET') || '',
+      // AuthModule.buildJwtModuleOptions has already failed bootstrap if this
+      // is missing — getOrThrow is the defensive fallback for TypeScript.
+      secretOrKey: configService.getOrThrow<string>('JWT_SECRET'),
 
       // Algorithms die akzeptiert werden
       algorithms: ['HS256'],
