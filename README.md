@@ -32,42 +32,70 @@ SnippetForge is a modern code snippet sharing platform that allows developers to
 - Collaborate with other developers
 - Learn from real-world code examples
 
-**Current Status:** ✅ Sprint 0 Complete (Authentication & Infrastructure)
+**Current Status:** ✅ MVP feature surface in place — hardening in progress.
 
 ---
 
 ## ✨ Features
 
-### ✅ Implemented (Sprint 0)
+### ✅ Implemented
+
 - **User Authentication**
-  - JWT-based authentication
-  - Secure password hashing (bcrypt)
-  - Role-based access control (USER, ADMIN, MODERATOR)
+  - JWT-based authentication (bcrypt password hashing, role-based access: USER / ADMIN / MODERATOR)
+  - Global `JwtAuthGuard` with `@Public()` opt-out; client persists the token under `SF_TOKEN`
+- **Snippets**
+  - Full CRUD with owner-or-admin guard
+  - Paginated public browsing with `q` / `tags` / `language` / `authorId` / `sort` (`createdAt` | `views`) / `order` filters
+  - Public/private visibility toggle and automatic view counter
+  - API in `apps/api/src/modules/snippets/`; web pages at `/snippets`, `/snippets/new`, `/snippets/me`, `/snippets/[id]`, `/snippets/[id]/edit`
+- **Tags**
+  - Admin-only tag creation, public listing with snippet counts
+  - Per-snippet attach/detach (owner-gated)
+- **Comments**
+  - Threaded (one level of replies), soft-delete with `editedAt` tracking
+  - Flag system with four reasons (`spam`, `abuse`, `off-topic`, `other`)
+- **Reactions**
+  - Seven emoji types (`like`, `love`, `star`, `laugh`, `wow`, `sad`, `angry`), idempotent set/remove
+  - Aggregated counts plus viewer-specific reactions
+- **Favorites**
+  - Add / remove / list with snippet preview join
+- **Collections**
+  - Per-user CRUD, named collections with optional public visibility
+  - Items with explicit ordering
+- **User Directory & Public Profiles**
+  - Searchable directory at `/users`, public profile at `/users/[id]` with stats and a public-snippets section
+- **User Settings** (partial)
+  - Persists `defaultSnippetVisibility`, `defaultLanguage`, `uiTheme`, `itemsPerPage` per user
+  - `uiTheme` is stored but not yet applied to the UI; `itemsPerPage` is not yet consumed by the snippet browser
 - **API Infrastructure**
-  - RESTful API with NestJS
-  - Global error handling
-  - Request validation with Zod
-  - Swagger/OpenAPI documentation
+  - RESTful API with NestJS 11, request validation via Zod (`ZodValidationPipe`)
+  - Global `GlobalHttpExceptionFilter` echoes a `requestId` in error bodies
+  - Swagger/OpenAPI at `/api-docs`
 - **Database**
-  - PostgreSQL with Drizzle ORM
-  - Type-safe database queries
-  - Automated migrations
+  - PostgreSQL 16 with Drizzle ORM and type-safe queries
+  - Schema covers users, snippets, tags, comments + flags, reactions, favorites, collections + items
+- **Observability**
+  - Sentry for API and Web (`apps/api/src/sentry/`, `apps/web/sentry.*.config.ts`)
+  - Liveness (`GET /api/live`), readiness with DB check (`GET /api/ready`)
+  - Prometheus metrics (`GET /api/metrics`, token-guarded)
+  - Structured request logging with `requestId` (`apps/api/src/shared/middleware/request-id.middleware.ts`)
 - **Testing**
-  - Unit tests (90%+ coverage)
-  - E2E tests for auth flow
-  - Jest configuration
+  - API: unit + E2E suites under `apps/api/test/unit` and `apps/api/test/e2e`
+  - Web: Jest + React Testing Library under `apps/web/src/**/__tests__/`
 - **Development**
   - Monorepo setup with npm workspaces
   - Hot reload for backend and frontend
   - Docker Compose for local development
+  - GitHub Actions CI (`.github/workflows/ci.yml`, `ci.postgres.snippet.yml`)
 
-### 🚧 Planned (Future Sprints)
-- Snippet CRUD operations
-- Syntax highlighting
-- Search and filtering
-- User profiles
-- Comments and reactions
-- Collections/Favorites
+### 🚧 Planned / In Progress
+- Refresh-token flow (current access tokens are short-lived with no rotation)
+- Applying the `uiTheme` setting to the rendered UI
+- Account-edit UI for `displayName` / `bio` / `avatarUrl` / `websiteUrl` (DB columns exist, no UI yet)
+- Full-text search (current implementation uses `ILIKE`)
+- Rate limiting on auth and comment endpoints
+- Moderation UI for flagged comments
+- Email verification and password reset
 
 ---
 
@@ -86,15 +114,17 @@ SnippetForge is a modern code snippet sharing platform that allows developers to
 ### Frontend
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript 5.7
-- **Styling:** Tailwind CSS
-- **State Management:** TBD
-- **Testing:** TBD
+- **Styling:** Tailwind CSS v4
+- **State Management:** React Context + `useState` (see `apps/web/src/contexts/auth-context.tsx`)
+- **Syntax Highlighting:** Prism.js
+- **Testing:** Jest + React Testing Library
 
 ### DevOps
 - **Containerization:** Docker + Docker Compose
 - **Package Manager:** npm (workspaces)
 - **Linting:** ESLint + Prettier
-- **CI/CD:** TBD
+- **CI/CD:** GitHub Actions (`.github/workflows/`)
+- **Error Tracking:** Sentry (API + Web)
 
 ---
 
