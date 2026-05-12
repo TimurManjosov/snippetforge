@@ -21,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../../shared/pipes';
+import { ThrottleWrite } from '../../shared/throttler';
 import { CurrentUser, Public } from '../auth';
 import { type SafeUser } from '../users';
 import {
@@ -38,6 +39,7 @@ const SnippetIdParamSchema = z.string().uuid();
 export class SnippetCommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @ThrottleWrite()
   @Post(':id/comments')
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth('JWT-Auth')

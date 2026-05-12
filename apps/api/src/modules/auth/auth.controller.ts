@@ -21,6 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from '../../shared/pipes';
+import { ThrottleAuth } from '../../shared/throttler';
 import {
   AuthResponseSchema,
   ConflictErrorResponseSchema,
@@ -85,6 +86,7 @@ export class AuthController {
    * - 409 Conflict: Email/Username already exists
    */
   @Public() // Keine Auth nötig für Registration
+  @ThrottleAuth()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -169,6 +171,7 @@ The user is immediately logged in after registration.
    * - 401 Unauthorized: Invalid credentials
    */
   @Public() // Keine Auth nötig für Login
+  @ThrottleAuth()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({

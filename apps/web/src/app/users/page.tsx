@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
+import PaginationControls from '@/components/pagination-controls';
 import { UserAvatar } from '@/components/users/user-avatar';
 import {
   listUsers,
@@ -168,38 +169,7 @@ export default function UsersDirectoryPage() {
         </ul>
       )}
 
-      {meta && meta.totalPages > 1 && (
-        <nav
-          aria-label="Users pagination"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 16,
-            marginTop: 24,
-          }}
-        >
-          <button
-            type="button"
-            disabled={!meta.hasPreviousPage}
-            onClick={() => updateParam('page', String(page - 1))}
-            aria-label="Previous page"
-          >
-            ← Previous
-          </button>
-          <span>
-            Page {meta.page} of {meta.totalPages}
-          </span>
-          <button
-            type="button"
-            disabled={!meta.hasNextPage}
-            onClick={() => updateParam('page', String(page + 1))}
-            aria-label="Next page"
-          >
-            Next →
-          </button>
-        </nav>
-      )}
+      {meta && <PaginationControls meta={meta} />}
     </main>
   );
 }

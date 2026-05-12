@@ -5,14 +5,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
-import { ApiClientError, createApiClient } from "@/lib/api-client";
-import { readToken } from "@/utils/storage";
+import { useApiClient } from "@/hooks/useApiClient";
+import { ApiClientError } from "@/lib/api-client";
 import type { PaginatedResponse, SnippetPreview } from "@/types/snippet";
 import SnippetList from "@/components/snippet-list";
 import PaginationControls from "@/components/pagination-controls";
 
 function MySnippetsContent() {
   const { token, isLoading: authLoading, logout } = useAuth();
+  const apiClient = useApiClient();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -33,17 +34,11 @@ function MySnippetsContent() {
   }, [authLoading, token, router]);
 
   const fetchMySnippets = useCallback(async () => {
-    const currentToken = readToken();
-    if (!currentToken) return;
+    if (!token) return;
 
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
-
-    const apiClient = createApiClient(
-      process.env.NEXT_PUBLIC_API_URL ?? "",
-      () => currentToken,
-    );
 
     setLoading(true);
     setError(null);
@@ -70,7 +65,7 @@ function MySnippetsContent() {
     } finally {
       setLoading(false);
     }
-  }, [logout, router, page]);
+  }, [apiClient, token, logout, router, page]);
 
   useEffect(() => {
     if (!authLoading && token) {

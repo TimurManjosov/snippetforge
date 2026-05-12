@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 
 import FavoriteButton from '../favorite-button';
 import * as favoritesApi from '@/lib/favorites-api';
-import type { FavoritesListResponse } from '@/types/favorites';
 
 jest.mock('@/lib/favorites-api');
 const mockedApi = favoritesApi as jest.Mocked<typeof favoritesApi>;
@@ -40,24 +39,11 @@ jest.mock('@/utils/storage', () => ({
   clearToken: jest.fn(),
 }));
 
-const makeFavoritesResponse = (snippetIds: string[]): FavoritesListResponse => ({
-  data: snippetIds.map((id, i) => ({
-    id: `fav-${i}`,
-    snippetId: id,
-    snippetTitle: `Snippet ${id}`,
-    snippetLanguage: 'typescript',
-    createdAt: '2025-01-01T00:00:00Z',
-  })),
-  total: snippetIds.length,
-  page: 1,
-  limit: 100,
-});
-
 describe('FavoriteButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     currentUser = mockUser;
-    mockedApi.listFavorites.mockResolvedValue(makeFavoritesResponse([]));
+    mockedApi.isFavorite.mockResolvedValue(false);
     mockedApi.addFavorite.mockResolvedValue(undefined);
     mockedApi.removeFavorite.mockResolvedValue(undefined);
   });
@@ -72,7 +58,7 @@ describe('FavoriteButton', () => {
   });
 
   it('shows "Saved" when snippet is in favorites', async () => {
-    mockedApi.listFavorites.mockResolvedValue(makeFavoritesResponse(['s1']));
+    mockedApi.isFavorite.mockResolvedValue(true);
     render(<FavoriteButton snippetId="s1" />);
 
     await waitFor(() =>
@@ -94,7 +80,7 @@ describe('FavoriteButton', () => {
   });
 
   it('calls removeFavorite when clicking Saved', async () => {
-    mockedApi.listFavorites.mockResolvedValue(makeFavoritesResponse(['s1']));
+    mockedApi.isFavorite.mockResolvedValue(true);
     const user = userEvent.setup();
     render(<FavoriteButton snippetId="s1" />);
 

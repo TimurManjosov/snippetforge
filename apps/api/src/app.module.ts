@@ -3,6 +3,7 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, JwtAuthGuard } from './modules/auth';
@@ -18,6 +19,7 @@ import { TagsModule } from './modules/tags';
 import { UsersModule } from './modules/users';
 import { DatabaseModule } from './shared/database';
 import { RequestIdMiddleware } from './shared/middleware/request-id.middleware';
+import { createThrottlerOptions } from './shared/throttler';
 
 /**
  * AppModule - Root Module
@@ -47,11 +49,14 @@ import { RequestIdMiddleware } from './shared/middleware/request-id.middleware';
     // 2. Database
     DatabaseModule,
 
-    // 3. Operations
+    // 3. Rate limiting (global default + per-route overrides via @Throttle*)
+    ThrottlerModule.forRoot(createThrottlerOptions()),
+
+    // 4. Operations
     HealthModule,
     MetricsModule,
 
-    // 4. Feature Modules
+    // 5. Feature Modules
     UsersModule,
     AuthModule,
     SnippetsModule,
@@ -65,6 +70,13 @@ import { RequestIdMiddleware } from './shared/middleware/request-id.middleware';
   controllers: [AppController],
   providers: [
     AppService,
+
+    // Global rate limiting. Runs before the auth guard so unauthenticated
+    // floods are rejected without spending CPU on JWT verification.
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
 
     // Global JwtAuthGuard
     // Alle Routes sind geschützt, außer @Public()

@@ -21,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../../shared/pipes';
+import { ThrottleWrite } from '../../shared/throttler';
 import { CurrentUser, Public } from '../auth';
 import { type SafeUser } from '../users';
 import {
@@ -54,6 +55,7 @@ export class CommentsController {
     return this.commentsService.get(commentId, user);
   }
 
+  @ThrottleWrite()
   @Put(':commentId')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
@@ -88,6 +90,7 @@ export class CommentsController {
     await this.commentsService.softDelete(commentId, user);
   }
 
+  @ThrottleWrite()
   @Post(':commentId/flags')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')

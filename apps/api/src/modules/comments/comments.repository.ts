@@ -38,6 +38,38 @@ export class CommentsRepository {
     return comment;
   }
 
+  /**
+   * Atomically inserts a reply and increments the parent comment's
+   * denormalised `replyCount`. Both operations succeed together or both
+   * roll back, preventing `replyCount` from drifting if the second
+   * statement fails.
+   */
+  async createReply(data: {
+    snippetId: string;
+    userId: string | null;
+    body: string;
+    parentId: string;
+  }): Promise<Comment> {
+    return this.db.drizzle.transaction(async (tx) => {
+      const [comment] = await tx
+        .insert(comments)
+        .values({
+          snippetId: data.snippetId,
+          userId: data.userId,
+          body: data.body,
+          parentId: data.parentId,
+        })
+        .returning();
+
+      await tx
+        .update(comments)
+        .set({ replyCount: sql`${comments.replyCount} + 1` })
+        .where(eq(comments.id, data.parentId));
+
+      return comment;
+    });
+  }
+
   async findById(commentId: string): Promise<Comment | null> {
     const comment = await this.db.drizzle.query.comments.findFirst({
       where: eq(comments.id, commentId),
@@ -115,6 +147,35 @@ export class CommentsRepository {
       .where(eq(comments.id, commentId))
       .returning();
     return updated ?? null;
+  }
+
+  /**
+   * Atomically soft-deletes a reply and decrements its parent's
+   * `replyCount`. Used instead of two separate calls to keep the
+   * denormalised counter consistent across failures.
+   */
+  async softDeleteReply(
+    commentId: string,
+    parentId: string,
+  ): Promise<Comment | null> {
+    return this.db.drizzle.transaction(async (tx) => {
+      const [updated] = await tx
+        .update(comments)
+        .set({ deletedAt: new Date() })
+        .where(eq(comments.id, commentId))
+        .returning();
+
+      if (!updated) return null;
+
+      await tx
+        .update(comments)
+        .set({
+          replyCount: sql`GREATEST(${comments.replyCount} - 1, 0)`,
+        })
+        .where(eq(comments.id, parentId));
+
+      return updated;
+    });
   }
 
   async incrementReplyCount(parentId: string): Promise<void> {

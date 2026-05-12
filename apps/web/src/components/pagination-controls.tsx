@@ -4,24 +4,44 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
 import type { PaginationMeta } from "@/types/snippet";
-import { stringifySnippetsState, updateSnippetsStateFromSearchParams } from "@/utils/url-state";
 
 interface PaginationControlsProps {
   meta: PaginationMeta;
+  /**
+   * Optional override. When provided, the component delegates navigation to
+   * this callback instead of mutating the URL. Useful for pages that hold
+   * pagination in component state rather than the query string.
+   */
+  onPageChange?: (page: number) => void;
 }
 
-export default function PaginationControls({ meta }: PaginationControlsProps) {
+/**
+ * Generic pagination control.
+ *
+ * Default behaviour: preserve every current search-param and override only
+ * `page`. This works uniformly for any list page that drives pagination via
+ * the URL (`/snippets`, `/favorites`, `/users`, `/collections`, …), so we
+ * don't need per-page bespoke prev/next buttons.
+ */
+export default function PaginationControls({
+  meta,
+  onPageChange,
+}: PaginationControlsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const navigate = useCallback(
     (newPage: number) => {
-      const nextState = updateSnippetsStateFromSearchParams(searchParams, { page: newPage });
-      const qs = stringifySnippetsState(nextState);
-      router.push(`${pathname}?${qs}`);
+      if (onPageChange) {
+        onPageChange(newPage);
+        return;
+      }
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", String(newPage));
+      router.push(`${pathname}?${params.toString()}`);
     },
-    [router, pathname, searchParams],
+    [router, pathname, searchParams, onPageChange],
   );
 
   if (meta.totalPages <= 1) return null;

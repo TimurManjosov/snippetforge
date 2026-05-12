@@ -15,6 +15,18 @@ export async function removeFavorite(
   await client.delete(`/favorites/${snippetId}`);
 }
 
+export async function isFavorite(
+  client: ApiClient,
+  snippetId: string,
+  signal?: AbortSignal,
+): Promise<boolean> {
+  const result = await client.get<{ favorited: boolean }>(
+    `/favorites/${snippetId}/exists`,
+    { signal },
+  );
+  return result?.favorited ?? false;
+}
+
 export async function listFavorites(
   client: ApiClient,
   page = 1,

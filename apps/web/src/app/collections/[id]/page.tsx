@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 
-import { ApiClientError, createApiClient } from '@/lib/api-client';
+import { ApiClientError } from '@/lib/api-client';
+import { useApiClient } from '@/hooks/useApiClient';
 import { getCollection, updateCollection } from '@/lib/collections-api';
 import { useAuth } from '@/hooks/useAuth';
-import { readToken } from '@/utils/storage';
 import type { CollectionWithItems } from '@/types/collections';
 import CollectionItemsList from '@/components/collections/collection-items-list';
 
@@ -20,10 +20,7 @@ export default function CollectionDetailPage() {
 
   const { user } = useAuth();
 
-  const apiClient = useMemo(
-    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', readToken),
-    [],
-  );
+  const apiClient = useApiClient();
 
   const [collection, setCollection] = useState<CollectionWithItems | null>(null);
   const [loading, setLoading] = useState(true);
