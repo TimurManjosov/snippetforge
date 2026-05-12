@@ -1,5 +1,7 @@
 import * as Sentry from '@sentry/nextjs';
 
+import { clearToken, writeToken } from '@/utils/storage';
+
 export interface ApiError {
   status: number;
   message: string;
@@ -11,6 +13,11 @@ export type TokenProvider = () => string | null;
 interface RequestOptions {
   signal?: AbortSignal;
   headers?: HeadersInit;
+}
+
+interface InternalRequestOptions extends RequestOptions {
+  /** Prevents 401-recovery from looping when retrying the same request. */
+  _retried?: boolean;
 }
 
 export class ApiClientError extends Error implements ApiError {
@@ -53,7 +60,10 @@ interface ApiErrorResponseBody {
 }
 
 const normalizeError = async (response: Response): Promise<ApiClientError> => {
-  const fallback = new ApiClientError(response.status, response.statusText || 'Request failed');
+  const fallback = new ApiClientError(
+    response.status,
+    response.statusText || 'Request failed',
+  );
 
   const body = await parseJsonSafely(response);
   if (!body || typeof body !== 'object') {
@@ -61,11 +71,64 @@ const normalizeError = async (response: Response): Promise<ApiClientError> => {
   }
 
   const errorBody = body as ApiErrorResponseBody;
-  const message = errorBody.error?.message ?? errorBody.message ?? fallback.message;
+  const message =
+    errorBody.error?.message ?? errorBody.message ?? fallback.message;
   const details = errorBody.error?.details;
 
   return new ApiClientError(response.status, message, details);
 };
+
+// ---------------------------------------------------------------------------
+// Silent refresh
+//
+// A 401 from any authenticated request triggers a single, deduplicated call
+// to the BFF refresh endpoint. On success the new access token lands in the
+// in-memory cache and the original request is retried once. On failure the
+// cache is cleared and the 401 surfaces to the caller — page-level logic
+// decides what to do (typically render the logout state or redirect).
+// ---------------------------------------------------------------------------
+
+let inflightRefresh: Promise<boolean> | null = null;
+
+interface BffRefreshResponse {
+  accessToken?: string;
+  user?: unknown;
+}
+
+const performRefresh = async (): Promise<boolean> => {
+  try {
+    const response = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      clearToken();
+      return false;
+    }
+    const body = (await response.json()) as BffRefreshResponse;
+    if (typeof body?.accessToken !== 'string' || !body.accessToken) {
+      clearToken();
+      return false;
+    }
+    writeToken(body.accessToken);
+    return true;
+  } catch {
+    clearToken();
+    return false;
+  }
+};
+
+const tryRefresh = (): Promise<boolean> => {
+  if (!inflightRefresh) {
+    inflightRefresh = performRefresh().finally(() => {
+      inflightRefresh = null;
+    });
+  }
+  return inflightRefresh;
+};
+
+// ---------------------------------------------------------------------------
 
 export class ApiClient {
   private readonly baseUrl: string;
@@ -80,12 +143,8 @@ export class ApiClient {
     method: string,
     path: string,
     body?: unknown,
-    options: RequestOptions = {},
+    options: InternalRequestOptions = {},
   ): Promise<T | undefined> {
-    if (!this.baseUrl) {
-      throw new ApiClientError(500, 'API base URL is not configured. Set NEXT_PUBLIC_API_URL.');
-    }
-
     const headers: Record<string, string> = {
       Accept: 'application/json',
       ...(body ? { 'Content-Type': 'application/json' } : {}),
@@ -109,9 +168,11 @@ export class ApiClient {
         headers,
         body: body ? JSON.stringify(body) : undefined,
         signal: options.signal,
+        // Carry same-origin cookies (refresh flow); cross-origin calls
+        // ignore the credentials unless CORS allows them, so this is safe.
+        credentials: 'same-origin',
       });
     } catch (e) {
-      // Don't report intentional aborts/cancellations to Sentry.
       if (e instanceof DOMException && e.name === 'AbortError') {
         throw e;
       }
@@ -120,6 +181,20 @@ export class ApiClient {
     }
 
     if (!response.ok) {
+      if (
+        response.status === 401 &&
+        !options._retried &&
+        this.shouldAttemptRefresh(path)
+      ) {
+        const refreshed = await tryRefresh();
+        if (refreshed) {
+          return this.request<T>(method, path, body, {
+            ...options,
+            _retried: true,
+          });
+        }
+      }
+
       if (response.status >= 500) {
         const requestId = response.headers.get('x-request-id');
         const err = new Error(`API error ${response.status}`);
@@ -141,6 +216,16 @@ export class ApiClient {
 
     const data = await parseJsonSafely(response);
     return data as T;
+  }
+
+  /**
+   * Don't try to refresh on auth-flow paths themselves — that would loop
+   * (refresh triggers refresh) — and don't try on BFF same-origin requests
+   * (no upstream JWT to recover).
+   */
+  private shouldAttemptRefresh(path: string): boolean {
+    if (!this.baseUrl) return false;
+    return !path.startsWith('/auth/refresh') && !path.startsWith('/auth/logout');
   }
 
   get<T>(path: string, options?: RequestOptions) {

@@ -65,6 +65,10 @@ export function createMockTokenResponse(): TokenResponse {
   return {
     accessToken:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiVVNFUiJ9.mock-signature',
+    refreshToken: 'mock-refresh-token-value',
+    refreshTokenExpiresAt: new Date(
+      Date.now() + 30 * 24 * 60 * 60 * 1000,
+    ).toISOString(),
     tokenType: 'Bearer',
     expiresIn: 900,
   };

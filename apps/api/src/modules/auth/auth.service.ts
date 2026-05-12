@@ -11,6 +11,7 @@ import {
 } from './auth.types';
 import { type LoginDto } from './dto/login.dto';
 import { type RegisterDto } from './dto/register.dto';
+import { RefreshTokenService } from './refresh-token.service';
 
 /**
  * AuthService - Zentrale Authentifizierungs-Logik
@@ -42,6 +43,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {
     // Parse JWT_EXPIRES_IN (z.B. "15m", "1h", "7d")
     const expiresInString =
@@ -70,8 +72,8 @@ export class AuthService {
       password: dto.password,
     });
 
-    // 2. Tokens generieren
-    const tokens = await this.generateTokens(user);
+    // 2. Token pair
+    const tokens = await this.issueTokenPair(user);
 
     this.logger.log(`User registered successfully: ${user.id}`);
 
@@ -108,8 +110,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    // 3. Tokens generieren
-    const tokens = await this.generateTokens(user);
+    // 3. Token pair
+    const tokens = await this.issueTokenPair(user);
 
     this.logger.log(`User logged in successfully: ${user.id}`);
 
@@ -117,6 +119,35 @@ export class AuthService {
       user,
       tokens,
     };
+  }
+
+  /**
+   * Validate a refresh token, rotate it, and issue a fresh access token.
+   * The caller (BFF) sets the new refresh cookie on the web origin.
+   */
+  async refresh(presentedRefreshToken: string): Promise<AuthResponse> {
+    const { rawToken, expiresAt, userId } =
+      await this.refreshTokenService.rotate(presentedRefreshToken);
+
+    const user = await this.usersService.findById(userId);
+    const accessToken = await this.signAccessToken(user);
+
+    return {
+      user,
+      tokens: {
+        accessToken,
+        refreshToken: rawToken,
+        refreshTokenExpiresAt: expiresAt.toISOString(),
+        tokenType: 'Bearer',
+        expiresIn: this.accessTokenExpiresIn,
+      },
+    };
+  }
+
+  /** Revoke the presented refresh token (single-session logout). */
+  async logout(presentedRefreshToken: string | undefined): Promise<void> {
+    if (!presentedRefreshToken) return;
+    await this.refreshTokenService.revoke(presentedRefreshToken);
   }
 
   /**
@@ -142,27 +173,33 @@ export class AuthService {
   // ============================================================
 
   /**
-   * Generiert JWT Access Token
-   *
-   * @param user - SafeUser für Payload
-   * @returns TokenResponse
+   * Mint a fresh access token + refresh token for a session start
+   * (register / login). The refresh token row is persisted by
+   * RefreshTokenService; this method just composes the wire response.
    */
-  private async generateTokens(user: SafeUser): Promise<TokenResponse> {
-    // JWT Payload (minimale Daten!)
-    const payload: JwtPayload = {
-      sub: user.id, // Standard JWT Claim für Subject (User ID)
-      email: user.email, // Für schnellen Lookup
-      role: user.role, // Für Authorization ohne DB-Query
-    };
-
-    // Token signieren
-    const accessToken = await this.jwtService.signAsync(payload);
+  private async issueTokenPair(user: SafeUser): Promise<TokenResponse> {
+    const accessToken = await this.signAccessToken(user);
+    const { rawToken, expiresAt } = await this.refreshTokenService.issue(
+      user.id,
+    );
 
     return {
       accessToken,
+      refreshToken: rawToken,
+      refreshTokenExpiresAt: expiresAt.toISOString(),
       tokenType: 'Bearer',
       expiresIn: this.accessTokenExpiresIn,
     };
+  }
+
+  /** Sign a short-lived JWT access token from the safe user fields. */
+  private async signAccessToken(user: SafeUser): Promise<string> {
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    };
+    return this.jwtService.signAsync(payload);
   }
 
   /**

@@ -13,6 +13,9 @@ export interface SafeUser {
 
 export interface TokenResponse {
   accessToken: string;
+  /** Raw refresh-token value — present in upstream API responses only. */
+  refreshToken: string;
+  refreshTokenExpiresAt: string;
   tokenType: "Bearer";
   expiresIn: number;
 }

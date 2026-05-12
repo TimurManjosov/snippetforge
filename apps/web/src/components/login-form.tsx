@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { type FormEvent, useCallback, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { type FormEvent, useCallback, useMemo, useState } from 'react';
 
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -12,9 +12,27 @@ import {
   validateLogin,
 } from '@/utils/validation';
 
+/**
+ * `next` query param is whitelisted to relative paths starting with `/` and
+ * not starting with `//` (the latter is a protocol-relative URL that would
+ * navigate cross-site). This prevents open-redirect attacks while still
+ * letting the middleware route the user back to a deep link after login.
+ */
+function safeNextPath(value: string | null): string {
+  if (!value) return '/snippets';
+  if (!value.startsWith('/')) return '/snippets';
+  if (value.startsWith('//')) return '/snippets';
+  return value;
+}
+
 export default function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextPath = useMemo(
+    () => safeNextPath(searchParams.get('next')),
+    [searchParams],
+  );
 
   const [values, setValues] = useState<LoginFormValues>({
     email: '',
@@ -51,7 +69,7 @@ export default function LoginForm() {
       setIsSubmitting(true);
       try {
         await login(normalizeLoginPayload(values));
-        router.push('/snippets');
+        router.push(nextPath);
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Login failed. Please try again.';
         setFormError(message);
@@ -59,7 +77,7 @@ export default function LoginForm() {
         setIsSubmitting(false);
       }
     },
-    [values, login, router],
+    [values, login, router, nextPath],
   );
 
   return (
