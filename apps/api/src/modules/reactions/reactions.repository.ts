@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { and, count, eq, sql } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { snippetReactions } from '../../lib/db/schema';
 import { DatabaseService } from '../../shared/database';
 import { type ReactionType } from './dto';
@@ -66,10 +66,7 @@ export class ReactionsRepository {
   /**
    * Get reaction types the given user has set on a snippet
    */
-  async userReactions(
-    snippetId: string,
-    userId: string,
-  ): Promise<string[]> {
+  async userReactions(snippetId: string, userId: string): Promise<string[]> {
     const rows = await this.db.drizzle
       .select({ type: snippetReactions.type })
       .from(snippetReactions)

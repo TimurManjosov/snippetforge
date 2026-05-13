@@ -20,8 +20,16 @@ import { MetricsService } from './metrics.service';
  *
  * Angewendete Regeln: P2 (Kardinality-Schutz - keine dynamischen Segmente als Labels).
  */
+/**
+ * Express attaches `req.route` after the router has matched the request,
+ * but @types/express types it as `any`. We narrow it locally to read
+ * `path` safely without `any`.
+ */
+type RequestRoute = { path?: string };
+
 function getRouteTemplate(req: Request): string {
-  const routePath = (req as any).route?.path;
+  const route = req.route as RequestRoute | undefined;
+  const routePath = route?.path;
   if (routePath) {
     const baseUrl = req.baseUrl ?? '';
     return `${baseUrl}${routePath}`;
@@ -69,7 +77,10 @@ export class MetricsInterceptor implements NestInterceptor {
         const status = String(statusCode);
 
         this.metrics.httpRequestsTotal.inc({ method, route, status });
-        this.metrics.httpRequestDurationMs.observe({ method, route, status }, duration);
+        this.metrics.httpRequestDurationMs.observe(
+          { method, route, status },
+          duration,
+        );
 
         if (isError || statusCode >= 400) {
           this.metrics.httpErrorsTotal.inc({ method, route, status });

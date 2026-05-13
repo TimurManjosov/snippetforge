@@ -16,11 +16,17 @@ describe('UsersRepository', () => {
     email: 'test@example.com',
     username: 'testuser',
     passwordHash: 'hashed-password',
-    role: 'USER',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    displayName: null,
     bio: null,
     avatarUrl: null,
+    websiteUrl: null,
+    role: 'USER',
+    defaultSnippetVisibility: false,
+    defaultLanguage: null,
+    uiTheme: 'system',
+    itemsPerPage: 20,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   beforeEach(async () => {

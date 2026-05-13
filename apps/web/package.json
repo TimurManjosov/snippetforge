@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest --no-coverage"
+    "test": "jest --no-coverage",
+    "lint": "echo 'web: no ESLint config yet — skipping' && exit 0",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@sentry/nextjs": "^8.0.0",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",

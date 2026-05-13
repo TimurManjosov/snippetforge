@@ -49,7 +49,9 @@ export class ReactionsController {
     status: HttpStatus.OK,
     description: 'Reaction set successfully',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Snippet not found' })
   async set(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
@@ -73,11 +75,14 @@ export class ReactionsController {
     status: HttpStatus.NO_CONTENT,
     description: 'Reaction removed',
   })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Snippet not found' })
   async remove(
     @Param('id', new ZodValidationPipe(SnippetIdParamSchema)) id: string,
-    @Param('type', new ZodValidationPipe(ReactionTypeSchema)) type: ReactionType,
+    @Param('type', new ZodValidationPipe(ReactionTypeSchema))
+    type: ReactionType,
     @CurrentUser() user: SafeUser,
   ) {
     await this.reactionsService.remove(id, user, type);

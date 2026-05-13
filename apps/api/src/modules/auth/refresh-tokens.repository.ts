@@ -49,10 +49,7 @@ export class RefreshTokensRepository {
     next: { userId: string; tokenHash: string; expiresAt: Date },
   ): Promise<RefreshToken> {
     return this.db.drizzle.transaction(async (tx) => {
-      const [created] = await tx
-        .insert(refreshTokens)
-        .values(next)
-        .returning();
+      const [created] = await tx.insert(refreshTokens).values(next).returning();
 
       await tx
         .update(refreshTokens)
@@ -79,10 +76,7 @@ export class RefreshTokensRepository {
       .update(refreshTokens)
       .set({ revokedAt: new Date() })
       .where(
-        and(
-          eq(refreshTokens.userId, userId),
-          isNull(refreshTokens.revokedAt),
-        ),
+        and(eq(refreshTokens.userId, userId), isNull(refreshTokens.revokedAt)),
       )
       .returning({ id: refreshTokens.id });
     return result.length;

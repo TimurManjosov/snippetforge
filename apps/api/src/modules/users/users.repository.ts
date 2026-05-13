@@ -12,7 +12,10 @@ import {
 } from '../../lib/db/schema';
 import { DatabaseService } from '../../shared/database';
 import { type ListUsersQueryDto } from './dto/list-users.dto';
-import { calculatePaginationMeta, type PaginationMeta } from '../snippets/snippets.types';
+import {
+  calculatePaginationMeta,
+  type PaginationMeta,
+} from '../snippets/snippets.types';
 
 /**
  * UsersRepository - Data Access Layer für User-Entity
@@ -303,7 +306,13 @@ export class UsersRepository {
       UsersRepository.LIST_USERS_SORT_MAP.createdAt;
     const sortDirection = dto.order === 'asc' ? sql`ASC` : sql`DESC`;
 
-    const items = await this.db.drizzle.execute<UserDirectoryItem>(sql`
+    // Result is shaped to UserDirectoryItem by the SELECT below and cast
+    // when assigned (see `items as unknown as UserDirectoryItem[]`). We
+    // omit the generic argument because Drizzle's `execute` constrains it
+    // to `Record<string, unknown>`, which UserDirectoryItem does not
+    // satisfy structurally (typed nullable fields don't extend `unknown`
+    // index signatures cleanly across all drizzle-orm versions).
+    const items = await this.db.drizzle.execute(sql`
       SELECT
         u.id,
         u.username,
