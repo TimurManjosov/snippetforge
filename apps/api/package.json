@@ -22,7 +22,8 @@
     "test:e2e": "jest test/e2e --runInBand",
     "test:ci": "jest --coverage --ci --runInBand",
     "type-check": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "drizzle-kit push"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
