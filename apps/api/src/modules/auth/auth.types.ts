@@ -33,12 +33,18 @@ export interface JwtPayload {
 }
 
 /**
- * Token Response - Was bei Login/Register zurückgegeben wird
+ * Token Response - Was bei Login/Register zurückgegeben wird.
+ *
+ * `refreshToken` is the raw opaque refresh-token string. The API does not
+ * set cookies — the BFF (Next.js route handler) reads this field and
+ * persists it as an HttpOnly cookie on the web origin.
  */
 export interface TokenResponse {
   accessToken: string;
+  refreshToken: string;
+  refreshTokenExpiresAt: string; // ISO 8601
   tokenType: 'Bearer';
-  expiresIn: number; // Sekunden bis Expiration
+  expiresIn: number; // access-token lifetime in seconds
 }
 
 /**

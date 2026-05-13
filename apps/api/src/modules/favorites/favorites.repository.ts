@@ -41,6 +41,20 @@ export class FavoritesRepository {
   }
 
   /**
+   * Existence check that hits the (user_id, snippet_id) unique index — O(1).
+   */
+  async exists(userId: string, snippetId: string): Promise<boolean> {
+    const [row] = await this.db.drizzle
+      .select({ id: favorites.id })
+      .from(favorites)
+      .where(
+        and(eq(favorites.userId, userId), eq(favorites.snippetId, snippetId)),
+      )
+      .limit(1);
+    return row !== undefined;
+  }
+
+  /**
    * List favorites for a user with snippet previews (no code)
    * Ordered by createdAt desc (uses favorites_user_created_idx)
    */

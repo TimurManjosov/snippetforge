@@ -15,6 +15,13 @@
       "when": 1768738315061,
       "tag": "0001_unique_thunderbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778586756076,
+      "tag": "0002_rainy_gargoyle",
+      "breakpoints": true
     }
   ]
 }

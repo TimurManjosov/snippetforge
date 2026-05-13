@@ -52,26 +52,28 @@ export class CommentsService {
   ): Promise<Comment> {
     await this.assertSnippetReadable(snippetId, user);
 
-    // Validate parent comment if provided
     if (parentId) {
       const parent = await this.repository.findById(parentId);
       if (!parent || parent.snippetId !== snippetId) {
         throw new NotFoundException('Comment not found');
       }
+
+      // Insert + parent replyCount increment in a single transaction so
+      // a failure on either side leaves the counter consistent.
+      return this.repository.createReply({
+        snippetId,
+        userId: user.id,
+        body,
+        parentId,
+      });
     }
 
-    const comment = await this.repository.create({
+    return this.repository.create({
       snippetId,
       userId: user.id,
       body,
-      parentId,
+      parentId: undefined,
     });
-
-    if (parentId) {
-      await this.repository.incrementReplyCount(parentId);
-    }
-
-    return comment;
   }
 
   async list(
@@ -137,11 +139,10 @@ export class CommentsService {
       return;
     }
 
-    await this.repository.softDelete(commentId);
-
-    // Decrement parent reply count if this was a reply
     if (comment.parentId) {
-      await this.repository.decrementReplyCount(comment.parentId);
+      await this.repository.softDeleteReply(commentId, comment.parentId);
+    } else {
+      await this.repository.softDelete(commentId);
     }
   }
 

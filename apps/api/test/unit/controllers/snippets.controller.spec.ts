@@ -121,7 +121,7 @@ describe('SnippetsController', () => {
     const snippets = [createMockSnippet({ userId: mockUser.id })];
     mockService.findUserSnippets.mockResolvedValue(snippets);
 
-    const result = await controller.findMine(mockUser, { limit: 5 });
+    const result = await controller.findMine(mockUser, { page: 1, limit: 5 });
 
     expect(result).toEqual(snippets);
     expect(mockService.findUserSnippets).toHaveBeenCalledWith(mockUser.id, 5);

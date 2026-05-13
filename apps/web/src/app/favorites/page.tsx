@@ -1,23 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { createApiClient } from '@/lib/api-client';
+import PaginationControls from '@/components/pagination-controls';
+import { useApiClient } from '@/hooks/useApiClient';
 import { listFavorites, removeFavorite } from '@/lib/favorites-api';
 import { useAuth } from '@/hooks/useAuth';
-import { readToken } from '@/utils/storage';
 import type { FavoritePreview } from '@/types/favorites';
 
 export default function FavoritesPage() {
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
 
-  const apiClient = useMemo(
-    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', readToken),
-    [],
-  );
+  const apiClient = useApiClient();
 
   const [favorites, setFavorites] = useState<FavoritePreview[]>([]);
   const [total, setTotal] = useState(0);
@@ -128,29 +125,17 @@ export default function FavoritesPage() {
             ))}
           </div>
 
-          {totalPages > 1 && (
-            <div className="favorites-pagination">
-              <button
-                type="button"
-                className="favorites-page-btn"
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-              >
-                Previous
-              </button>
-              <span className="favorites-page-info">
-                Page {page} of {totalPages}
-              </span>
-              <button
-                type="button"
-                className="favorites-page-btn"
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <PaginationControls
+            meta={{
+              page,
+              limit,
+              total,
+              totalPages,
+              hasNextPage: page < totalPages,
+              hasPreviousPage: page > 1,
+            }}
+            onPageChange={setPage}
+          />
         </>
       )}
     </div>

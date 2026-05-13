@@ -54,6 +54,27 @@ export class FavoritesController {
     return this.favoritesService.addFavorite(user, dto.snippetId);
   }
 
+  @Get(':snippetId/exists')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Check whether the current user has favorited a snippet',
+  })
+  @ApiParam({ name: 'snippetId', format: 'uuid', description: 'Snippet UUID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Boolean flag indicating favorite status',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
+  async exists(
+    @Param('snippetId', new ZodValidationPipe(SnippetIdParamSchema))
+    snippetId: string,
+    @CurrentUser() user: SafeUser,
+  ) {
+    return this.favoritesService.isFavorite(user, snippetId);
+  }
+
   @Delete(':snippetId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remove a snippet from favorites (idempotent)' })

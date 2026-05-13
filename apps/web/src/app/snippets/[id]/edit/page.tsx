@@ -7,7 +7,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { ApiClientError } from "@/lib/api-client";
 import { getSnippetById } from "@/lib/snippets-api";
-import { readToken } from "@/utils/storage";
 import type { SnippetDetail } from "@/types/snippets";
 import EditSnippetForm from "@/components/edit-snippet-form";
 import DeleteSnippetButton from "@/components/delete-snippet-button";
@@ -48,8 +47,7 @@ export default function EditSnippetPage() {
   }, []);
 
   const fetchSnippet = useCallback(async () => {
-    const currentToken = readToken();
-    if (!currentToken || !snippetId) {
+    if (!token || !snippetId) {
       setNotFound(!snippetId);
       setLoading(false);
       return;
@@ -64,7 +62,7 @@ export default function EditSnippetPage() {
     setNotFound(false);
 
     try {
-      const result = await getSnippetById(currentToken, snippetId, controller.signal);
+      const result = await getSnippetById(token, snippetId, controller.signal);
       setSnippet(result);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
@@ -89,7 +87,7 @@ export default function EditSnippetPage() {
     } finally {
       setLoading(false);
     }
-  }, [snippetId, handleUnauthorized]);
+  }, [token, snippetId, handleUnauthorized]);
 
   // Single initial fetch
   useEffect(() => {

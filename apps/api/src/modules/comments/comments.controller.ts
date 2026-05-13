@@ -21,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../../shared/pipes';
+import { ThrottleWrite } from '../../shared/throttler';
 import { CurrentUser, Public } from '../auth';
 import { type SafeUser } from '../users';
 import {
@@ -54,14 +55,20 @@ export class CommentsController {
     return this.commentsService.get(commentId, user);
   }
 
+  @ThrottleWrite()
   @Put(':commentId')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({ summary: 'Update a comment' })
   @ApiParam({ name: 'commentId', format: 'uuid', description: 'Comment UUID' })
   @ApiBody({ description: 'Comment update payload' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Comment updated successfully' })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Comment updated successfully',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Comment not found' })
   async update(
     @Param('commentId', new ZodValidationPipe(CommentIdParamSchema))
@@ -77,8 +84,13 @@ export class CommentsController {
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({ summary: 'Soft-delete a comment' })
   @ApiParam({ name: 'commentId', format: 'uuid', description: 'Comment UUID' })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Comment deleted' })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Comment deleted',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Comment not found' })
   async delete(
     @Param('commentId', new ZodValidationPipe(CommentIdParamSchema))
@@ -88,6 +100,7 @@ export class CommentsController {
     await this.commentsService.softDelete(commentId, user);
   }
 
+  @ThrottleWrite()
   @Post(':commentId/flags')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-Auth')
@@ -95,7 +108,9 @@ export class CommentsController {
   @ApiParam({ name: 'commentId', format: 'uuid', description: 'Comment UUID' })
   @ApiBody({ description: 'Flag reason and optional message' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Comment flagged' })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   @ApiNotFoundResponse({ description: 'Comment not found' })
   async flag(
     @Param('commentId', new ZodValidationPipe(CommentIdParamSchema))
@@ -111,9 +126,15 @@ export class CommentsController {
   @ApiBearerAuth('JWT-Auth')
   @ApiOperation({ summary: 'Remove a flag from a comment' })
   @ApiParam({ name: 'commentId', format: 'uuid', description: 'Comment UUID' })
-  @ApiParam({ name: 'reason', enum: ['spam', 'abuse', 'off-topic', 'other'], description: 'Flag reason' })
+  @ApiParam({
+    name: 'reason',
+    enum: ['spam', 'abuse', 'off-topic', 'other'],
+    description: 'Flag reason',
+  })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Flag removed' })
-  @ApiUnauthorizedResponse({ description: 'Missing or invalid authentication token' })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication token',
+  })
   async unflag(
     @Param('commentId', new ZodValidationPipe(CommentIdParamSchema))
     commentId: string,

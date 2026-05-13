@@ -3,7 +3,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { createApiClient } from '@/lib/api-client';
-import { addFavorite, removeFavorite, listFavorites } from '@/lib/favorites-api';
+import {
+  addFavorite,
+  isFavorite,
+  removeFavorite,
+} from '@/lib/favorites-api';
 import { useAuth } from '@/hooks/useAuth';
 import { readToken } from '@/utils/storage';
 
@@ -27,28 +31,25 @@ export default function FavoriteButton({ snippetId }: FavoriteButtonProps) {
 
   useEffect(() => {
     if (!isLoggedIn) {
+      setIsFavorited(false);
       setLoading(false);
       return;
     }
 
-    let cancelled = false;
+    const controller = new AbortController();
+    setLoading(true);
 
-    const load = async () => {
-      try {
-        const result = await listFavorites(apiClient, 1, 100);
-        if (!cancelled) {
-          setIsFavorited(result.data.some((f) => f.snippetId === snippetId));
-          setLoading(false);
-        }
-      } catch {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
+    isFavorite(apiClient, snippetId, controller.signal)
+      .then((favorited) => {
+        setIsFavorited(favorited);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err instanceof DOMException && err.name === 'AbortError') return;
+        setLoading(false);
+      });
 
-    load();
-    return () => { cancelled = true; };
+    return () => controller.abort();
   }, [apiClient, snippetId, isLoggedIn]);
 
   const handleToggle = useCallback(async () => {
@@ -89,10 +90,14 @@ export default function FavoriteButton({ snippetId }: FavoriteButtonProps) {
         onClick={handleToggle}
       >
         <span className="favorite-btn-icon">{isFavorited ? '♥' : '♡'}</span>
-        <span className="favorite-btn-text">{isFavorited ? 'Saved' : 'Save'}</span>
+        <span className="favorite-btn-text">
+          {isFavorited ? 'Saved' : 'Save'}
+        </span>
       </button>
       {error && (
-        <span className="favorite-error" role="alert">{error}</span>
+        <span className="favorite-error" role="alert">
+          {error}
+        </span>
       )}
     </div>
   );

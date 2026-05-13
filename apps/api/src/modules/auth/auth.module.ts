@@ -4,12 +4,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { DatabaseModule } from '../../shared/database';
 import { UsersModule } from '../users';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { buildJwtModuleOptions } from './jwt-module.config';
+import { RefreshTokensRepository } from './refresh-tokens.repository';
+import { RefreshTokenService } from './refresh-token.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 /**
@@ -44,9 +47,19 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
     // UsersModule für Zugriff auf UsersService
     UsersModule,
+
+    // DatabaseModule für RefreshTokensRepository (Drizzle access)
+    DatabaseModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    JwtAuthGuard,
+    RolesGuard,
+    RefreshTokenService,
+    RefreshTokensRepository,
+  ],
   exports: [
     // Andere Module können diese nutzen
     AuthService,

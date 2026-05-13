@@ -1,12 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { createApiClient } from '@/lib/api-client';
+import { useApiClient } from '@/hooks/useApiClient';
 import { listMyCollections, deleteCollection } from '@/lib/collections-api';
 import { useAuth } from '@/hooks/useAuth';
-import { readToken } from '@/utils/storage';
 import type { Collection } from '@/types/collections';
 import CollectionCard from '@/components/collections/collection-card';
 import CreateCollectionForm from '@/components/collections/create-collection-form';
@@ -15,10 +14,7 @@ export default function CollectionsPage() {
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
 
-  const apiClient = useMemo(
-    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', readToken),
-    [],
-  );
+  const apiClient = useApiClient();
 
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);

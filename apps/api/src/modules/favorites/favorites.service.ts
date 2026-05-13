@@ -54,6 +54,19 @@ export class FavoritesService {
   }
 
   /**
+   * Check whether the current user has favorited a given snippet.
+   * Used by the frontend to render the correct initial button state
+   * without paginating the full favorites list.
+   */
+  async isFavorite(
+    user: SafeUser,
+    snippetId: string,
+  ): Promise<{ favorited: boolean }> {
+    const favorited = await this.repository.exists(user.id, snippetId);
+    return { favorited };
+  }
+
+  /**
    * List user's favorites with snippet previews
    * ANNAHME: max limit = 50
    */

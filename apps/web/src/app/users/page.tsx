@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
+import PaginationControls from '@/components/pagination-controls';
 import { UserAvatar } from '@/components/users/user-avatar';
 import {
   listUsers,
@@ -28,7 +29,7 @@ function setParam(
   return next;
 }
 
-export default function UsersDirectoryPage() {
+function UsersDirectoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -168,38 +169,26 @@ export default function UsersDirectoryPage() {
         </ul>
       )}
 
-      {meta && meta.totalPages > 1 && (
-        <nav
-          aria-label="Users pagination"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 16,
-            marginTop: 24,
-          }}
-        >
-          <button
-            type="button"
-            disabled={!meta.hasPreviousPage}
-            onClick={() => updateParam('page', String(page - 1))}
-            aria-label="Previous page"
-          >
-            ← Previous
-          </button>
-          <span>
-            Page {meta.page} of {meta.totalPages}
-          </span>
-          <button
-            type="button"
-            disabled={!meta.hasNextPage}
-            onClick={() => updateParam('page', String(page + 1))}
-            aria-label="Next page"
-          >
-            Next →
-          </button>
-        </nav>
-      )}
+      {meta && <PaginationControls meta={meta} />}
     </main>
+  );
+}
+
+/**
+ * `useSearchParams` is a CSR-bailout API; the wrapping Suspense
+ * boundary lets Next.js prerender a stable shell at build time and
+ * resume on the client with the actual params.
+ */
+export default function UsersDirectoryPage() {
+  return (
+    <Suspense
+      fallback={
+        <main style={{ maxWidth: 900, margin: '0 auto', padding: 16 }}>
+          <h1>User Directory</h1>
+        </main>
+      }
+    >
+      <UsersDirectoryContent />
+    </Suspense>
   );
 }

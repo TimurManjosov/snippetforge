@@ -10,9 +10,9 @@ import ReactionBar from '@/components/reactions/reaction-bar';
 import FavoriteButton from '@/components/favorites/favorite-button';
 import AddToCollectionButton from '@/components/collections/add-to-collection-button';
 import { AuthorCard } from '@/components/users/author-card';
-import { ApiClientError, createApiClient } from '@/lib/api-client';
+import { ApiClientError } from '@/lib/api-client';
+import { useApiClient } from '@/hooks/useApiClient';
 import type { SnippetDetail as SnippetDetailType } from '@/types/snippets';
-import { readToken } from '@/utils/storage';
 
 export default function SnippetDetailPage() {
   const params = useParams();
@@ -28,10 +28,7 @@ export default function SnippetDetailPage() {
   const [retryCount, setRetryCount] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
 
-  const apiClient = useMemo(
-    () => createApiClient(process.env.NEXT_PUBLIC_API_URL ?? '', readToken),
-    [],
-  );
+  const apiClient = useApiClient();
 
   useEffect(() => {
     if (!snippetId) {

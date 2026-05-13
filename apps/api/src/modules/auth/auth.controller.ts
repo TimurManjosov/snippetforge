@@ -21,6 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { ZodValidationPipe } from '../../shared/pipes';
+import { ThrottleAuth } from '../../shared/throttler';
 import {
   AuthResponseSchema,
   ConflictErrorResponseSchema,
@@ -37,6 +38,7 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { Public } from './decorators/public.decorator';
 import * as loginDto from './dto/login.dto';
 import * as registerDto from './dto/register.dto';
+import { RefreshTokenSchema, type RefreshTokenDto } from './dto/refresh.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 /**
@@ -85,6 +87,7 @@ export class AuthController {
    * - 409 Conflict: Email/Username already exists
    */
   @Public() // Keine Auth nötig für Registration
+  @ThrottleAuth()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -169,6 +172,7 @@ The user is immediately logged in after registration.
    * - 401 Unauthorized: Invalid credentials
    */
   @Public() // Keine Auth nötig für Login
+  @ThrottleAuth()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -266,5 +270,60 @@ Requires a valid JWT token in the Authorization header.
   getMe(@CurrentUser() user: SafeUser): SafeUser {
     this.logger.debug(`Get profile for user: ${user.id}`);
     return user;
+  }
+
+  /**
+   * POST /api/auth/refresh
+   *
+   * Single-use refresh-token rotation. Validates the presented token,
+   * revokes it, and returns a new access/refresh pair plus the user.
+   *
+   * The BFF (Next.js route handler) is the only legitimate caller — it
+   * reads the refresh token from the HttpOnly cookie on the web origin and
+   * forwards it in the JSON body. Reuse of a revoked refresh token causes
+   * every active session for the user to be revoked.
+   */
+  @Public()
+  @ThrottleAuth()
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Rotate the refresh token and mint a new access token',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'New access and refresh tokens',
+    type: AuthResponseSchema,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Refresh token is missing, expired, or has been revoked',
+    type: UnauthorizedErrorResponseSchema,
+  })
+  async refresh(
+    @Body(new ZodValidationPipe(RefreshTokenSchema)) dto: RefreshTokenDto,
+  ): Promise<AuthResponse> {
+    return this.authService.refresh(dto.refreshToken);
+  }
+
+  /**
+   * POST /api/auth/logout
+   *
+   * Idempotent: revokes the presented refresh-token row if it exists. The
+   * BFF clears the cookie on its side regardless. Unknown / already-revoked
+   * tokens succeed silently to avoid leaking session state.
+   */
+  @Public()
+  @ThrottleAuth()
+  @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Revoke the presented refresh token' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Logout acknowledged (always idempotent)',
+  })
+  async logout(
+    @Body(new ZodValidationPipe(RefreshTokenSchema)) dto: RefreshTokenDto,
+  ): Promise<void> {
+    await this.authService.logout(dto.refreshToken);
   }
 }
