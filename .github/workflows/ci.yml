@@ -118,14 +118,28 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        # `npm ci` plus `--include=optional` so Tailwind v4's lightningcss
-        # platform binary (lightningcss-linux-x64-gnu) is installed during
-        # CI on Linux runners. Without this Next's build fails with
-        # "Cannot find module '../lightningcss.linux-x64-gnu.node'".
-        run: npm ci --include=optional
+        # `npm install` (not `npm ci`) on the build job specifically: npm
+        # has a long-standing bug where platform-specific optionalDeps
+        # (e.g. lightningcss-linux-x64-gnu, used by Tailwind v4) are not
+        # always restored by `npm ci` when the lockfile was generated on
+        # a different platform. `npm install` recomputes optional deps
+        # for the current platform and is the recommended workaround.
+        run: npm install --no-audit --no-fund
 
-      - name: Run build
-        run: npm run build
+      - name: Diagnostics
+        run: |
+          node --version
+          npm --version
+          echo "--- lightningcss native binary ---"
+          ls -la node_modules/lightningcss-linux-x64-gnu 2>&1 | head -5 || true
+          echo "--- workspaces resolved ---"
+          npm ls --workspaces --depth=0 2>&1 | head -20 || true
+
+      - name: Build API
+        run: npm -w apps/api run build
+
+      - name: Build Web
+        run: npm -w apps/web run build
 
 # ============================================================================
 # pnpm variant – single sequential job
